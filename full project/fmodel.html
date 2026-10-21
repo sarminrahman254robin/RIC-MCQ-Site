@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Test List - Robin ICT Care</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.2rem;
+            color: #00ffcc;
+        }
+        header p {
+            color: #e0e0e0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            background: #203a43;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .chapter-heading {
+            font-size: 1.8rem;
+            color: #2c5364;
+            margin-bottom: 20px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th, td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #203a43;
+            color: #fff;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .btn-free {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .btn-lock {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Login Modal Box */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content button {
+            width: 100%;
+            background: #203a43;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #0f2027;
+            color: #fff;
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Robin ICT Care</h1>
+        <p>Learn ICT Build your Future</p>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">&#8592; হোম পেজে ফিরে যান</a>
+        <h2 id="chapterTitle" class="chapter-heading">মডেল টেস্ট সমূহের তালিকা</h2>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">মডেল নং</th>
+                        <th style="width: 50%;">মডেল টেস্টের নাম / বিবরণ</th>
+                        <th style="width: 30%; text-align: center;">অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="modelTableBody">
+                    <!-- JavaScript দিয়ে ১০টি সারি তৈরি হবে -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- পাসওয়ার্ড ইনপুট পপআপ -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalModelName" style="color: #203a43; margin-bottom: 10px;"></h3>
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">প্রিমিয়াম টেস্টে অংশ নিতে ইউজার আইডি ও পাসওয়ার্ড দিন।</p>
+            <input type="text" id="username" placeholder="ইউজার আইডি দিন">
+            <input type="password" id="password" placeholder="পাসওয়ার্ড দিন">
+            <button id="loginBtn" onclick="checkAccess()">পরীক্ষা শুরু করুন</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Robin ICT Care. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // ১. আপনার গুগল অ্যাপস স্ক্রিপ্টের Web App URL এখানে বসানো আছে:
+        // =========================================================================
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby-SSbtA1OVyYq2DRCq5KQJLwfJQ55S5b3BUCE9Y6g6A0resslOehakumyfaP5HOqov/exec";
+
+        // =========================================================================
+        // ২. প্রতিটি মডেল টেস্টের নাম বা বোর্ডের বিবরণ এবং নির্দিষ্ট ফাইলের নাম:
+        // =========================================================================
+        const modelData = {
+            1: { name: "সকল বোর্ড - ২০২৬ (ফ্রি মডেল টেস্ট)", file: "model/all2026.html" },
+            2: { name: "ঢাকা বোর্ড - ২০২৫", file: "fmodel2.html" },
+            3: { name: "যশোর বোর্ড - ২০২৫", file: "model03.html" },
+            4: { name: "কুমিল্লা বোর্ড - ২০২৫", file: "model04.html" },
+            5: { name: "চট্টগ্রাম বোর্ড - ২০২৫", file: "model05.html" },
+            6: { name: "বরিশাল বোর্ড - ২০২৫", file: "model06.html" },
+            7: { name: "সিলেট বোর্ড - ২০২৫", file: "model07.html" },
+            8: { name: "দিনাজপুর বোর্ড - ২০২৫", file: "model08.html" },
+            9: { name: "ময়মনসিংহ বোর্ড - ২০২৫", file: "model09.html" },
+            10: { name: "সাপ্লিমেন্টারি ফাইনাল মডেল - ২০২৫", file: "model10.html" }
+        };
+
+        // URL থেকে চ্যাপ্টারের নাম এবং কোড রিড করা
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterCode = urlParams.get('ch') || 'ch1';
+        const chapterTitle = urlParams.get('title') || 'ICT ফুল বুক মডেল টেস্ট';
+
+        document.getElementById('chapterTitle').innerText = chapterTitle;
+
+        let selectedModelNo = 0;
+
+        // ১০টি মডেল টেবিল তৈরি করা
+        const tbody = document.getElementById('modelTableBody');
+
+        // ১ম মডেল (ফ্রি)
+        tbody.innerHTML += `
+            <tr>
+                <td><b>মডেল - ০১</b></td> 
+                <td>
+                    <span style="font-weight: 600; color: #2c5364;">${modelData[1].name}</span><br>
+                    <span style="color: green; font-size: 0.85rem; font-weight: 600;">উন্মুক্ত (ফ্রি)</span>
+                </td>
+                <td style="text-align: center;">
+                    <a href="${modelData[1].file}?ch=${chapterCode}&model=1" class="btn-free">পরীক্ষা দিন</a>  
+                </td>
+            </tr>
+        `;
+
+        // ২ থেকে ১০ম মডেল (লকড / প্রিমিয়াম)
+        for (let i = 2; i <= 10; i++) {
+            tbody.innerHTML += `
+                <tr>
+                    <td><b>মডেল - ${i < 10 ? '0' + i : i}</b></td>
+                    <td>
+                        <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
+                        <span style="color: #d9534f; font-size: 0.85rem;">&#128274; পাসওয়ার্ড প্রটেক্টেড</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <button class="btn-lock" onclick="openLogin(${i})">পরীক্ষা দিন</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function openLogin(modelNo) {
+            selectedModelNo = modelNo;
+            document.getElementById('modalModelName').innerText = 'মডেল টেস্ট - ' + (modelNo < 10 ? '0' + modelNo : modelNo);
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        async function checkAccess() {
+            let u = document.getElementById('username').value.trim();
+            let p = document.getElementById('password').value.trim();
+
+            if(!u || !p) {
+                alert("দয়া করে ইউজার আইডি এবং পাসওয়ার্ড উভয়ই দিন।");
+                return;
+            }
+
+            let btn = document.getElementById('loginBtn');
+            btn.innerText = "যাচাই করা হচ্ছে...";
+            btn.disabled = true;
+
+            try {
+                // গুগল অ্যাপস স্ক্রিপ্টে রিকোয়েস্ট পাঠানো
+                let response = await fetch(`${WEB_APP_URL}?action=login&userId=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
+                let result = await response.json();
+
+                if (result.success) {
+                    alert(`স্বাগতম, ${result.name}! সফলভাবে লগইন হয়েছে।`);
+                    
+                    // নির্দিষ্ট মডেলের লিংক নিয়ে রিডাইরেক্ট করা
+                    let targetPage = modelData[selectedModelNo] ? modelData[selectedModelNo].file : "exam.html";
+                    window.location.href = `${targetPage}?ch=${chapterCode}&model=${selectedModelNo}&user=${encodeURIComponent(result.name)}`;
+                } else {
+                    alert(result.message || "ভুল ইউজার আইডি বা পাসওয়ার্ড!");
+                }
+            } catch (error) {
+                console.error("Login Error:", error);
+                alert("সার্ভারের সাথে সংযোগ স্থাপন করা সম্ভব হয়নি। ইন্টারনেট কানেকশন বা লিংক চেক করুন।");
+            } finally {
+                btn.innerText = "পরীক্ষা শুরু করুন";
+                btn.disabled = false;
+            }
+        }
+
+        window.onclick = function(e) {
+            let modal = document.getElementById('loginModal');
+            if (e.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
