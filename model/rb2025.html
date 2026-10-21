@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin ICT Care - অনলাইন পরীক্ষা সিস্টেম</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kalpurush&family=Hind+Siliguri:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Hind Siliguri', 'Kalpurush', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        /* মাল্টি-কালার নিয়ন লাইট ইফেক্ট (হলুদ, লাল ও নীল মিশ্রণ) */
+        .neon-glow-large {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffff00; /* হলুদ বেস কালার */
+            text-shadow: 
+                0 0 5px #ff0000,   /* লাল গ্লো */
+                0 0 10px #ff0000,  
+                0 0 20px #0055ff,  /* নীল গ্লো */
+                0 0 30px #0055ff,  
+                0 0 40px #ffff00,  /* হলুদ গ্লো */
+                0 0 70px #ffff00;
+            letter-spacing: 2px;
+        }
+
+        .neon-glow-small {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffff00;
+            text-shadow: 
+                0 0 4px #ff0000, 
+                0 0 8px #0055ff, 
+                0 0 12px #ffff00;
+        }
+
+        /* প্রিমিয়াম সার্টিফিকেট বর্ডার ও ডিজাইন */
+        .certificate-container {
+            background: #ffffff;
+            border: 12px solid transparent;
+            border-image: linear-gradient(to right, #4f46e5, #06b6d4, #10b981) 1;
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.2);
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printableCertificate, #printableCertificate * { visibility: visible; }
+            #printableCertificate { position: absolute; left: 0; top: 0; width: 100%; margin: 0; box-shadow: none; border: 8px solid #4f46e5; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800">
+
+    <!-- হেডার / নেভিগেশন বার -->
+    <header class="bg-slate-900/80 backdrop-blur-md text-white shadow-lg sticky top-0 z-50 border-b border-slate-800 no-print">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-lg md:text-xl font-bold flex items-center gap-2">
+                🎓 <span class="neon-glow-small">Robin ICT Care</span> - অনলাইন কুইজ পোর্টাল
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- ১. পরীক্ষা উইন্ডো -->
+        <section id="quizSection" class="space-y-6">
+            <!-- তথ্য ইনপুট দেওয়ার ছোট ফরম -->
+            <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">আপনার নাম:</label>
+                        <input type="text" id="stdName" placeholder="আপনার নাম লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">মোবাইল নম্বর:</label>
+                        <input type="tel" id="stdMobile" placeholder="মোবাইল নম্বর লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- টাইমার ও শিরোনাম -->
+            <div class="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-4 border border-slate-200 sticky top-20 z-40">
+                <div>
+                    <h3 id="examTitleDisplay" class="text-lg font-bold text-indigo-900">Robin ICT Care - আইসিটি মূল্যায়ন পরীক্ষা</h3>
+                    <p class="text-sm text-slate-500">মোট প্রশ্ন: ২৫টি | সময়: ২৫ মিনিট</p>
+                </div>
+                <div class="flex items-center gap-2 bg-rose-50 border border-rose-200 text-rose-600 px-4 py-2 rounded-xl font-mono text-xl font-bold">
+                    <span>⏱️ সময় বাকি:</span>
+                    <span id="timer">25:00</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-3 space-y-6" id="questionsContainer"></div>
+                <div class="lg:col-span-1">
+                    <div class="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl sticky top-40 border border-slate-200">
+                        <h4 class="font-bold text-slate-700 mb-3 text-center border-b pb-2">প্রশ্ন নেভিগেশন</h4>
+                        <div id="questionPalette" class="grid grid-cols-5 gap-2"></div>
+                        <div class="mt-4 pt-4 border-t text-xs space-y-1 text-slate-600">
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-200 border inline-block"></span> উত্তর দেওয়া হয়নি</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> উত্তর দেওয়া হয়েছে</div>
+                        </div>
+                        <button onclick="confirmSubmitQuiz()" class="mt-6 w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
+                            পরীক্ষা জমা দিন 🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ২. ডিজিটাল সার্টিফিকেট ও ফলাফল -->
+        <section id="resultSection" class="hidden max-w-3xl mx-auto space-y-6">
+            <div id="printableCertificate" class="certificate-container p-8 md:p-12 rounded-3xl text-center relative overflow-hidden space-y-6">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
+                <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
+
+                <div class="py-2">
+                    <!-- সার্টিফিকেট হেডের বড় ও আকর্ষণীয় মাল্টি-কালার নিয়ন লাইট ইফেক্ট -->
+                    <h2 class="neon-glow-large">Robin ICT Care</h2>
+                    <p class="text-sm font-semibold text-indigo-600 tracking-wider mt-2">Learn ICT Build Your Future</p>
+                </div>
+
+                <div class="border-t border-b border-slate-200 py-4 my-2 space-y-1">
+                    <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest">অংশগ্রহণ সার্টিফিকেট</h3>
+                    <p id="certChapterInfo" class="text-sm font-bold text-indigo-700">অধ্যায়: কমিউনিকেশন সিস্টেম ও নেটওয়ার্কিং | মডেল টেস্ট - ০১</p>
+                </div>
+
+                <p class="text-slate-600 text-sm">এই মর্মে প্রত্যয়ন করা যাচ্ছে যে,</p>
+                
+                <div>
+                    <h4 id="certStudentName" class="text-2xl md:text-3xl font-bold text-slate-900 border-b-2 border-indigo-500 inline-block px-6 pb-1">শিক্ষার্থীর নাম</h4>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">মোবাইল/আইডি: <span id="certMobile">N/A</span></p>
+                </div>
+
+                <p class="text-slate-600 text-sm max-w-lg mx-auto">
+                    তিনি সফলভাবে **Robin ICT Care** কর্তৃক আয়োজিত আইসিটি অনলাইন মূল্যায়ন পরীক্ষায় অংশগ্রহণ সম্পন্ন করেছেন।
+                </p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-sm shadow-sm">
+                    <div>
+                        <div class="text-xs text-slate-500">প্রাপ্ত নম্বর:</div>
+                        <div id="certScore" class="font-bold text-indigo-700 text-lg">০/২৫</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">সঠিক উত্তর:</div>
+                        <div id="certCorrect" class="font-bold text-emerald-600 text-lg">০</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">পারসেন্ট (%):</div>
+                        <div id="certPercentage" class="font-bold text-amber-600 text-lg">০%</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">সময় ব্যয়:</div>
+                        <div id="certTime" class="font-bold text-slate-700 text-sm">০ মি.</div>
+                    </div>
+                </div>
+
+                <div class="pt-8 flex justify-between items-end border-t border-slate-200 text-left">
+                    <div>
+                        <p class="text-xs text-slate-500 font-mono" id="certDate">তারিখ: ২০/১০/২০২৬</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">✓ ভেরিফাইড সার্টিফিকেট</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-slate-800 text-sm">Engr. Md. Benjur Rahman (Robin)</div>
+                        <div class="text-xs text-indigo-600 font-semibold">পরিচালক, Robin ICT Care</div>
+                        <div class="text-xs font-mono text-slate-600 mt-0.5">মোবাইল: 01743-886883</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 justify-center no-print pb-12">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+                    🖨️ সার্টিফিকেট প্রিন্ট বা PDF সেভ করুন
+                </button>
+                <button onclick="location.reload()" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition">
+                    পুনরায় পরীক্ষা দিন
+                </button>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-slate-200 space-y-4 no-print">
+                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা (Answer Analysis)</h3>
+                <div id="answerReviewList" class="space-y-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBQCVPJcWqixFkzKoOmqXnXohy1vyncK0uD8xyd5wcgjRQ8MUybUvrYpwiRl4g6Z9g/exec";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterTitleParam = urlParams.get('title') || 'Chapter-2: কমিউনিকেশন সিস্টেম ও নেটওয়ার্কিং';
+        const modelNoParam = urlParams.get('model') || '০১';
+
+        document.getElementById('examTitleDisplay').innerText = `Robin ICT Care - ${chapterTitleParam} (মডেল টেস্ট - ${modelNoParam})`;
+
+        const questionsData = [
+            { id: 1, q: "HTML এর সবচেয়ে ছোট হেডিং কোনটি?", options: ["h1", "h2", "h4", "h6"], ans: 3 },
+            { id: 2, q: "বায়োমেট্রিক পদ্ধতিতে সিমকার্ড নিবন্ধন শুরু করা ১য় ও ২য় দেশ কী কী?", options: ["বাংলাদেশ ও ভারত", "বাংলাদেশ ও পাকিস্তান", "ভারত ও পাকিস্তান", "পাকিস্তান ও বাংলাদেশ"], ans: 3 },
+            { id: 3, q: "ব্রাউজারের মাধ্যমে সর্ট করাকে কী বলে?", options: ["Insertion sort", "Selection sort", "Quick sort", "Bubble sort"], ans: 1 },
+            { id: 4, q: "ফাইবার অপটিক ক্যাবলে কোন তরঙ্গদৈর্ঘ্য ব্যবহৃত হয়?", options: ["500 nm", "1000 nm", "1500 nm", "2000 nm"], ans: 2 },
+            { id: 5, q: "ইমেইল ঠিকানায় কয়টি অংশ থাকে?", options: ["2", "3", "4", "5"], ans: 0 },
+            { id: 6, q: "5, 8, B ধারার পরবর্তী মান কোনটি?", options: ["C", "D", "E", "F"], ans: 2 },
+            { id: 7, q: "নিচের উদ্দীপকটি পড়ে ৭ ও ৮ নং প্রশ্নের উত্তর দাও:\n<html>\n<body>\n<font color=\"red\"> HSC Exam </font>\n</body>\n</html>\nউদ্দীপকে ব্যবহৃত রঙের সমতুল্য হেক্সাডেসিমেল কোড হচ্ছে—", options: ["#FF 0000", "#00 FF 00", "#0000 FF", "#FFF 000"], ans: 0 },
+            { id: 8, q: "উদ্দীপকে HSC Exam শব্দের জন্য ব্যবহৃত ট্যাগের অ্যাট্রিবিউট হতে পারে—\ni. href\nii. face\niii. size\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 2 },
+            { id: 9, q: "সংযোগ লাইন অব সাইট (LOS) অবলম্বন করা হয় কোন ক্ষেত্রে?", options: ["রেডিও ওয়েভ", "মাইক্রোওয়েভ", "টেলিড্রিয়াল", "স্যাটেলাইট"], ans: 1 },
+            { id: 10, q: "Y = ĀB + C বুলিয়ান সমীকরণ বাস্তবায়ন করতে মোট কয়টি মৌলিক গেইট প্রয়োজন?", options: ["2", "3", "4", "5"], ans: 1 },
+            { id: 11, q: "টেবিল হেডারে থাকে—\ni. মূল তথ্য\nii. বিভিন্ন কলামের নাম\niii. কলামে যে ধরনের ডেটা রাখা হবে তার তথ্য\nনিচের কোনটি সঠিক?", options: ["i", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 2 },
+            { id: 12, q: "কোনো ওয়েবসাইটের ঠিকানায় ব্যবহৃত 'https'-এর 's' দিয়ে কী বোঝায়?", options: ["Security", "Speical", "System", "Secure"], ans: 3 },
+            { id: 13, q: "বায়েইনফরমেটিক্স ইনফরমেশন সিস্টেম তৈরিতে ব্যবহৃত অ্যালগরিদম কোনটি?\ni. ইমেজ প্রসেসিং\nii. ডেটা মাইনিং\niii. কৃত্রিম বুদ্ধিমত্তা\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 0 },
+            { id: 14, q: "সুডোকোড কথন করা হয়?", options: ["প্রোগ্রাম কোডিং এর পূর্বে", "প্রোগ্রাম কোডিং এর পরে", "লুপ অপারেশন এর পূর্বে", "লুপ অপারেশন এর পরে"], ans: 0 },
+            { id: 15, q: "কোন কমান্ডটি একটি টেবিল থেকে সব ডেটা নেওয়ার জন্য ব্যবহৃত হয়?", options: ["SELECT ALL", "SELECT ALL *", "SELECT *", "SELECT **"], ans: 2 },
+            { id: 16, q: "HTML border অ্যাট্রিবিউট কোন ভ্যালু লিখলে বর্ডার প্রদর্শিত হবে না?", options: ['Border = "1"', 'Border = "alt"', 'Border = "0"', 'Border = "null"'], ans: 2 },
+            { 
+                id: 17, 
+                q: "নিচের চিত্রটি হতে পারে—\ni. ব্রডকাস্ট\nii. মাল্টি কাস্ট\niii. সিমপ্লেক্স\nনিচের কোনটি সঠিক?", 
+                qImg: "1.png",
+                options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
+                ans: 1 
+            },
+            { id: 18, q: "(A)₁₆ + (13)₁₀ এর যোগফল নির্ণয়ের জন্য কতটি অ্যাডার লাগবে?", options: ["৩টি হাফ অ্যাডার ১টি ফুল অ্যাডার", "২টি হাফ অ্যাডার ২টি ফুল অ্যাডার", "১টি হাফ অ্যাডার ৩টি ফুল অ্যাডার", "১টি হাফ অ্যাডার ৪টি ফুল অ্যাডার"], ans: 2 },
+            { id: 19, q: "DNS এর পূর্ণরূপ কোনটি?", options: ["Domain Name Server", "Domain Name System", "Domain Number System", "Domain Number of Server"], ans: 1 },
+            { id: 20, q: "ডিজিটাল সেলুলার নেটওয়ার্ক হলো—", options: ["প্রথম প্রজন্ম", "দ্বিতীয় প্রজন্ম", "তৃতীয় প্রজন্ম", "চতুর্থ প্রজন্ম"], ans: 1 },
+            { id: 21, q: "নিচের উদ্দীপকটি লক্ষ্য কর এবং ২১ ও ২২ নং প্রশ্নের উত্তর দাও:\n#include <stdio.h>\nmain()\n{\n  float A = 21.5;\n  float B = 9.7;\n  float sum = A + B;\n  printf(\"summation %.2f\", sum);\n}\nপ্রোগ্রামটির আউটপুট কত হবে?", options: ["31", "31.20", "32", "32.20"], ans: 1 },
+            { id: 22, q: "প্রোগ্রামটির ভ্যারিয়েবলগুলো মেমোরিতে মোট কত বাইট জায়গা দখল করবে?", options: ["৮", "১২", "১৬", "২০"], ans: 1 },
+            { id: 23, q: "টেবিলের ডেটা বা ফিল্ড নির্বাচন করে কুয়েরি করা হলে তাকে কী বলে?", options: ["অ্যাকশন কুয়েরি", "প্যারামিটার কুয়েরি", "ক্রসট্যাব কুয়েরি", "সিলেক্ট কুয়েরি"], ans: 3 },
+            { id: 24, q: "(45)₁₀ এর সমতুল্য মান হলো—\ni. (101101)₂\nii. (55)₈\niii. (213)₁₆\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 0 },
+            { 
+                id: 25, 
+                q: "'ATM' এর পূর্ণরূপ কোনটি?", 
+                options: ["Automatic Teller Machine", "Automated Teller Machine", "Autonomous Teller Machine", "Automated Teller Machinability"], 
+                ans: 1 
+            }
+        ];
+
+        let timerInterval = null;
+        let timeRemaining = 25 * 60;
+        let userAnswers = {};
+
+        window.onload = function() {
+            renderQuestions();
+            renderPalette();
+            startTimer();
+        };
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            const timerDisplay = document.getElementById('timer');
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                timerDisplay.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert('সময় শেষ! পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হচ্ছে।');
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.id = `question-card-${index}`;
+                qCard.className = "bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200 space-y-3";
+
+                let qImageHtml = q.qImg ? `<div class="my-2"><img src="${q.qImg}" alt="Question Image" class="max-h-52 rounded-lg border shadow-sm mx-auto"></div>` : '';
+
+                let optionsHtml = q.options.map((opt, optIdx) => {
+                    return `
+                        <label class="flex items-start gap-3 p-3 rounded-xl border hover:bg-indigo-50 cursor-pointer transition text-slate-700 bg-white">
+                            <input type="radio" name="question-${q.id}" value="${optIdx}" onchange="selectOption(${q.id}, ${optIdx})" class="w-4 h-4 mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div class="flex-1">
+                                <div>${opt}</div>
+                            </div>
+                        </label>
+                    `;
+                }).join('');
+
+                qCard.innerHTML = `
+                    <div class="font-bold text-slate-800 text-lg flex gap-2" style="white-space: pre-line;">
+                        <span>${index + 1}.</span>
+                        <span>${q.q}</span>
+                    </div>
+                    ${qImageHtml}
+                    <div class="space-y-2 pl-4">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(qCard);
+            });
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('questionPalette');
+            palette.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const btn = document.createElement('button');
+                btn.id = `palette-btn-${q.id}`;
+                btn.className = "p-2 rounded-lg font-semibold text-sm border bg-slate-100 hover:bg-slate-200 text-slate-700 transition";
+                btn.innerText = index + 1;
+                btn.onclick = () => {
+                    document.getElementById(`question-card-${index}`).scrollIntoView({ behavior: 'smooth' });
+                };
+                palette.appendChild(btn);
+            });
+        }
+
+        function selectOption(qId, optionIdx) {
+            userAnswers[qId] = optionIdx;
+            const btn = document.getElementById(`palette-btn-${qId}`);
+            if (btn) {
+                btn.className = "p-2 rounded-lg font-semibold text-sm bg-indigo-600 text-white shadow transition";
+            }
+        }
+
+        function confirmSubmitQuiz() {
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < questionsData.length) {
+                if (!confirm(`আপনি ২৫টি প্রশ্নের মধ্যে ${answeredCount}টির উত্তর দিয়েছেন। পরীক্ষা জমা দিতে চান?`)) {
+                    return;
+                }
+            }
+            submitQuiz();
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+
+            const timeUsedSeconds = (25 * 60) - timeRemaining;
+            const minsUsed = Math.floor(timeUsedSeconds / 60);
+            const secsUsed = timeUsedSeconds % 60;
+            const timeTakenFormatted = `${minsUsed} মি. ${secsUsed} সে.`;
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (userAns !== undefined) {
+                    if (userAns === q.ans) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            const score = correctCount;
+            const percentage = ((correctCount / questionsData.length) * 100).toFixed(1);
+
+            const studentNameInput = document.getElementById('stdName').value.trim();
+            const studentMobileInput = document.getElementById('stdMobile').value.trim();
+
+            const resultData = {
+                studentName: studentNameInput !== "" ? studentNameInput : "পরীক্ষার্থী",
+                mobile: studentMobileInput !== "" ? studentMobileInput : "N/A",
+                dateTime: new Date().toLocaleString('bn-BD'),
+                score: score,
+                totalQuestions: questionsData.length,
+                correctCount: correctCount,
+                wrongCount: wrongCount,
+                percentage: percentage,
+                timeTaken: timeTakenFormatted
+            };
+
+            saveResult(resultData);
+            displayStudentCertificate(resultData);
+
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+        }
+
+        async function saveResult(resultData) {
+            let results = JSON.parse(localStorage.getItem('quiz_results') || '[]');
+            results.unshift(resultData);
+            localStorage.setItem('quiz_results', JSON.stringify(results));
+
+            if (GOOGLE_SCRIPT_URL) {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(resultData)
+                    });
+                } catch (error) {
+                    console.error("ডেটা পাঠাতে ব্যর্থ:", error);
+                }
+            }
+        }
+
+        function displayStudentCertificate(data) {
+            document.getElementById('certStudentName').innerText = data.studentName;
+            document.getElementById('certMobile').innerText = data.mobile;
+            document.getElementById('certScore').innerText = `${data.score}/${data.totalQuestions}`;
+            document.getElementById('certCorrect').innerText = data.correctCount;
+            document.getElementById('certPercentage').innerText = `${data.percentage}%`;
+            document.getElementById('certTime').innerText = data.timeTaken;
+            document.getElementById('certDate').innerText = `তারিখ: ${data.dateTime.split(',')[0]}`;
+            
+            document.getElementById('certChapterInfo').innerText = `অধ্যায়: ${chapterTitleParam} | মডেল টেস্ট - ${modelNoParam}`;
+
+            const reviewList = document.getElementById('answerReviewList');
+            reviewList.innerHTML = '';
+
+            questionsData.forEach((q, idx) => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.ans;
+                const isUnanswered = userAns === undefined;
+
+                let statusBadge = isUnanswered ? '<span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded text-xs font-bold">উত্তর দেননি</span>' :
+                                  isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
+                                  '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
+
+                let statusBg = isUnanswered ? 'border-l-4 border-gray-400 bg-gray-50' :
+                               isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+
+                const item = document.createElement('div');
+                item.className = `p-4 rounded-xl border ${statusBg} space-y-1 bg-white`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
+                        <span class="font-bold text-slate-800">${idx + 1}. ${q.q}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="text-sm text-slate-600 space-y-1 pt-1">
+                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'নেই'}</strong></div>
+                        <div>সঠিক উত্তর: <strong class="text-emerald-700">${q.options[q.ans]}</strong></div>
+                    </div>
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
