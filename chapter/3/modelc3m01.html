@@ -70,15 +70,15 @@
 
         <!-- ১. পরীক্ষা উইন্ডো -->
         <section id="quizSection" class="space-y-6">
-            <!-- তথ্য ইনপুট দেওয়ার ছোট ফরম -->
+            <!-- তথ্য ইনপুট দেওয়ার ফরম (বাধ্যতামূলক) -->
             <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1 text-sm">আপনার নাম:</label>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">আপনার নাম: <span class="text-rose-500">*</span></label>
                         <input type="text" id="stdName" placeholder="আপনার নাম লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
                     </div>
                     <div>
-                        <label class="block text-slate-700 font-semibold mb-1 text-sm">মোবাইল নম্বর:</label>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">মোবাইল নম্বর: <span class="text-rose-500">*</span></label>
                         <input type="tel" id="stdMobile" placeholder="মোবাইল নম্বর লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
                     </div>
                 </div>
@@ -194,7 +194,7 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBQCVPJcWqixFkzKoOmqXnXohy1vyncK0uD8xyd5wcgjRQ8MUybUvrYpwiRl4g6Z9g/exec";
 
         const urlParams = new URLSearchParams(window.location.search);
-        const chapterTitleParam = urlParams.get('title') || 'অধ্যায় ০৩:  সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস মডেল- ০১';
+        const chapterTitleParam = urlParams.get('title') || 'অধ্যায় ০৩: সংখ্যা পদ্ধতি ও ডিজিটাল ডিভাইস মডেল- ০১';
         const modelNoParam = urlParams.get('model') || '০১';
 
         document.getElementById('examTitleDisplay').innerText = `Robin ICT Care - ${chapterTitleParam} (মডেল টেস্ট - ${modelNoParam})`;
@@ -327,7 +327,7 @@
                 options: ["ক", "খ", "গ", "ঘ"], 
                 ans: 2,
                 explanation: "",
-				expImg:"images/c3m016.png"
+                expImg:"images/c3m016.png"
             },
             { 
                 id: 19, 
@@ -342,7 +342,7 @@
                 qImg: "images/c3m013.png",
                 options: ["ক", "খ", "গ", "ঘ"], 
                 ans: 3,
-                explanation: "বুলিয়ান অ্যালজেব্রার দ্বৈত নীতি (Duality Principle) অনুযায়ী, OR(+) চিহ্ন অ্যান্ড্রয়েড/মাল্টিপ্লিকেশন এবং অ্যান্ড ডট চিহ্নের পারস্পরিক রূপান্তর ঘটে। সুতরাং সঠিক উত্তর হবে দ্বৈত পরিপূরক রূপ।"
+                explanation: "বুলিয়ান অ্যালজেব্রার দ্বৈত নীতি (Duality Principle) অনুযায়ী, OR(+) চিহ্ন এবং AND(.) চিহ্নের পারস্পরিক রূপান্তর ঘটে। সুতরাং সঠিক উত্তর হবে দ্বৈত পরিপূরক রূপ।"
             },
             { 
                 id: 21, 
@@ -358,7 +358,7 @@
                 qImg: "images/c3m014.png", 
                 ans: 2,
                 explanation: "",
-				expImg:"images/c3m017.png"
+                expImg:"images/c3m017.png"
             },
             { 
                 id: 23, 
@@ -379,7 +379,7 @@
                 q: "(- 293)₁₀ সংখ্যাটি রেজিস্টারে স্টোর করতে কমপক্ষে কত বিটের প্রয়োজন?", 
                 options: ["8", "16", "32", "64"], 
                 ans: 1,
-                explanation: "২৮৩ সংখ্যাটি প্রকাশ করতে বাইনারিতে ৯টি বিট প্রয়োজন হয়। এটি ৮-বিট রেজিস্টারে ধরে না। ফলে চিহ্নিত সংখ্যা হিসেবে সংসংস্থানে সংরক্ষণের জন্য পরবর্তী মান অর্থাৎ ১৬-বিট রেজিস্টারের প্রয়োজন হবে।"
+                explanation: "সংখ্যাটি প্রকাশ করতে বাইনারিতে ৯টি বিট প্রয়োজন হয়। এটি ৮-বিট রেজিস্টারে ধরে না। ফলে চিহ্নিত সংখ্যা হিসেবে সংরক্ষণের জন্য পরবর্তী মান অর্থাৎ ১৬-বিট রেজিস্টারের প্রয়োজন হবে।"
             }
         ];
 
@@ -406,6 +406,14 @@
                 if (timeRemaining <= 0) {
                     clearInterval(timerInterval);
                     alert('সময় শেষ! পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হচ্ছে।');
+                    
+                    const studentName = document.getElementById('stdName').value.trim();
+                    const studentMobile = document.getElementById('stdMobile').value.trim();
+                    if(studentName === "" || studentMobile === "") {
+                        alert('⚠️ নাম এবং মোবাইল নম্বর না লিখে পরীক্ষা জমা দেওয়া সম্ভব নয়। দয়া করে আপনার নাম ও মোবাইল নম্বর প্রদান করুন।');
+                        document.getElementById('stdName').focus();
+                        return;
+                    }
                     submitQuiz();
                 }
             }, 1000);
@@ -472,9 +480,30 @@
         }
 
         function confirmSubmitQuiz() {
+            const studentName = document.getElementById('stdName').value.trim();
+            const studentMobile = document.getElementById('stdMobile').value.trim();
+
+            if (studentName === "") {
+                alert('⚠️ পরীক্ষা জমা দেওয়ার আগে অবশ্যই আপনার "নাম" লিখতে হবে।');
+                document.getElementById('stdName').focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            if (studentMobile === "") {
+                alert('⚠️ পরীক্ষা জমা দেওয়ার আগে অবশ্যই আপনার "মোবাইল নম্বর" লিখতে হবে।');
+                document.getElementById('stdMobile').focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
             const answeredCount = Object.keys(userAnswers).length;
             if (answeredCount < questionsData.length) {
-                if (!confirm(`আপনি ২৫টি প্রশ্নের মধ্যে ${answeredCount}টির উত্তর দিয়েছেন। পরীক্ষা জমা দিতে চান?`)) {
+                if (!confirm(`আপনি ২৫টি প্রশ্নের মধ্যে মাত্র ${answeredCount}টির উত্তর দিয়েছেন। তবুও কি পরীক্ষা জমা দিতে চান?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
                     return;
                 }
             }
@@ -507,8 +536,8 @@
             const studentMobileInput = document.getElementById('stdMobile').value.trim();
 
             const resultData = {
-                studentName: studentNameInput !== "" ? studentNameInput : "পরীক্ষার্থী",
-                mobile: studentMobileInput !== "" ? studentMobileInput : "N/A",
+                studentName: studentNameInput,
+                mobile: studentMobileInput,
                 dateTime: new Date().toLocaleString('bn-BD'),
                 score: score,
                 totalQuestions: questionsData.length,
@@ -564,36 +593,62 @@
                 const isUnanswered = userAns === undefined;
 
                 let statusBadge = isUnanswered ? '<span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded text-xs font-bold">উত্তর দেননি</span>' :
-                                  isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
-                                  '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
+                                         isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
+                                         '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
 
                 let statusBg = isUnanswered ? 'border-l-4 border-gray-400 bg-gray-50' :
-                               isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+                                         isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
 
-                // প্রশ্নের মূল ছবি
                 let reviewImageHtml = q.qImg ? `<div class="my-3"><img src="${q.qImg}" alt="Question Image" class="max-h-52 rounded-lg border shadow-sm mx-auto"></div>` : '';
-
-                // ব্যাখ্যার ছবি (যদি কোনো প্রশ্নে expImg প্রপার্টি যোগ করা হয়)
                 let expImageHtml = q.expImg ? `<div class="my-2"><img src="${q.expImg}" alt="Explanation Image" class="max-h-48 rounded-lg border shadow-sm mx-auto"></div>` : '';
 
-                const item = document.createElement('div');
-                item.className = `p-4 rounded-xl border ${statusBg} space-y-2 bg-white`;
-                item.innerHTML = `
-                    <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
-                        <span class="font-bold text-slate-800">${idx + 1}. ${q.q}</span>
-                        ${statusBadge}
-                    </div>
-                    ${reviewImageHtml}
-                    <div class="text-sm text-slate-600 space-y-1 pt-1 border-t border-slate-100">
-                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'নেই'}</strong></div>
-                        <div>সঠিক উত্তর: <strong class="text-emerald-700">${q.options[q.ans]}</strong></div>
-                    </div>
-                    ${(q.explanation || q.expImg) ? `
-                        <div class="mt-2 p-3 bg-indigo-50/70 border border-indigo-100 rounded-lg text-xs md:text-sm text-indigo-900 space-y-2">
+                // অপশনগুলো সুন্দরভাবে প্রদর্শন করার লজিক (সঠিক ও ভুল চিহ্নিতকরণ)
+                let optionsReviewHtml = q.options.map((opt, optIdx) => {
+                    let optionStyle = "p-2.5 rounded-xl border text-sm font-medium transition flex items-center gap-2 ";
+                    let marker = "⚪";
+
+                    if (optIdx === q.ans) {
+                        optionStyle += "border-emerald-500 bg-emerald-100/70 text-emerald-900 font-semibold shadow-sm";
+                        marker = "✅";
+                    } else if (optIdx === userAns && !isCorrect) {
+                        optionStyle += "border-rose-400 bg-rose-100/70 text-rose-900 font-semibold shadow-sm";
+                        marker = "❌";
+                    } else {
+                        optionStyle += "border-slate-200 bg-slate-50 text-slate-700";
+                    }
+
+                    return `<div class="${optionStyle}"><span>${marker}</span><span>${opt}</span></div>`;
+                }).join('');
+
+                let expSectionHtml = '';
+                if (q.explanation || q.expImg) {
+                    expSectionHtml = `
+                        <div class="mt-2 p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs md:text-sm text-indigo-900 space-y-2">
                             ${q.explanation ? `<div><span class="font-bold">💡 ব্যাখ্যা:</span> ${q.explanation}</div>` : ''}
                             ${expImageHtml}
                         </div>
-                    ` : ''}
+                    `;
+                }
+
+                const item = document.createElement('div');
+                item.className = `p-5 rounded-2xl border ${statusBg} space-y-3 bg-white shadow-sm`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
+                        <span class="font-bold text-slate-800 text-base">${idx + 1}. ${q.q}</span>
+                        ${statusBadge}
+                    </div>
+                    ${reviewImageHtml}
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                        ${optionsReviewHtml}
+                    </div>
+
+                    <div class="text-sm text-slate-600 space-y-1 pt-2 border-t border-slate-100">
+                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'উত্তর দেননি'}</strong></div>
+                        <div>সঠিক উত্তর: <strong class="text-emerald-700">${q.options[q.ans]}</strong></div>
+                    </div>
+
+                    ${expSectionHtml}
                 `;
                 reviewList.appendChild(item);
             });

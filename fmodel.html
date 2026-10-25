@@ -174,7 +174,7 @@
                     </tr>
                 </thead>
                 <tbody id="modelTableBody">
-                    <!-- JavaScript দিয়ে ১০টি সারি তৈরি হবে -->
+                    <!-- JavaScript দিয়ে ২০টি সারি তৈরি হবে -->
                 </tbody>
             </table>
         </div>
@@ -197,26 +197,29 @@
     </footer>
 
     <script>
-        // =========================================================================
-        // ১. আপনার গুগল অ্যাপস স্ক্রিপ্টের Web App URL এখানে বসানো আছে:
-        // =========================================================================
+        // গুগল অ্যাপস স্ক্রিপ্টের Web App URL
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby-SSbtA1OVyYq2DRCq5KQJLwfJQ55S5b3BUCE9Y6g6A0resslOehakumyfaP5HOqov/exec";
 
-        // =========================================================================
-        // ২. প্রতিটি মডেল টেস্টের নাম বা বোর্ডের বিবরণ এবং নির্দিষ্ট ফাইলের নাম:
-        // =========================================================================
-        const modelData = {
-            1: { name: "সকল বোর্ড - ২০২৬ (ফ্রি মডেল টেস্ট)", file: "model/all2026.html" },
-            2: { name: "ঢাকা বোর্ড - ২০২৫", file: "fmodel2.html" },
-            3: { name: "যশোর বোর্ড - ২০২৫", file: "model03.html" },
-            4: { name: "কুমিল্লা বোর্ড - ২০২৫", file: "model04.html" },
-            5: { name: "চট্টগ্রাম বোর্ড - ২০২৫", file: "model05.html" },
-            6: { name: "বরিশাল বোর্ড - ২০২৫", file: "model06.html" },
-            7: { name: "সিলেট বোর্ড - ২০২৫", file: "model07.html" },
-            8: { name: "দিনাজপুর বোর্ড - ২০২৫", file: "model08.html" },
-            9: { name: "ময়মনসিংহ বোর্ড - ২০২৫", file: "model09.html" },
-            10: { name: "সাপ্লিমেন্টারি ফাইনাল মডেল - ২০২৫", file: "model10.html" }
-        };
+        // ২০টি মডেলের নাম ও ফাইলের পাথ
+const modelData = {
+    1: { name: "সকল বোর্ড - ২০২৬ (ফ্রি মডেল টেস্ট)", file: "model/all2026.html" },
+    2: { name: "ঢাকা বোর্ড - ২০২৫", file: "model/db2025.html" },
+    3: { name: "রাজশাহী বোর্ড - ২০২৫", file: "model/rb2025.html" },
+    4: { name: "কুমিল্লা বোর্ড - ২০২৫", file: "model/cb2025.html" },
+    5: { name: "যশোর বোর্ড - ২০২৫", file: "model/jb2025.html" },
+    6: { name: "চট্রগ্রাম বোর্ড - ২০২৫", file: "model/ctb2025.html" },
+    7: { name: "সিলেট বোর্ড - ২০২৫", file: "model/model10.html" },
+    8: { name: "দিনাজপুর বোর্ড - ২০২৫", file: "model/model11.html" },
+    9: { name: "ময়মনসিংহ বোর্ড - ২০২৫", file: "model/model12.html" },
+    10: { name: "মডেল টেস্ট - ১৩", file: "model/model13.html" },
+    11: { name: "মডেল টেস্ট - ১৪", file: "model/model14.html" },
+    12: { name: "মডেল টেস্ট - ১৫", file: "model/model15.html" },
+    13: { name: "মডেল টেস্ট - ১৬", file: "model/model16.html" },
+    14: { name: "মডেল টেস্ট - ১৭", file: "model/model17.html" },
+    15: { name: "মডেল টেস্ট - ১৮", file: "model/model18.html" },
+    16: { name: "মডেল টেস্ট - ১৯", file: "model/model19.html" },
+    17: { name: "সাপ্লিমেন্টারি ফাইনাল মডেল - ২০২৫", file: "model/model20.html" }
+};
 
         // URL থেকে চ্যাপ্টারের নাম এবং কোড রিড করা
         const urlParams = new URLSearchParams(window.location.search);
@@ -226,38 +229,40 @@
         document.getElementById('chapterTitle').innerText = chapterTitle;
 
         let selectedModelNo = 0;
-
-        // ১০টি মডেল টেবিল তৈরি করা
         const tbody = document.getElementById('modelTableBody');
+        tbody.innerHTML = "";
 
-        // ১ম মডেল (ফ্রি)
-        tbody.innerHTML += `
-            <tr>
-                <td><b>মডেল - ০১</b></td> 
-                <td>
-                    <span style="font-weight: 600; color: #2c5364;">${modelData[1].name}</span><br>
-                    <span style="color: green; font-size: 0.85rem; font-weight: 600;">উন্মুক্ত (ফ্রি)</span>
-                </td>
-                <td style="text-align: center;">
-                    <a href="${modelData[1].file}?ch=${chapterCode}&model=1" class="btn-free">পরীক্ষা দিন</a>  
-                </td>
-            </tr>
-        `;
-
-        // ২ থেকে ১০ম মডেল (লকড / প্রিমিয়াম)
-        for (let i = 2; i <= 10; i++) {
-            tbody.innerHTML += `
-                <tr>
-                    <td><b>মডেল - ${i < 10 ? '0' + i : i}</b></td>
-                    <td>
-                        <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
-                        <span style="color: #d9534f; font-size: 0.85rem;">&#128274; পাসওয়ার্ড প্রটেক্টেড</span>
-                    </td>
-                    <td style="text-align: center;">
-                        <button class="btn-lock" onclick="openLogin(${i})">পরীক্ষা দিন</button>
-                    </td>
-                </tr>
-            `;
+        // ১ থেকে ২০টি মডেলের সারি ডাইনামিক তৈরি করা (প্রথম ৪টি ফ্রি, বাকিগুলো লকড)
+        for (let i = 1; i <= 17; i++) {
+            let modelNoFormatted = i < 10 ? '0' + i : i;
+            
+            if (i <= 4) {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><b>মডেল - ${modelNoFormatted}</b></td> 
+                        <td>
+                            <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
+                            <span style="color: green; font-size: 0.85rem; font-weight: 600;">উন্মুক্ত (ফ্রি)</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="${modelData[i].file}?ch=${chapterCode}&model=${i}" class="btn-free">পরীক্ষা দিন</a>  
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><b>মডেল - ${modelNoFormatted}</b></td>
+                        <td>
+                            <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
+                            <span style="color: #d9534f; font-size: 0.85rem;">&#128274; পাসওয়ার্ড প্রটেক্টেড</span>
+                        </td>
+                        <td style="text-align: center;">
+                            <button class="btn-lock" onclick="openLogin(${i})">পরীক্ষা দিন</button>
+                        </td>
+                    </tr>
+                `;
+            }
         }
 
         function openLogin(modelNo) {
@@ -286,14 +291,11 @@
             btn.disabled = true;
 
             try {
-                // গুগল অ্যাপস স্ক্রিপ্টে রিকোয়েস্ট পাঠানো
                 let response = await fetch(`${WEB_APP_URL}?action=login&userId=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
                 let result = await response.json();
 
                 if (result.success) {
                     alert(`স্বাগতম, ${result.name}! সফলভাবে লগইন হয়েছে।`);
-                    
-                    // নির্দিষ্ট মডেলের লিংক নিয়ে রিডাইরেক্ট করা
                     let targetPage = modelData[selectedModelNo] ? modelData[selectedModelNo].file : "exam.html";
                     window.location.href = `${targetPage}?ch=${chapterCode}&model=${selectedModelNo}&user=${encodeURIComponent(result.name)}`;
                 } else {
