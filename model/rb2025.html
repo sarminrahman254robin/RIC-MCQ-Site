@@ -103,8 +103,8 @@
                         <h4 class="font-bold text-slate-700 mb-3 text-center border-b pb-2">প্রশ্ন নেভিগেশন</h4>
                         <div id="questionPalette" class="grid grid-cols-5 gap-2"></div>
                         <div class="mt-4 pt-4 border-t text-xs space-y-1 text-slate-600">
-                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-200 border inline-block"></span> উত্তর দেওয়া হয়নি</div>
-                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> উত্তর দেওয়া হয়েছে</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-200 border inline-block"></span> উত্তর দেওয়া হয়নি</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> উত্তর দেওয়া হয়েছে</div>
                         </div>
                         <button onclick="confirmSubmitQuiz()" class="mt-6 w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
                             পরীক্ষা জমা দিন 🚀
@@ -121,14 +121,13 @@
                 <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
 
                 <div class="py-2">
-                    <!-- সার্টিফিকেট হেডের বড় ও আকর্ষণীয় মাল্টি-কালার নিয়ন লাইট ইফেক্ট -->
                     <h2 class="neon-glow-large">Robin ICT Care</h2>
                     <p class="text-sm font-semibold text-indigo-600 tracking-wider mt-2">Learn ICT Build Your Future</p>
                 </div>
 
                 <div class="border-t border-b border-slate-200 py-4 my-2 space-y-1">
                     <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest">অংশগ্রহণ সার্টিফিকেট</h3>
-                    <p id="certChapterInfo" class="text-sm font-bold text-indigo-700">অধ্যায়: কমিউনিকেশন সিস্টেম ও নেটওয়ার্কিং | মডেল টেস্ট - ০১</p>
+                    <p id="certChapterInfo" class="text-sm font-bold text-indigo-700">রাজশাহী বোর্ড - ২০২৫ মডেল টেস্ট বাই Robin ICT </p>
                 </div>
 
                 <p class="text-slate-600 text-sm">এই মর্মে প্রত্যয়ন করা যাচ্ছে যে,</p>
@@ -184,7 +183,7 @@
             </div>
 
             <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-slate-200 space-y-4 no-print">
-                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা (Answer Analysis)</h3>
+                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা ও ব্যাখ্যা (Answer Analysis & Explanation)</h3>
                 <div id="answerReviewList" class="space-y-4"></div>
             </div>
         </section>
@@ -195,47 +194,194 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBQCVPJcWqixFkzKoOmqXnXohy1vyncK0uD8xyd5wcgjRQ8MUybUvrYpwiRl4g6Z9g/exec";
 
         const urlParams = new URLSearchParams(window.location.search);
-        const chapterTitleParam = urlParams.get('title') || 'Chapter-2: কমিউনিকেশন সিস্টেম ও নেটওয়ার্কিং';
+        const chapterTitleParam = urlParams.get('title') || 'রাজশাহী বোর্ড - ২০২৫ মডেল টেস্ট বাই Robin ICT';
         const modelNoParam = urlParams.get('model') || '০১';
 
         document.getElementById('examTitleDisplay').innerText = `Robin ICT Care - ${chapterTitleParam} (মডেল টেস্ট - ${modelNoParam})`;
 
         const questionsData = [
-            { id: 1, q: "HTML এর সবচেয়ে ছোট হেডিং কোনটি?", options: ["h1", "h2", "h4", "h6"], ans: 3 },
-            { id: 2, q: "বায়োমেট্রিক পদ্ধতিতে সিমকার্ড নিবন্ধন শুরু করা ১য় ও ২য় দেশ কী কী?", options: ["বাংলাদেশ ও ভারত", "বাংলাদেশ ও পাকিস্তান", "ভারত ও পাকিস্তান", "পাকিস্তান ও বাংলাদেশ"], ans: 3 },
-            { id: 3, q: "ব্রাউজারের মাধ্যমে সর্ট করাকে কী বলে?", options: ["Insertion sort", "Selection sort", "Quick sort", "Bubble sort"], ans: 1 },
-            { id: 4, q: "ফাইবার অপটিক ক্যাবলে কোন তরঙ্গদৈর্ঘ্য ব্যবহৃত হয়?", options: ["500 nm", "1000 nm", "1500 nm", "2000 nm"], ans: 2 },
-            { id: 5, q: "ইমেইল ঠিকানায় কয়টি অংশ থাকে?", options: ["2", "3", "4", "5"], ans: 0 },
-            { id: 6, q: "5, 8, B ধারার পরবর্তী মান কোনটি?", options: ["C", "D", "E", "F"], ans: 2 },
-            { id: 7, q: "নিচের উদ্দীপকটি পড়ে ৭ ও ৮ নং প্রশ্নের উত্তর দাও:\n<html>\n<body>\n<font color=\"red\"> HSC Exam </font>\n</body>\n</html>\nউদ্দীপকে ব্যবহৃত রঙের সমতুল্য হেক্সাডেসিমেল কোড হচ্ছে—", options: ["#FF 0000", "#00 FF 00", "#0000 FF", "#FFF 000"], ans: 0 },
-            { id: 8, q: "উদ্দীপকে HSC Exam শব্দের জন্য ব্যবহৃত ট্যাগের অ্যাট্রিবিউট হতে পারে—\ni. href\nii. face\niii. size\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 2 },
-            { id: 9, q: "সংযোগ লাইন অব সাইট (LOS) অবলম্বন করা হয় কোন ক্ষেত্রে?", options: ["রেডিও ওয়েভ", "মাইক্রোওয়েভ", "টেলিড্রিয়াল", "স্যাটেলাইট"], ans: 1 },
-            { id: 10, q: "Y = ĀB + C বুলিয়ান সমীকরণ বাস্তবায়ন করতে মোট কয়টি মৌলিক গেইট প্রয়োজন?", options: ["2", "3", "4", "5"], ans: 1 },
-            { id: 11, q: "টেবিল হেডারে থাকে—\ni. মূল তথ্য\nii. বিভিন্ন কলামের নাম\niii. কলামে যে ধরনের ডেটা রাখা হবে তার তথ্য\nনিচের কোনটি সঠিক?", options: ["i", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 2 },
-            { id: 12, q: "কোনো ওয়েবসাইটের ঠিকানায় ব্যবহৃত 'https'-এর 's' দিয়ে কী বোঝায়?", options: ["Security", "Speical", "System", "Secure"], ans: 3 },
-            { id: 13, q: "বায়েইনফরমেটিক্স ইনফরমেশন সিস্টেম তৈরিতে ব্যবহৃত অ্যালগরিদম কোনটি?\ni. ইমেজ প্রসেসিং\nii. ডেটা মাইনিং\niii. কৃত্রিম বুদ্ধিমত্তা\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 0 },
-            { id: 14, q: "সুডোকোড কথন করা হয়?", options: ["প্রোগ্রাম কোডিং এর পূর্বে", "প্রোগ্রাম কোডিং এর পরে", "লুপ অপারেশন এর পূর্বে", "লুপ অপারেশন এর পরে"], ans: 0 },
-            { id: 15, q: "কোন কমান্ডটি একটি টেবিল থেকে সব ডেটা নেওয়ার জন্য ব্যবহৃত হয়?", options: ["SELECT ALL", "SELECT ALL *", "SELECT *", "SELECT **"], ans: 2 },
-            { id: 16, q: "HTML border অ্যাট্রিবিউট কোন ভ্যালু লিখলে বর্ডার প্রদর্শিত হবে না?", options: ['Border = "1"', 'Border = "alt"', 'Border = "0"', 'Border = "null"'], ans: 2 },
+            { 
+                id: 1, 
+                q: "মেষ টপোলজিতে ৪৫টি তার দিয়ে সর্বোচ্চ কতটি নোডকে সংযুক্ত করা যায়?", 
+                options: ["৮টি", "৯টি", "১০টি", "৪৫টি"], 
+                ans: 2,
+                explanation: "মেষ টপোলজিতে নোডের সংখ্যা নির্ণয়ের সূত্র হলো n(n-1)/2 = তারের সংখ্যা। এখানে n(n-1)/2 = 45 হলে, n = 10 অর্থাৎ সর্বোচ্চ ১০টি নোড সংযুক্ত করা যায়।"
+            },
+            { 
+                id: 2, 
+                q: "নিচের উদ্দীপকটি পড় এবং ২ ও ৩ নং প্রশ্নের উত্তর দাও :\nজনাব লাবিব মসৃণ ত্বকের জন্য অ্যান্টি-এজিং ক্রিম তৈরিতে এক ধরণের প্রযুক্তি ব্যবহার করলেন। তার অফিসে প্রবেশ করতে হাতের ছাপ লাগে।\n\nজনাব লাবিবের ক্রিম তৈরির প্রযুক্তি কোনটি?", 
+                options: ["ন্যানোপ্রযুক্তি", "বায়োইনফরমেটিক্স", "বায়োমেট্রিক্স", "জেনেটিক ইঞ্জিনিয়ারিং"], 
+                ans: 0,
+                explanation: "অ্যান্টি-এজিং ক্রিম বা প্রসাধনী তৈরিতে ন্যানোটেকনোলজি বা ন্যানোপ্রযুক্তি ব্যাপকভাবে ব্যবহৃত হয়।"
+            },
+            { 
+                id: 3, 
+                q: "জনাব লাবিবের কক্ষে প্রবেশে ব্যবহৃত প্রযুক্তির ক্ষেত্রে ব্যবহারিক বৈশিষ্ট্য হলো—\ni. স্বাক্ষর\nii. ডিএনএ\niii. ফিঙ্গার প্রিন্ট\nনিচের কোনটি সঠিক?", 
+                options: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], 
+                ans: 1,
+                explanation: "হাতের ছাপ বা ফিঙ্গারপ্রিন্ট এবং ডিএনএ বায়োমেট্রিক্সের অনন্য বৈশিষ্ট্য, যার মধ্যে ফিঙ্গারপ্রিন্ট অফিসে প্রবেশে সরাসরি ব্যবহৃত হয়।"
+            },
+            { 
+                id: 4, 
+                q: "ইউনিকোডের প্রথম সংস্করণ কতটি ভাষা নিয়ে চালু করা হয়?", 
+                options: ["৬টি", "১২টি", "২৪টি", "৪৮টি"], 
+                ans: 2,
+                explanation: "ইউনিকোডের প্রথম সংস্করণ (Unicode 1.0.0) প্রকাশের সময় ২৪ টি ভাষা অন্তর্ভুক্ত করা হয়েছিল।"
+            },
+            { 
+                id: 5, 
+                qImg: "images/rb251.png",
+                q: "নিচের উদ্দীপকটি পড় এবং ৫ নং প্রশ্নের উত্তর দাও :\nচিত্রে '?' চিহ্নিত স্থানে কোন ডিভাইস স্থাপন করলে স্টার নেটওয়ার্ক তৈরি করা যায়?", 
+                options: ["মডেম", "হাব", "রাউটার", "গেটওয়ে"], 
+                ans: 1,
+                explanation: "স্টার টপোলজির কেন্দ্রীয় ডিভাইস হিসেবে হাব (Hub) বা সুইচ ব্যবহৃত হয়।"
+            },
+            { 
+                id: 6, 
+                q: "স্ট্রিমিং ভিডিও service এর  জন্য প্রয়োজনীয় ব্যান্ডউইথ হলো—", 
+                options: ["0.5 Mbps", "0.7 Mbps", "1 Mbps", "4 Mbps"], 
+                ans: 1,
+                explanation: "স্ট্রিমিং ভিডিওর উচ্চ মানের জন্য সাধারণত ন্যূনতম ৪ এমবিপিএস (4 Mbps) বা ততোধিক ব্যান্ডউইথ প্রয়োজন হয়।"
+            },
+            { 
+                id: 7, 
+                q: "HTML ফাইল এডিট করার জন্য ব্যবহৃত টেক্সট এডিটর হলো—\ni. নোটপ্যাড ++\nii. সাবলাইম টেক্সট\niii. নোটপ্যাড\nনিচের কোনটি সঠিক?", 
+                options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
+                ans: 3,
+                explanation: "নোটপ্যাড++, সাবলাইম টেক্সট এবং সাধারণ নোটপ্যাড—সবগুলোই HTML কোড লেখার ও এডিট করার টেক্সট এডিটর হিসেবে ব্যবহৃত হয়।"
+            },
+            { 
+                id: 8, 
+                q: "C ভাষায় F = POW(5, (7 MOD 3)) + (6/3) * 2 + 5 হলে F এর সরলীকৃত মান কত?", 
+                options: ["14", "31", "34", "40"], 
+                ans: 0,
+                explanation: "(7 MOD 3) = 1, POW(5, 1) = 5। আবার (6/3) * 2 = 2 * 2 = 4। সুতরাং F = 5 + 4 + 5 = 14।"
+            },
+            { 
+                id: 9, 
+                q: "10 BASE-2 নামে পরিচিত ক্যাবল কোনটি?", 
+                options: ["অপটিক্যাল ফাইবার", "থিননেট", "টুস্টেড পেয়ার", "থিকনেট"], 
+                ans: 1,
+                explanation: "কোঅ্যাক্সিয়াল ক্যাবলের মধ্যে থিননেট (ThinNet)-কে 10BASE-2 এবং থিকনেটকে 10BASE-5 বলা হয়।"
+            },
+            { 
+                id: 10, 
+                q: "নিচের চিত্রটি লক্ষ্য কর এবং ১০ ও ১১ নং প্রশ্নের উত্তর দাও :\nF এর মান কোনটি?", 
+                qImg: "images/rb252.jpg",
+                options: ["ক", "খ", "গ", "ঘ"], 
+                ans: 1,
+                expImg: "images/rb253.png",
+                explanation: ""
+            },
+            { 
+                id: 11, 
+                q: "চিত্রে '2' নং গেটের পরিবর্তে কোন গেট স্থাপন করলে F = 0 হবে?", 
+                options: ["OR", "AND", "NOR", "NAND"], 
+                ans: 1,
+                expImg: "images/rb254.png",
+                explanation: ""
+            },
+            { 
+                id: 12, 
+                q: "&lt;img&gt; ট্যাগের সাথে মিল রয়েছে কোন ট্যাগের?", 
+                options: ["&lt;hr&gt;", "&lt;tr&gt;", "&lt;b&gt;", "&lt;div&gt;"], 
+                ans: 0,
+                explanation: "`<img>` হলো একটি এম্প্টি ট্যাগ (Empty Tag), যার কোনো ক্লোজিং ট্যাগ নেই। একই রকমভাবে `<br>` ও `<hr>` ও এম্প্টি ট্যাগ।"
+            },
+            { 
+                id: 13, 
+                q: "C ভাষায় লজিক্যাল অপারেটর কোনটি?", 
+                options: ["&", ">", "?", "!"], 
+                ans: 3,
+                explanation: "লজিক্যাল অপারেটর ৩টি (&&(AND), ||(OR), !(NOT))। `!` হলো C ভাষার লজিক্যাল নট (Logical NOT) অপারেটর। অন্যদিকে `&` বিটওয়াইজ অপারেটর এবং `? :` কন্ডিশনাল অপারেটর।"
+            },
+            { 
+                id: 14, 
+                q: "নিচের উদ্দীপকটি পড় এবং ১৪ নং প্রশ্নের উত্তর দাও :\nmain() {\nint x, y;\nx = 20;\nx += 10;\ny = x % 5;\nprintf(\"%d\", y);\n}\n\nপ্রোগ্রামটির আউটপুট কত হবে?", 
+                options: ["0", "1", "2", "4"], 
+                ans: 0,
+                explanation: "এখানে x = 20 + 10 = 30 হয়। পরবর্তীতে y = 30 % 5 এর মান 0 (ভাগশেষ) হয়, যা প্রিন্ট হয়।"
+            },
+            { 
+                id: 15, 
+                q: "নিচের উদ্দীপকটি পড় এবং ১৫ ও ১৬ নং প্রশ্নের উত্তর দাও :\n&lt;font color = \"Red\" face = \"Arial\" &gt; ICT &lt;/font&gt;\n\nউদ্দীপকে কনটেন্ট কোনটি?", 
+                options: ["Font", "Color", "Red", "ICT"], 
+                ans: 3,
+                explanation: "starting ও closing tag এর মাঝে যা লিখা হয় তাই কনটেন্ট। যেমন উদ্দীপকের ICT।"
+            },
+            { 
+                id: 16, 
+                q: "উদ্দীপকে অ্যাট্রিবিউট ভ্যালু হলো—\ni. color\nii. red\niii. arial\nনিচের কোনটি সঠিক?", 
+                options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
+                ans: 2,
+                explanation: "এখানে 'red' (color এর মান) এবং 'arial' (face এর মান) হলো অ্যাট্রিবিউট মান, আর color ও face হলো অ্যাট্রিবিউট।"
+            },
             { 
                 id: 17, 
-                q: "নিচের চিত্রটি হতে পারে—\ni. ব্রডকাস্ট\nii. মাল্টি কাস্ট\niii. সিমপ্লেক্স\nনিচের কোনটি সঠিক?", 
-                qImg: "1.png",
-                options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 1 
+                q: "নিচের উদ্দীপকটি পড় এবং ১৭ ও ১৮ নং প্রশ্নের উত্তর দাও :\n#include <stdio.h>\nmain() {\nint C, S = 1;\nfor (C = 2; C < 10; C += 3) {\nS = S + C;\n}\nprintf(\"%d\", S);\n}\n\nপ্রোগ্রামটি রান করালে আউটপুট কত হবে?", 
+                options: ["15", "16", "18", "19"], 
+                ans: 1,
+                explanation: "লুপটি চলবে C = 2, 5, 8 এর জন্য। S এর মান হবে: S = 1 + 2 = 3; S = 3 + 5 = 8; S = 8 + 8 = 16"
             },
-            { id: 18, q: "(A)₁₆ + (13)₁₀ এর যোগফল নির্ণয়ের জন্য কতটি অ্যাডার লাগবে?", options: ["৩টি হাফ অ্যাডার ১টি ফুল অ্যাডার", "২টি হাফ অ্যাডার ২টি ফুল অ্যাডার", "১টি হাফ অ্যাডার ৩টি ফুল অ্যাডার", "১টি হাফ অ্যাডার ৪টি ফুল অ্যাডার"], ans: 2 },
-            { id: 19, q: "DNS এর পূর্ণরূপ কোনটি?", options: ["Domain Name Server", "Domain Name System", "Domain Number System", "Domain Number of Server"], ans: 1 },
-            { id: 20, q: "ডিজিটাল সেলুলার নেটওয়ার্ক হলো—", options: ["প্রথম প্রজন্ম", "দ্বিতীয় প্রজন্ম", "তৃতীয় প্রজন্ম", "চতুর্থ প্রজন্ম"], ans: 1 },
-            { id: 21, q: "নিচের উদ্দীপকটি লক্ষ্য কর এবং ২১ ও ২২ নং প্রশ্নের উত্তর দাও:\n#include <stdio.h>\nmain()\n{\n  float A = 21.5;\n  float B = 9.7;\n  float sum = A + B;\n  printf(\"summation %.2f\", sum);\n}\nপ্রোগ্রামটির আউটপুট কত হবে?", options: ["31", "31.20", "32", "32.20"], ans: 1 },
-            { id: 22, q: "প্রোগ্রামটির ভ্যারিয়েবলগুলো মেমোরিতে মোট কত বাইট জায়গা দখল করবে?", options: ["৮", "১২", "১৬", "২০"], ans: 1 },
-            { id: 23, q: "টেবিলের ডেটা বা ফিল্ড নির্বাচন করে কুয়েরি করা হলে তাকে কী বলে?", options: ["অ্যাকশন কুয়েরি", "প্যারামিটার কুয়েরি", "ক্রসট্যাব কুয়েরি", "সিলেক্ট কুয়েরি"], ans: 3 },
-            { id: 24, q: "(45)₁₀ এর সমতুল্য মান হলো—\ni. (101101)₂\nii. (55)₈\niii. (213)₁₆\nনিচের কোনটি সঠিক?", options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], ans: 0 },
+            { 
+                id: 18, 
+                q: "প্রোগ্রামটির আউটপুট 127 পেতে হলে কী পরিবর্তন করতে হবে?", 
+                options: ["C = 1, S = S * C;", "C = 2, S = S + C * C;", "C = 3, S = S + S * C;", "C = 4, S = S + C;"], 
+                ans: 2,
+                expImg: "images/rb255.png",
+                explanation: "প্রদত্ত লজিক ও ইনিশিয়ালাইজেশন পরিবর্তন করে কাঙ্ক্ষিত যোগফল বা মান পাওয়ার জন্য লুপের শর্ত পরিমার্জন করতে হয়।"
+            },
+            { 
+                id: 19, 
+                q: "ক্রায়োজেনিক এজেন্ট কোনটি?", 
+                options: ["হাইড্রোজেন", "আর্গন", "ক্লোরিন", "হিলিয়াম"], 
+                ans: 1,
+                explanation: "ক্রায়োসার্জারিতে অতি ঠান্ডায় কোষ ধ্বংস করার জন্য তরল নাইট্রোজেন, আর্গন বা ফ্রিয়ন গ্যাস ক্রায়োজেনিক এজেন্ট হিসেবে ব্যবহৃত হয়।"
+            },
+            { 
+                id: 20, 
+                q: "কোন প্রজন্মের মোবাইল ফোনে 4K ভিডিও আপলোড করা যায়?", 
+                options: ["২য়", "৩য়", "৪র্থ", "৫ম"], 
+                ans: 3,
+                explanation: "পঞ্চম প্রজন্ম (5G) এর অতি উচ্চ গতিসম্পন্ন নেটওয়ার্কে খুব সহজেই 4K বা Ultra HD ভিডিও আপলোড ও স্ট্রিম করা যায়।"
+            },
+            { 
+                id: 21, 
+                q: "কৃত্রিম বুদ্ধিমত্তার ক্ষেত্র হলো—\ni. মেশিন লার্নিং \nii. ই-লার্নিং \niii. ডিপ লার্নিং \nনিচের কোনটি সঠিক?", 
+                options: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], 
+                ans: 2,
+                explanation: "কৃত্রিম বুদ্ধিমত্তার (AI) প্রধান ক্ষেত্রগুলোর মধ্যে মেশিন লার্নিং এবং ডিপ লার্নিং অন্তর্ভুক্ত, তবে ই-লার্নিং সরাসরি অনলাইন শিক্ষা পদ্ধতি।"
+            },
+            { 
+                id: 22, 
+                q: "নতুন লাইনে আউটপুট প্রদর্শনের জন্য নিচের কোন escape sequence টি ব্যবহৃত হয়?", 
+                options: ["\\a", "\\b", "\\n", "\\t"], 
+                ans: 2,
+                explanation: "C প্রোগ্রামিং ভাষায় নতুন লাইনে কার্সর নিতে বা নিউ লাইন তৈরি করতে `\\n` এস্কেপ সিকোয়েন্স ব্যবহৃত হয়।"
+            },
+            { 
+                id: 23, 
+                q: "নিচের উদ্দীপকটি পড় এবং ২৩ ও ২৪ নং প্রশ্নের উত্তর দাও :\nদুটি সংখ্যার পার্থক্য (52)₁₀। তাদের মধ্যে বড় সংখ্যাটি (5D)₁₆।\n\nউদ্দীপকের অপর সংখ্যাটি কত?", 
+                options: ["(101100)₂", "(101001)₂", "(110010)₂", "(100101)₂"], 
+                ans: 1,
+                expImg: "images/rb256.png",
+                explanation: ""
+            },
+            { 
+                id: 24, 
+                q: "সংখ্যা দুটির যোগফল হতে পারে—\ni. (10000110)₂\nii. (134)₁₀\niii. (206)₁₆\nনিচের কোনটি সঠিক?", 
+                options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
+                ans: 0,
+                expImg: "images/rb257.png",
+                explanation: ""
+            },
             { 
                 id: 25, 
-                q: "'ATM' এর পূর্ণরূপ কোনটি?", 
-                options: ["Automatic Teller Machine", "Automated Teller Machine", "Autonomous Teller Machine", "Automated Teller Machinability"], 
-                ans: 1 
+                q: "নিচের সার্কিটের কখন আলো জ্বলবে না?", 
+                qImg: "images/rb258.jpg",
+                options: ["A = 0, B = 0", "A = 0, B = 1", "A = 1, B = 0", "A = 1, B = 1"], 
+                ans: 0,
+                explanation: "সার্কিটের সুইচ বিন্যাস ও লজিক অনুযায়ী ইনপুট মানের পরিবর্তনের ফলে কারেন্ট প্রবাহ নিয়ন্ত্রিত হয়।"
             }
         ];
 
@@ -420,23 +566,63 @@
                 const isUnanswered = userAns === undefined;
 
                 let statusBadge = isUnanswered ? '<span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded text-xs font-bold">উত্তর দেননি</span>' :
-                                  isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
-                                  '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
+                                         isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
+                                         '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
 
                 let statusBg = isUnanswered ? 'border-l-4 border-gray-400 bg-gray-50' :
-                               isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+                                   isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+
+                // প্রশ্নের মূল ছবি
+                let reviewImageHtml = q.qImg ? `<div class="my-3"><img src="${q.qImg}" alt="Question Image" class="max-h-52 rounded-lg border shadow-sm mx-auto"></div>` : '';
+
+                // ব্যাখ্যার ছবি
+                let expImageHtml = q.expImg ? `<div class="my-2"><img src="${q.expImg}" alt="Explanation Image" class="max-h-48 rounded-lg border shadow-sm mx-auto"></div>` : '';
+
+                // অপশনগুলো সুন্দরভাবে প্রদর্শন করার লজিক
+                let optionsReviewHtml = q.options.map((opt, optIdx) => {
+                    let optionStyle = "p-2.5 rounded-xl border text-sm font-medium transition flex items-center gap-2 ";
+                    let marker = "⚪";
+
+                    if (optIdx === q.ans) {
+                        // সঠিক উত্তর সবুজ রঙ দিয়ে দেখাবে
+                        optionStyle += "border-emerald-500 bg-emerald-100/70 text-emerald-900 font-semibold shadow-sm";
+                        marker = "✅";
+                    } else if (optIdx === userAns && !isCorrect) {
+                        // ভুলের ক্ষেত্রে লাল রঙ দেখাবে
+                        optionStyle += "border-rose-400 bg-rose-100/70 text-rose-900 font-semibold shadow-sm";
+                        marker = "❌";
+                    } else {
+                        optionStyle += "border-slate-200 bg-slate-50 text-slate-700";
+                    }
+
+                    return `<div class="${optionStyle}"><span>${marker}</span><span>${opt}</span></div>`;
+                }).join('');
 
                 const item = document.createElement('div');
-                item.className = `p-4 rounded-xl border ${statusBg} space-y-1 bg-white`;
+                item.className = `p-5 rounded-2xl border ${statusBg} space-y-3 bg-white shadow-sm`;
                 item.innerHTML = `
                     <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
-                        <span class="font-bold text-slate-800">${idx + 1}. ${q.q}</span>
+                        <span class="font-bold text-slate-800 text-base">${idx + 1}. ${q.q}</span>
                         ${statusBadge}
                     </div>
-                    <div class="text-sm text-slate-600 space-y-1 pt-1">
-                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'নেই'}</strong></div>
+                    ${reviewImageHtml}
+                    
+                    <!-- অপশন সমূহের লিস্ট -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                        ${optionsReviewHtml}
+                    </div>
+
+                    <div class="text-sm text-slate-600 space-y-1 pt-2 border-t border-slate-100">
+                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'উত্তর দেননি'}</strong></div>
                         <div>সঠিক উত্তর: <strong class="text-emerald-700">${q.options[q.ans]}</strong></div>
                     </div>
+
+                    ${(q.explanation || q.expImg) ? `
+                        <div class="mt-2 p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs md:text-sm text-indigo-900 space-y-2">
+                            ${q.explanation ? `<div><span class="font-bold">💡 ব্যাখ্যা:</span> ${q.explanation}</div>` : ''}
+                            ${expImageHtml}
+                        </div>
+                    ` : ''}
                 `;
                 reviewList.appendChild(item);
             });

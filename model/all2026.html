@@ -70,7 +70,7 @@
 
         <!-- ১. পরীক্ষা উইন্ডো -->
         <section id="quizSection" class="space-y-6">
-            <!-- তথ্য ইনপুট দেওয়ার ছোট ফরম -->
+            <!-- তথ্য ইনপুট দেওয়ার ছোট ফরম -->
             <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -121,7 +121,6 @@
                 <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
 
                 <div class="py-2">
-                    <!-- সার্টিফিকেট হেডের বড় ও আকর্ষণীয় মাল্টি-কালার নিয়ন লাইট ইফেক্ট -->
                     <h2 class="neon-glow-large">Robin ICT Care</h2>
                     <p class="text-sm font-semibold text-indigo-600 tracking-wider mt-2">Learn ICT Build Your Future</p>
                 </div>
@@ -184,7 +183,7 @@
             </div>
 
             <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-slate-200 space-y-4 no-print">
-                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা (Answer Analysis)</h3>
+                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা ও ব্যাখ্যা (Answer Analysis & Explanation)</h3>
                 <div id="answerReviewList" class="space-y-4"></div>
             </div>
         </section>
@@ -200,42 +199,48 @@
 
         document.getElementById('examTitleDisplay').innerText = `Robin ICT Care - ${chapterTitleParam} (মডেল টেস্ট - ${modelNoParam})`;
 
-const questionsData = [
+        const questionsData = [
             { 
                 id: 1, 
                 q: "মেশিন লার্নিং ব্যবহার করে তৈরিকৃত NLP সফটওয়্যার কোনটি?", 
                 options: ["Microsoft Azure", "Microsoft Copilot", "Microsoft Bard", "Microsoft Hub"], 
-                ans: 1 
+                ans: 1,
+                explanation: "Microsoft Copilot মেশিন লার্নিং এবং ন্যাচারাল ল্যাঙ্গুয়েজ প্রসেসিং (NLP) প্রযুক্তি ব্যবহার করে তৈরি করা একটি এআই সহকারী।"
             },
             { 
                 id: 2, 
                 q: "নিচের কোনটি html ডকুমেন্ট টাইপ ডিক্লারেশনে ব্যবহৃত হয়?", 
                 options: ["&lt;DOCTYPE html&gt;", "&lt;DOCTYPE html!&gt;", "&lt;!DOCTYPE html&gt;", "&lt;!DOCTYPE html!&gt;"], 
-                ans: 2 
+                ans: 2,
+                explanation: "HTML5 নথিতে ডকুমেন্ট টাইপ ডিক্লেয়ার করার জন্য `<!DOCTYPE html>` কোডটি ব্যবহার করা হয়।"
             },
             { 
                 id: 3, 
                 q: "শারীরবৃত্তীয় বায়োমেট্রিক পদ্ধতি—\ni. ফিঙ্গার প্রিন্ট\nii. কি-স্ট্রোক\niii. ডিএনএ পর্যবেক্ষণ\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 1 
+                ans: 1,
+                explanation: "ফিঙ্গারপ্রিন্ট এবং ডিএনএ পর্যবেক্ষণ মানুষের শারীরিক গঠন বা শারীরবৃত্তীয় (Physiological) বায়োমেট্রিক্সের অন্তর্ভুক্ত।"
             },
             { 
                 id: 4, 
                 q: "কম্পিউটার ও মাল্টিমিডিয়া প্রজেক্টরের মধ্যে ডেটা সঞ্চালন মোড কোনটি?", 
                 options: ["সিমপ্লেক্স", "হাফ-ডুপ্লেক্স", "ব্রডকাস্ট", "ফুল-ডুপ্লেক্স"], 
-                ans: 0 
+                ans: 0,
+                explanation: "কম্পিউটার থেকে প্রজেক্টরে কেবল একমুখী ডেটা প্রবাহিত হয় বলে এটি সিমপ্লেক্স (Simplex) মোড।"
             },
             { 
                 id: 5, 
                 q: "বিট সিনক্রোনাইজেশন হচ্ছে—\ni. বিট প্রবাহের সমন্বিত পদ্ধতি\nii. বিটের শুরু এবং শেষ বোঝানো\niii. ব্যান্ডউইথ বৃদ্ধি পাওয়া\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 0 
+                ans: 0,
+                explanation: "বিট সিনক্রোনাইজেশন হলো প্রেরক ও প্রাপকের মধ্যে ডেটা বা বিট প্রবাহের সমন্বয় সাধন করা এবং বিটের শুরু ও শেষ চিহ্নিত করা।"
             },
             { 
                 id: 6, 
                 q: "কোন কমান্ডটি টেবিল থেকে সব ডেটা নেওয়ার জন্য ব্যবহৃত হয়?", 
                 options: ["SELECT ALL", "SELECT ALL *", "SELECT *", "SELECT **"], 
-                ans: 2 
+                ans: 2,
+                explanation: "SQL டேটাবেজ টেবিল থেকে সকল রেকর্ড বা ডেটা প্রদর্শনের জন্য `SELECT *` কমান্ড ব্যবহার করা হয়।"
             },
             { 
                 id: 7, 
@@ -246,121 +251,142 @@ const questionsData = [
                     "Select * From Student Where Class = '5' OR Section = 'morning';", 
                     "Select * From Student Where Class = '5' AND Section = 'morning';"
                 ], 
-                ans: 3 
+                ans: 3,
+                explanation: "উভয় শর্ত একসাথে পূরণ করার জন্য `AND` লজিক ব্যবহার করতে হয়।"
             },
             { 
                 id: 8, 
-                q: "এই ধরনের নেটওয়ার্কে মোট তারের সংখ্যা হবে—", 
-				qImg: "images/all261.png",
+                q: "এই ধরনের নেটওয়ার্কে মোট তারের সংখ্যা হবে—", 
+                qImg: "images/all261.png",
                 options: ["n", "(n-1)", "n(n-1)/2", "(n-1)/2"], 
-                ans: 2 
+                ans: 2,
+                explanation: "মেশ টপোলজিতে মোট তারের সংখ্যা নির্ণয়ের সূত্র হলো n(n-1)/2।"
             },
             { 
                 id: 9, 
-				qImg: "images/all261.png",
+                qImg: "images/all261.png",
                 q: "উক্ত টপোলজির সুবিধাগুলো—\ni. শক্তিশালী কাঠামো\nii. নেটওয়ার্ক ইনস্টলেশন ও কনফিগারেশন সহজ\niii. একটি লিংক নষ্ট হলেও ডেটা আদান-প্রদান সম্ভব\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 1 
+                ans: 1,
+                explanation: "মেশ টপোলজির কাঠামো অত্যন্ত শক্তিশালী এবং বিকল্প পাথ থাকায় একটি লিংক নষ্ট হলেও যোগাযোগ অব্যাহত থাকে।"
             },
             { 
                 id: 10, 
                 q: "(100)₁₀ গণনা করার জন্য কতটি বিট্যারি ডিজিট প্রয়োজন?", 
                 options: ["3", "7", "12", "16"], 
-                ans: 1 
+                ans: 1,
+                explanation: "(100)₁₀ এর সমকক্ষ বাইনারি মান হলো (1100100)₂, যেখানে মোট ৭টি বিট রয়েছে।"
             },
             { 
                 id: 11, 
                 q: "(100)₂ এবং (AA)₁₆ এর যোগফল কত?", 
                 options: ["AE", "1B", "AF", "1AA"], 
-                ans: 0 
+                ans: 0,
+                explanation: "(100)₂ = (4)₁₀ এবং (AA)₁₆ = (170)₁₀। মোট যোগফল = 174₁₀, যা হেক্সাডেসিমালে (AE)₁₆ এর সমান।"
             },
             { 
                 id: 12, 
-				qImg: "images/all262.png",
-                q: " এর সরলীকৃত মান হলো—", 
+                qImg: "images/all262.png",
+                q: "এর সরলীকৃত মান হলো—", 
                 options: ["1", "0", "A", "Ā"], 
-                ans: 0 
+                ans: 0,
+                explanation: "বুলিয়ান উপপাদ্য অনুযায়ী সঠিক সরলীকৃত ফলাফল 1 হয়।"
             },
             { 
                 id: 13, 
-				qImg: "images/all263.png",
+                qImg: "images/all263.png",
                 q: "উদ্দীপকের লজিক গেইটে আউটপুট 1 পেতে হলে ইনপুট দিতে হবে—\ni. A = 0, B = 0, C = 0\nii. A = 0, B = 1, C = 1\niii. A = 1, B = 0, C = 1\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 2 
+                ans: 2,
+				expImg:"images/all266.png",
+                explanation: "লজিক সার্কিটের সত্যক সারণী অনুযায়ী উল্লেখিত ইনপুটগুলোর জন্য আউটপুট ১ পাওয়া যায়।"
             },
             { 
                 id: 14, 
-                q: " 13 নং উদ্দীপকের  লজিক চিত্রটির জন্য সরলীকৃত মান নিচের কোনটি?", 
-				qImg: "images/all264.png",
+                qImg: "images/all264.png",
+                q: "১৩ নং উদ্দীপকের লজিক চিত্রটির জন্য সরলীকৃত মান নিচের কোনটি?", 
                 options: ["ক ", "খ", "গ", "ঘ"], 
-                ans: 2 
+                ans: 2,
+                expImg: "images/all264.png",
+                explanation: "লজিক সার্কিটটির গেট বিশ্লেষণ করে সঠিক সমীকরণ ও মান নির্ণয় করা হয়েছে।"
             },
             { 
                 id: 15, 
                 q: "HTML ফাইল এডিট করার জন্য টেক্সট এডিটর কোনটি?\ni. নোটপ্যাড\nii. নোটপ্যাড ++\niii. সাবলাইম টেক্সট\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 3 
+                ans: 3,
+                explanation: "নোটপ্যাড, নোটপ্যাড++ এবং সাবলাইম টেক্সট—সবগুলোই HTML কোড লেখার কাজে ব্যবহৃত হয়।"
             },
             { 
                 qImg: "images/all265.png",
-				id: 16, 
+                id: 16, 
                 q: "Result টেবিলে 'ID' কলামটি কোন ধরনের?", 
                 options: ["প্রাইমারি কি", "ফরেন কি", "কম্পোজিট কি", "ক্যান্ডিডেট কি"], 
-                ans: 1 
+                ans: 1,
+                explanation: "যেহেতু আইডি কলামটি অন্য টেবিলের প্রাইমারি কি এর সাথে সম্পর্কযুক্ত, তাই এটি একটি ফরেন কি (Foreign Key)।"
             },
             { 
                 id: 17, 
                 q: "উদ্দীপকের টেবিল দুটির মধ্যে বিদ্যমান রিলেশনশিপের ধরন কোনটি?", 
                 options: ["One to one", "One to many", "Many to one", "Many to many"], 
-                ans: 0
+                ans: 0,
+                explanation: "টেবিল দুটির মধ্যকার সংযোগ এক থেকে এক (One to One) ধরনের।"
             },
             { 
                 id: 18, 
-                q: "ন্যানোপ্রযুক্তিতে কোন পদ্ধতিতে ক্ষুদ্র পরমাণু থেকে বড়ো কাঠামো তৈরি করা হয়?", 
+                q: "ন্যানোপ্রযুক্তিতে কোন পদ্ধতিতে ক্ষুদ্র পরমাণু থেকে বড়ো কাঠামো তৈরি করা হয়?", 
                 options: ["টপ-ডাউন", "টপ-আপ", "বটম-ডাউন", "বটম-আপ"], 
-                ans: 3 
+                ans: 3,
+                explanation: "পরমাণু বা অণু একত্র করে বড় কাঠামো তৈরি করার পদ্ধতিকে বটম-আপ (Bottom-Up) পদ্ধতি বলা হয়।"
             },
             { 
                 id: 19, 
-                q: " নিচের উদ্দীপকটি পড়ো এবং ১৯ ও ২০ নং প্রশ্নের উত্তর দাও : একটি অফিসে ১০টি কম্পিউটার এমন একটি কেন্দ্রীয় ডিভাইসের মাধ্যমে সংযুক্ত যা নেটওয়ার্কে ডেটা পাঠালে সব কম্পিউটারে যায়। এ কারণে কেন্দ্রীয় ডিভাইসটি পরিবর্তন করা হলো।  \nউদ্দীপকের নেটওয়ার্কটি কোন টপোলজি ছিল?", 
+                q: "নিচের উদ্দীপকটি পড়ো এবং ১৯ ও ২০ নং প্রশ্নের উত্তর দাও : একটি অফিসে ১০টি কম্পিউটার এমন একটি কেন্দ্রীয় ডিভাইসের মাধ্যমে সংযুক্ত যা নেটওয়ারքում ডেটা পাঠালে সব কম্পিউটারে যায়। এ কারণে কেন্দ্রীয় ডিভাইসটি পরিবর্তন করা হলো। \nউদ্দীপকের নেটওয়ার্কটি কোন টপোলজি ছিল?", 
                 options: ["বাস", "স্টার", "রিং", "মেস"], 
-                ans: 1 
+                ans: 1,
+                explanation: "যেহেতু কেন্দ্রীয় ডিভাইসের মাধ্যমে কম্পিউটারগুলো যুক্ত ছিল এবং হাব ব্যবহারের ফলে সব কম্পিউটারে ডেটা যেত, তাই এটি স্টার টপোলজি ছিল।"
             },
             { 
                 id: 20, 
-                q: "ডিভাইস পরিবর্তনের ফলে নেটওয়ার্কটির কাঠামোতে কী প্রভাব পড়বে?\ni. লজিক্যাল টপোলজি বা ডেটা প্রবাহের উন্নতি হবে\nii. শারীরিক বা ভৌতিক টপোলজি বদলে যাবে\niii. নেটওয়ার্ক পারফরম্যান্স বৃদ্ধি পাবে\nনিচের কোনটি সঠিক?", 
+                q: "ডিভাইস পরিবর্তনের ফলে নেটওয়ার্কটির কাঠামোতে কী প্রভাব পড়বে?\ni. লজিক্যাল টপোলজি বা ডেটা প্রবাহের উন্নতি হবে\nii. শারীরিক বা ভৌতিক টপোলজি বদলে যাবে\niii. নেটওয়ার্ক পারফরম্যান্স বৃদ্ধি পাবে\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 1 
+                ans: 1,
+                explanation: "হাবের পরিবর্তে সুইচ ব্যবহার করলে শারীরিক টপোলজি অপরিবর্তিত থাকলেও লজিক্যাল ডেটা প্রবাহ এবং নেটওয়ার্ক পারফরম্যান্স বৃদ্ধি পায়।"
             },
             { 
                 id: 21, 
-                q: "সি-ভাষায় উপাত্ত গ্রহণের কমান্ড কোনটি?", 
+                q: "সি-ভাষায় উপাত্ত গ্রহণের কমান্ড কোনটি?", 
                 options: ["main()", "printf()", "scanf()", "getch()"], 
-                ans: 2 
+                ans: 2,
+                explanation: "C প্রোগ্রামিং ভাষায় ব্যবহারকারীর কাছ থেকে ইনপুট বা উপাত্ত গ্রহণের জন্য `scanf()` ফাংশন ব্যবহার করা হয়।"
             },
             { 
                 id: 22, 
                 q: "উদ্দীপক:\nfor(C = 15; C <= 25; C = C + 2)\n{\n  printf(\"Apple\");\n  if (C == 21)\n    break;\n}\nApple লেখাটি কতবার প্রদর্শিত হবে?", 
                 options: ["৪", "৫", "৬", "৩"], 
-                ans: 0 
+                ans: 0,
+                explanation: "লুপটি C = 15, 17, 19, 21 এর জন্য চলবে। C == 21 হলে break হওয়ার কারণে মোট ৪ বার Apple প্রিন্ট হবে।"
             },
             { 
                 id: 23, 
                 q: "if শর্তটি বাদ দিলে Apple লেখাটি কতবার প্রদর্শিত হবে?", 
                 options: ["৪", "৮", "৬", "৫"], 
-                ans: 2 
+                ans: 2,
+                explanation: "শর্ত ছাড়া লুপটি C = 15, 17, 19, 21, 23, 25 অর্থাৎ মোট ৬ বার চলবে।"
             },
             { 
                 id: 24, 
                 q: "একটি প্রোগ্রামে int a[5] = {10, 20, 30, 40, 50}; থাকলে—\ni. a[0] এর মান 10\nii. a[2] এর মান 30\niii. a[5] এর মান 50\nনিচের কোনটি সঠিক?", 
                 options: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], 
-                ans: 0 
+                ans: 0,
+                explanation: "একের ইডেক্স ০ থেকে শুরু হওয়ায় a[0] = 10 এবং a[2] = 30 সঠিক। a[5] এর কোনো অস্তিত্ব নেই (সীমা বহির্ভূত)।"
             },
             { 
                 id: 25, 
                 q: "সি-প্রোগ্রামের ক্ষেত্রে লজিক্যাল অপারেটর কোনটি?", 
                 options: ["&&", "<=", "!=", "="], 
-                ans: 0 
+                ans: 0,
+                explanation: "`&&` হলো C ভাষার লজিক্যাল AND অপারেটর।"
             }
         ];
 
@@ -545,23 +571,61 @@ const questionsData = [
                 const isUnanswered = userAns === undefined;
 
                 let statusBadge = isUnanswered ? '<span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded text-xs font-bold">উত্তর দেননি</span>' :
-                                  isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
-                                  '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
+                                         isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
+                                         '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
 
                 let statusBg = isUnanswered ? 'border-l-4 border-gray-400 bg-gray-50' :
-                               isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+                                   isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+
+                // প্রশ্নের মূল ছবি
+                let reviewImageHtml = q.qImg ? `<div class="my-3"><img src="${q.qImg}" alt="Question Image" class="max-h-52 rounded-lg border shadow-sm mx-auto"></div>` : '';
+
+                // ব্যাখ্যার ছবি
+                let expImageHtml = q.expImg ? `<div class="my-2"><img src="${q.expImg}" alt="Explanation Image" class="max-h-48 rounded-lg border shadow-sm mx-auto"></div>` : '';
+
+                // অপশনগুলো কালার-কোডেড আকারে দেখানোর জন্য লজিক
+                let optionsReviewHtml = q.options.map((opt, optIdx) => {
+                    let optionStyle = "p-2.5 rounded-xl border text-sm font-medium transition flex items-center gap-2 ";
+                    let marker = "⚪";
+
+                    if (optIdx === q.ans) {
+                        optionStyle += "border-emerald-500 bg-emerald-100/70 text-emerald-900 font-semibold shadow-sm";
+                        marker = "✅";
+                    } else if (optIdx === userAns && !isCorrect) {
+                        optionStyle += "border-rose-400 bg-rose-100/70 text-rose-900 font-semibold shadow-sm";
+                        marker = "❌";
+                    } else {
+                        optionStyle += "border-slate-200 bg-slate-50 text-slate-700";
+                    }
+
+                    return `<div class="${optionStyle}"><span>${marker}</span><span>${opt}</span></div>`;
+                }).join('');
 
                 const item = document.createElement('div');
-                item.className = `p-4 rounded-xl border ${statusBg} space-y-1 bg-white`;
+                item.className = `p-5 rounded-2xl border ${statusBg} space-y-3 bg-white shadow-sm`;
                 item.innerHTML = `
                     <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
-                        <span class="font-bold text-slate-800">${idx + 1}. ${q.q}</span>
+                        <span class="font-bold text-slate-800 text-base">${idx + 1}. ${q.q}</span>
                         ${statusBadge}
                     </div>
-                    <div class="text-sm text-slate-600 space-y-1 pt-1">
-                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'নেই'}</strong></div>
+                    ${reviewImageHtml}
+                    
+                    <!-- অপশন সমূহের লিস্ট -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
+                        ${optionsReviewHtml}
+                    </div>
+
+                    <div class="text-sm text-slate-600 space-y-1 pt-2 border-t border-slate-100">
+                        <div>আপনার উত্তর: <strong>${userAns !== undefined ? q.options[userAns] : 'উত্তর দেননি'}</strong></div>
                         <div>সঠিক উত্তর: <strong class="text-emerald-700">${q.options[q.ans]}</strong></div>
                     </div>
+
+                    ${(q.explanation || q.expImg) ? `
+                        <div class="mt-2 p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs md:text-sm text-indigo-900 space-y-2">
+                            ${q.explanation ? `<div><span class="font-bold">💡 ব্যাখ্যা:</span> ${q.explanation}</div>` : ''}
+                            ${expImageHtml}
+                        </div>
+                    ` : ''}
                 `;
                 reviewList.appendChild(item);
             });
