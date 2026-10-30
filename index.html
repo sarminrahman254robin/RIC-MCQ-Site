@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Robin ICT Care - Learn ICT Build your Future</title>
     <!-- Google Fonts & Font Awesome Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         * {
             margin: 0;
@@ -16,21 +15,22 @@
         }
         body {
             font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
+            background-color: #f0f4f8; 
+            color: #2d3748;
+            line-height: 1.5;
         }
         
         /* --- Header with Neon Light Effect --- */
         header {
             background: #0a0e17;
-            padding: 40px 20px;
+            padding: 35px 20px;
             text-align: center;
             border-bottom: 3px solid #00ffcc;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         header h1 {
-            font-size: 3rem;
-            margin-bottom: 8px;
+            font-size: 2.5rem;
+            margin-bottom: 6px;
             color: #fff;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -38,8 +38,7 @@
                 0 0 5px #fff,
                 0 0 10px #fff,
                 0 0 20px #00ffcc,
-                0 0 40px #00ffcc,
-                0 0 80px #00ffcc;
+                0 0 40px #00ffcc;
             animation: neonPulse 1.8s infinite alternate;
         }
         @keyframes neonPulse {
@@ -47,11 +46,11 @@
                 text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #00ffcc, 0 0 40px #00ffcc;
             }
             100% {
-                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 30px #00ffcc;
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 10px #00ffcc, 0 0 20px #00ffcc;
             }
         }
         header p {
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             letter-spacing: 1px;
             color: #e0e0e0;
         }
@@ -62,105 +61,122 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 35px 15px;
         }
         .login-card {
             background: #ffffff;
-            padding: 35px 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px 25px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             text-align: center;
+            border: 1px solid #cbd5e1;
         }
         .login-card h3 {
-            color: #2c5364;
-            margin-bottom: 20px;
-            font-size: 1.6rem;
+            color: #1e293b;
+            margin-bottom: 18px;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             text-align: left;
         }
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 600;
-            color: #444;
+            color: #334155;
+            font-size: 0.9rem;
         }
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
+            padding: 11px 14px;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
             outline: none;
-            transition: 0.3s;
+            transition: 0.2s;
+            background-color: #f8fafc;
         }
         .form-group input:focus {
-            border-color: #00b09b;
-            box-shadow: 0 0 5px rgba(0, 176, 155, 0.3);
+            border-color: #db2777;
+            background-color: #fff;
+            box-shadow: 0 0 6px rgba(219, 39, 119, 0.2);
         }
+
+        /* --- কিবোর্ড কালার (নরমাল অবস্থায়) ও পিংক হভার এফেক্ট --- */
         .btn-login {
             width: 100%;
-            background: linear-gradient(to right, #203a43, #2c5364);
-            color: white;
+            background: linear-gradient(135deg, #1e293b, #0f172a); 
+            color: #f8fafc;
             padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 6px rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         .btn-login:hover {
-            opacity: 0.95;
+            background: linear-gradient(135deg, #db2777, #f43f5e); /* মাউস নিলে পিংক */
+            border-color: #f43f5e;
+            color: #ffffff;
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(219, 39, 119, 0.35);
         }
 
         .error-message {
-            color: #d9534f;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
+            color: #dc2626;
+            background-color: #fee2e2;
+            border: 1px solid #fecaca;
+            padding: 8px;
             border-radius: 6px;
-            margin-top: 15px;
+            margin-top: 12px;
             display: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-align: center;
         }
 
         /* Contact Box for ID & Password Request */
         .contact-notice {
-            background-color: #eef9f6;
-            border: 1px dashed #00b09b;
+            background-color: #f8fafc;
+            border: 1.5px dashed #cbd5e1;
             border-radius: 8px;
             padding: 12px;
             margin-top: 15px;
-            font-size: 0.9rem;
-            color: #2c5364;
+            font-size: 0.88rem;
+            color: #334155;
         }
         .contact-notice strong {
-            color: #d9534f;
+            color: #dc2626;
         }
         .btn-account {
             margin-top: 10px;
-            background: #25d366;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
+            background: linear-gradient(135deg, #334155, #1e293b);
+            color: #fff;
+            padding: 7px 16px;
+            border-radius: 6px;
+            border: 1px solid #475569;
             text-decoration: none;
             font-weight: 600;
             display: inline-block;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            font-size: 0.85rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .btn-account:hover {
-            background: #1ebc57;
+            background: linear-gradient(135deg, #db2777, #f43f5e); /* মাউস নিলে পিংক */
+            border-color: #f43f5e;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
         }
 
         .divider {
-            margin: 20px 0;
+            margin: 18px 0;
             position: relative;
             text-align: center;
         }
@@ -171,130 +187,195 @@
             left: 0;
             width: 100%;
             height: 1px;
-            background: #e0e0e0;
+            background: #cbd5e1;
             z-index: 1;
         }
         .divider span {
             position: relative;
             background: #fff;
             padding: 0 10px;
-            color: #777;
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 0.85rem;
             z-index: 2;
+            font-weight: 500;
         }
 
         .btn-free-access {
             width: 100%;
-            background: linear-gradient(to right, #11998e, #38ef7d);
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
+            background: linear-gradient(135deg, #273548, #1e293b);
+            color: #00ffcc; 
+            padding: 11px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: 0.3s ease;
+            transition: all 0.25s ease;
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         .btn-free-access:hover {
-            opacity: 0.95;
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #db2777, #f43f5e); /* মাউস নিলে পিংক */
+            border-color: #f43f5e;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
         }
 
         .btn-yt-guide {
-            margin-top: 25px;
-            background-color: #ff0000;
+            margin-top: 20px;
+            background-color: #dc2626;
             color: white;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
-            transition: 0.3s ease;
+            gap: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            transition: 0.2s ease;
         }
         .btn-yt-guide:hover {
-            background-color: #cc0000;
-            transform: scale(1.05);
+            background-color: #b91c1c;
+            transform: scale(1.03);
         }
 
         /* --- Dashboard Area --- */
         .container {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
             display: none;
         }
         .user-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #eef2f5;
-            padding: 15px 20px;
+            background: #ffffff;
+            padding: 12px 20px;
             border-radius: 8px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
         .user-welcome {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #2c5364;
+            color: #0f2027;
         }
         .btn-logout {
-            background-color: #dc3545;
+            background-color: #ef4444;
             color: white;
             border: none;
-            padding: 7px 15px;
-            border-radius: 5px;
+            padding: 6px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        .btn-logout:hover {
+            background-color: #dc2626;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
-            color: #2c5364;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: #1e293b;
+            font-weight: 700;
         }
+
+        /* ডার্ক গ্রে স্টাইলিশ রেসপনসিভ টেবিল */
         .table-responsive {
+            width: 100%;
             overflow-x: auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            -webkit-overflow-scrolling: touch;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 480px;
         }
         th, td {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
+            padding: 11px 14px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.88rem;
+            vertical-align: middle;
         }
         th {
-            background-color: #203a43;
-            color: #fff;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
             font-weight: 600;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid #00ffcc;
         }
-        tr:hover {
-            background-color: #f9f9f9;
+        
+        /* সারির অল্টারনেটিভ কালার (ডার্ক গ্রে শেড) */
+        tbody tr {
+            transition: background-color 0.2s ease;
+            color: #f1f5f9;
         }
+        tbody tr:nth-child(odd) {
+            background-color: #1e293b; 
+        }
+        tbody tr:nth-child(even) {
+            background-color: #273548; 
+        }
+        tbody tr:hover {
+            background-color: #334155;
+            box-shadow: inset 3px 0 0 #00ffcc; 
+        }
+        
+        /* ফ্রি মডেল টেস্ট রো হাইলাইট */
+        tbody tr.free-model-row:nth-child(odd) {
+            background-color: #064e3b;
+        }
+        tbody tr.free-model-row:nth-child(even) {
+            background-color: #065f46;
+        }
+
         .btn-exam {
-            background: linear-gradient(to right, #ff9966, #ff5e62);
-            color: white;
-            padding: 8px 18px;
-            border: none;
-            border-radius: 5px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #00ffcc;
+            padding: 6px 14px;
+            border: 1px solid #475569;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s ease;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
         }
         .btn-exam:hover {
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #db2777, #f43f5e); /* মাউস নিলে পিংক */
+            border-color: #f43f5e;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(219, 39, 119, 0.3);
+        }
+        
+        .badge-free {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            display: inline-block;
+            border: 1px solid rgba(52, 211, 153, 0.3);
         }
 
         /* --- Live Exam Modal --- */
@@ -303,62 +384,89 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(3px);
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
             z-index: 1000;
         }
         .exam-box {
             background: #fff;
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 600px;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 550px;
             width: 100%;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
         }
         .exam-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .exam-header h3 {
+            color: #0f2027;
+            font-size: 1.1rem;
         }
         .option-btn {
             display: block;
             width: 100%;
             text-align: left;
-            padding: 12px 15px;
-            margin: 10px 0;
-            background: #f8f9fa;
-            border: 1px solid #ddd;
+            padding: 10px 12px;
+            margin: 8px 0;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #1e293b;
             transition: 0.2s;
         }
         .option-btn:hover {
-            background: #eef2f5;
-            border-color: #00b09b;
+            background: #e2e8f0;
+            border-color: #db2777;
         }
         .close-exam {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
+            top: 12px;
+            right: 15px;
+            font-size: 1.3rem;
             cursor: pointer;
-            color: #888;
+            color: #94a3b8;
+        }
+        .close-exam:hover {
+            color: #334155;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: #0a0e17;
-            color: #fff;
-            margin-top: 50px;
-            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 40px;
+            font-size: 0.8rem;
+        }
+
+        /* মোবাইলের জন্য অপটিমাইজেশন */
+        @media screen and (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            th, td {
+                padding: 8px 8px;
+                font-size: 0.8rem;
+            }
+            .btn-exam {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
         }
     </style>
 </head>
@@ -385,12 +493,12 @@
                 <button type="submit" class="btn-login" id="loginBtn">লগইন করুন</button>
             </form>
 
-            <div id="loginError" class="error-message">ভুল ইউজার আইডি বা পাসওয়ার্ড!</div>
+            <div id="loginError" class="error-message">ভুল ইউজার আইডি বা পাসওয়ার্ড!</div>
 
             <!-- আইডি ও পাসওয়ার্ড পাওয়ার জন্য যোগাযোগের নির্দেশনা -->
             <div class="contact-notice">
-                আইডি ও পাসওয়ার্ড পেতে সরাসরি কল করুন:<br>
-                <a href="tel:01743886883" style="color:#203a43; font-weight:700; text-decoration:none;">
+                আইডি ও পাসওয়ার্ড পেতে সরাসরি কল করুন:<br>
+                <a href="tel:01743886883" style="color:#0f172a; font-weight:700; text-decoration:none;">
                     <i class="fa-solid fa-phone"></i> 01743-886883
                 </a><br>
                 <a href="login pannel.html" class="btn-account">
@@ -426,8 +534,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 25%;">বিভাগ/অধ্যায়</th>
-                        <th style="width: 50%;">পরীক্ষার বিষয়</th>
+                        <th style="width: 22%;">বিভাগ/অধ্যায়</th>
+                        <th style="width: 53%;">পরীক্ষার বিষয়</th>
                         <th style="width: 25%; text-align: center;">অ্যাকশন</th>
                     </tr>
                 </thead>
@@ -439,6 +547,7 @@
                            <a href="cpt1v2.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>অধ্যায় ০২</td>
@@ -456,6 +565,7 @@
                            <a href="cpt3v2.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>অধ্যায় ০৪</td>
@@ -464,6 +574,7 @@
                            <a href="cpt4v2.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td>অধ্যায় ০৫</td>
@@ -472,7 +583,7 @@
                            <a href="cpt5v2.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
-						</td>
+                        </td>
                     </tr>
                     <tr>
                         <td>অধ্যায় ০৬</td>
@@ -481,16 +592,16 @@
                            <a href="cpt6v2.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
-						</td>   
+                        </td>   
                     </tr>
-                    <tr style="background-color: #e8f8f5;">
-                        <td><strong>ফ্রি মডেল টেস্ট</strong></td>
-                        <td><strong>MCQ TEST (ফ্রি মেম্বার)</strong></td>
+                    <tr class="free-model-row">
+                        <td><strong>ফ্রি মডেল</strong></td>
+                        <td><strong>MCQ TEST (ফ্রি মেম্বার)</strong><br><span class="badge-free">উন্মুক্ত (ফ্রি)</span></td>
                         <td style="text-align: center;">
                            <a href="fmodel.html">
                            <button class="btn-exam">MCQ পরীক্ষা দিন</button>
                            </a>
-						</td> 
+                        </td>  
                     </tr>
                 </tbody>
             </table>
@@ -505,13 +616,13 @@
                 <h3 id="examSubjectTitle">পরীক্ষা</h3>
             </div>
             <div id="quizContainer">
-                <h4 id="questionText" style="margin-bottom: 15px;">প্রশ্ন লোড হচ্ছে...</h4>
+                <h4 id="questionText" style="margin-bottom: 15px; font-size: 1rem; color: #1e293b;">প্রশ্ন লোড হচ্ছে...</h4>
                 <div id="optionsContainer"></div>
             </div>
             <div id="resultContainer" style="display:none; text-align:center;">
-                <h3 style="color:#00b09b;">পরীক্ষা সম্পন্ন হয়েছে!</h3>
-                <p id="scoreText" style="font-size: 1.2rem; margin: 15px 0;"></p>
-                <button class="btn-login" onclick="closeExam()">প্যানেলে ফিরে যান</button>
+                <h3 style="color:#059669; margin-bottom: 10px;">পরীক্ষা সম্পন্ন হয়েছে!</h3>
+                <p id="scoreText" style="font-size: 1.1rem; margin: 15px 0; color: #334155;"></p>
+                <button class="btn-login" onclick="closeExam()" style="max-width: 200px; margin: 0 auto;">প্যানেলে ফিরে যান</button>
             </div>
         </div>
     </div>
@@ -521,7 +632,6 @@
     </footer>
 
     <script>
-        // আপনার গুগল শিটের Apps Script Deploy করার পর পাওয়া Web App URL টি এখানে বসাবেন
         const webAppUrl = 'https://script.google.com/macros/s/AKfycbx-brqHsadk2NcwDKT-H-KI0pYecS0p90bmFW3QXJZNOr_2lZHzd17qpqlwyhMdvJ4/exec';
 
         const sampleQuestions = [
@@ -536,7 +646,7 @@
                 ans: 0
             },
             {
-                q: "C ভাষায় ভ্যারিয়েবল ডিক্লেয়ার করতে কোনটি ব্যবহৃত হয়?",
+                q: "C ভাষায় ভ্যারিয়েবল ডিক্লেয়ার করতে কোনটি ব্যবহৃত হয়?",
                 options: ["int", "define", "include", "void"],
                 ans: 0
             }
@@ -545,7 +655,6 @@
         let currentQIndex = 0;
         let score = 0;
 
-        // গুগল শিট থেকে যাচাই করে লগইন করার ফাংশন
         function handleLogin(event) {
             event.preventDefault();
             const userIdInput = document.getElementById("studentId").value.trim();
@@ -563,12 +672,12 @@
                     if (data.success) {
                         showDashboard(data.name);
                     } else {
-                        errorMsg.innerText = data.message || "ভুল ইউজার আইডি বা পাসওয়ার্ড!";
+                        errorMsg.innerText = data.message || "ভুল ইউজার আইডি বা পাসওয়ার্ড!";
                         errorMsg.style.display = "block";
                     }
                 })
                 .catch(error => {
-                    errorMsg.innerText = "সার্ভারে সংযোগ করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।";
+                    errorMsg.innerText = "সার্ভারে সংযোগ করতে সমস্যা হয়েছে, আবার চেষ্টা করুন।";
                     errorMsg.style.display = "block";
                 })
                 .finally(() => {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Model Test List - Robin ICT Care</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,84 +13,169 @@
         }
         body {
             font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
+            background-color: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.5;
         }
         header {
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: #fff;
-            padding: 30px 20px;
+            padding: 25px 15px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         header h1 {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             color: #00ffcc;
+            letter-spacing: 0.5px;
         }
         header p {
             color: #e0e0e0;
+            font-size: 0.9rem;
+            margin-top: 3px;
         }
+        
         .container {
+            width: 100%;
             max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 25px auto;
+            padding: 0 12px;
         }
         .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 15px;
             background: #203a43;
             color: #fff;
             padding: 8px 16px;
-            border-radius: 5px;
+            border-radius: 6px;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .back-btn:hover {
+            background: #0f2027;
+            transform: translateX(-2px);
         }
         .chapter-heading {
-            font-size: 1.8rem;
-            color: #2c5364;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: #1a202c;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
+        
+        /* স্টাইলিশ রেসপনসিভ টেবিল কার্ড */
         .table-responsive {
+            width: 100%;
             overflow-x: auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+            -webkit-overflow-scrolling: touch;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 480px;
         }
+        
+        /* কলামের দূরত্ব ও প্যাডিং কমানো হয়েছে */
         th, td {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
+            padding: 10px 12px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.88rem;
+            vertical-align: middle;
         }
+        
+        /* ডার্ক গ্রে স্টাইলিশ হেডার */
         th {
-            background-color: #203a43;
-            color: #fff;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid #00ffcc;
         }
-        tr:hover {
-            background-color: #f9f9f9;
+        
+        /* সারির অল্টারনেটিভ কালার (ডার্ক গ্রে শেড) */
+        tbody tr {
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            color: #f1f5f9;
         }
+        tbody tr:nth-child(odd) {
+            background-color: #1e293b; /* প্রথম ডার্ক গ্রে */
+        }
+        tbody tr:nth-child(even) {
+            background-color: #273548; /* দ্বিতীয় একটু লাইটার ডার্ক গ্রে */
+        }
+        tbody tr:hover {
+            background-color: #334155;
+            box-shadow: inset 3px 0 0 #00ffcc; 
+        }
+        
+        /* স্ট্যাটাস ব্যাজ (Badge Style) */
+        .badge-free {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            display: inline-block;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            margin-top: 3px;
+        }
+        .badge-lock {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.78rem;
+            display: inline-block;
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            margin-top: 3px;
+        }
+        
+        /* স্টাইলিশ বাটন */
         .btn-free {
-            background-color: #28a745;
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
-            padding: 8px 18px;
-            border-radius: 5px;
+            padding: 6px 14px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
             display: inline-block;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(16, 185, 129, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn-free:hover {
+            box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+            transform: translateY(-1px);
         }
         .btn-lock {
-            background: linear-gradient(to right, #ff9966, #ff5e62);
+            background: linear-gradient(135deg, #f97316, #ef4444);
             color: white;
-            padding: 8px 18px;
+            padding: 6px 14px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
+            font-size: 0.82rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.3);
+            transition: all 0.2s ease;
+        }
+        .btn-lock:hover {
+            box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+            transform: translateY(-1px);
         }
 
         /* Login Modal Box */
@@ -102,54 +187,89 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(3px);
             justify-content: center;
             align-items: center;
+            padding: 15px;
         }
         .modal-content {
             background: #fff;
-            padding: 30px;
-            border-radius: 10px;
+            padding: 24px;
+            border-radius: 12px;
             width: 100%;
-            max-width: 400px;
+            max-width: 360px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             position: relative;
         }
         .modal-content input {
             width: 100%;
-            padding: 10px;
+            padding: 10px 12px;
             margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .modal-content input:focus {
+            border-color: #203a43;
         }
         .modal-content button {
             width: 100%;
-            background: #203a43;
+            background: linear-gradient(135deg, #0f2027, #203a43);
             color: white;
             border: none;
-            padding: 10px;
+            padding: 11px;
             margin-top: 10px;
-            border-radius: 5px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 8px rgba(15, 32, 39, 0.3);
         }
         .close-btn {
             position: absolute;
             top: 10px;
             right: 15px;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            color: #888;
+            color: #94a3b8;
+        }
+        .close-btn:hover {
+            color: #334155;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: #0f2027;
-            color: #fff;
-            margin-top: 50px;
-            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 35px;
+            font-size: 0.8rem;
+        }
+
+        /* মোবাইলের জন্য অপটিমাইজেশন */
+        @media screen and (max-width: 600px) {
+            header h1 {
+                font-size: 1.4rem;
+            }
+            .chapter-heading {
+                font-size: 1.1rem;
+            }
+            th, td {
+                padding: 8px 8px;
+                font-size: 0.82rem;
+            }
+            .badge-free, .badge-lock {
+                font-size: 0.72rem;
+                padding: 2px 6px;
+            }
+            .btn-free, .btn-lock {
+                padding: 5px 10px;
+                font-size: 0.78rem;
+            }
         }
     </style>
 </head>
@@ -174,18 +294,18 @@
                     </tr>
                 </thead>
                 <tbody id="modelTableBody">
-                    <!-- JavaScript দিয়ে ২০টি সারি তৈরি হবে -->
+                    <!-- JavaScript দিয়ে সারি তৈরি হবে -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- পাসওয়ার্ড ইনপুট পপআপ -->
+    <!-- পাসওয়ার্ড ইনপুট পপআপ -->
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h3 id="modalModelName" style="color: #203a43; margin-bottom: 10px;"></h3>
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">প্রিমিয়াম টেস্টে অংশ নিতে ইউজার আইডি ও পাসওয়ার্ড দিন।</p>
+            <h3 id="modalModelName" style="color: #0f2027; margin-bottom: 6px; font-size: 1.1rem;"></h3>
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 12px;">প্রিমিয়াম টেস্টে অংশ নিতে ইউজার আইডি ও পাসওয়ার্ড দিন।</p>
             <input type="text" id="username" placeholder="ইউজার আইডি দিন">
             <input type="password" id="password" placeholder="পাসওয়ার্ড দিন">
             <button id="loginBtn" onclick="checkAccess()">পরীক্ষা শুরু করুন</button>
@@ -200,26 +320,26 @@
         // গুগল অ্যাপস স্ক্রিপ্টের Web App URL
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby-SSbtA1OVyYq2DRCq5KQJLwfJQ55S5b3BUCE9Y6g6A0resslOehakumyfaP5HOqov/exec";
 
-        // ২০টি মডেলের নাম ও ফাইলের পাথ
-const modelData = {
-    1: { name: "সকল বোর্ড - ২০২৬ (ফ্রি মডেল টেস্ট)", file: "model/all2026.html" },
-    2: { name: "ঢাকা বোর্ড - ২০২৫", file: "model/db2025.html" },
-    3: { name: "রাজশাহী বোর্ড - ২০২৫", file: "model/rb2025.html" },
-    4: { name: "কুমিল্লা বোর্ড - ২০২৫", file: "model/cb2025.html" },
-    5: { name: "যশোর বোর্ড - ২০২৫", file: "model/jb2025.html" },
-    6: { name: "চট্রগ্রাম বোর্ড - ২০২৫", file: "model/ctb2025.html" },
-    7: { name: "সিলেট বোর্ড - ২০২৫", file: "model/model10.html" },
-    8: { name: "দিনাজপুর বোর্ড - ২০২৫", file: "model/model11.html" },
-    9: { name: "ময়মনসিংহ বোর্ড - ২০২৫", file: "model/model12.html" },
-    10: { name: "মডেল টেস্ট - ১৩", file: "model/model13.html" },
-    11: { name: "মডেল টেস্ট - ১৪", file: "model/model14.html" },
-    12: { name: "মডেল টেস্ট - ১৫", file: "model/model15.html" },
-    13: { name: "মডেল টেস্ট - ১৬", file: "model/model16.html" },
-    14: { name: "মডেল টেস্ট - ১৭", file: "model/model17.html" },
-    15: { name: "মডেল টেস্ট - ১৮", file: "model/model18.html" },
-    16: { name: "মডেল টেস্ট - ১৯", file: "model/model19.html" },
-    17: { name: "সাপ্লিমেন্টারি ফাইনাল মডেল - ২০২৫", file: "model/model20.html" }
-};
+        // ১৭টি মডেলের নাম ও ফাইলের পাথ
+        const modelData = {
+            1: { name: "সকল বোর্ড - ২০২৬ (ফ্রি মডেল টেস্ট)", file: "model/all2026.html" },
+            2: { name: "ঢাকা বোর্ড - ২০২৫", file: "model/db2025.html" },
+            3: { name: "রাজশাহী বোর্ড - ২০২৫", file: "model/rb2025.html" },
+            4: { name: "কুমিল্লা বোর্ড - ২০২৫", file: "model/cb2025.html" },
+            5: { name: "যশোর বোর্ড - ২০২৫", file: "model/jb2025.html" },
+            6: { name: "চট্রগ্রাম বোর্ড - ২০২৫", file: "model/ctb2025.html" },
+            7: { name: "সিলেট বোর্ড - ২০২৫", file: "model/model10.html" },
+            8: { name: "দিনাজপুর বোর্ড - ২০২৫", file: "model/model11.html" },
+            9: { name: "ময়মনসিংহ বোর্ড - ২০২৫", file: "model/model12.html" },
+            10: { name: "মডেল টেস্ট - ১৩", file: "model/model13.html" },
+            11: { name: "মডেল টেস্ট - ১৪", file: "model/model14.html" },
+            12: { name: "মডেল টেস্ট - ১৫", file: "model/model15.html" },
+            13: { name: "মডেল টেস্ট - ১৬", file: "model/model16.html" },
+            14: { name: "মডেল টেস্ট - ১৭", file: "model/model17.html" },
+            15: { name: "মডেল টেস্ট - ১৮", file: "model/model18.html" },
+            16: { name: "মডেল টেস্ট - ১৯", file: "model/model19.html" },
+            17: { name: "সাপ্লিমেন্টারি ফাইনাল মডেল - ২০২৫", file: "model/model20.html" }
+        };
 
         // URL থেকে চ্যাপ্টারের নাম এবং কোড রিড করা
         const urlParams = new URLSearchParams(window.location.search);
@@ -232,7 +352,7 @@ const modelData = {
         const tbody = document.getElementById('modelTableBody');
         tbody.innerHTML = "";
 
-        // ১ থেকে ২০টি মডেলের সারি ডাইনামিক তৈরি করা (প্রথম ৪টি ফ্রি, বাকিগুলো লকড)
+        // ১ থেকে ১৭টি মডেলের সারি ডাইনামিক তৈরি করা (প্রথম ৪টি ফ্রি, বাকিগুলো লকড)
         for (let i = 1; i <= 17; i++) {
             let modelNoFormatted = i < 10 ? '0' + i : i;
             
@@ -241,8 +361,8 @@ const modelData = {
                     <tr>
                         <td><b>মডেল - ${modelNoFormatted}</b></td> 
                         <td>
-                            <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
-                            <span style="color: green; font-size: 0.85rem; font-weight: 600;">উন্মুক্ত (ফ্রি)</span>
+                            <span style="font-weight: 600; color: #f1f5f9;">${modelData[i].name}</span><br>
+                            <span class="badge-free">উন্মুক্ত (ফ্রি)</span>
                         </td>
                         <td style="text-align: center;">
                             <a href="${modelData[i].file}?ch=${chapterCode}&model=${i}" class="btn-free">পরীক্ষা দিন</a>  
@@ -254,8 +374,8 @@ const modelData = {
                     <tr>
                         <td><b>মডেল - ${modelNoFormatted}</b></td>
                         <td>
-                            <span style="font-weight: 600; color: #2c5364;">${modelData[i].name}</span><br>
-                            <span style="color: #d9534f; font-size: 0.85rem;">&#128274; পাসওয়ার্ড প্রটেক্টেড</span>
+                            <span style="font-weight: 600; color: #f1f5f9;">${modelData[i].name}</span><br>
+                            <span class="badge-lock">&#128274; লকড</span>
                         </td>
                         <td style="text-align: center;">
                             <button class="btn-lock" onclick="openLogin(${i})">পরীক্ষা দিন</button>
@@ -267,7 +387,8 @@ const modelData = {
 
         function openLogin(modelNo) {
             selectedModelNo = modelNo;
-            document.getElementById('modalModelName').innerText = 'মডেল টেস্ট - ' + (modelNo < 10 ? '0' + modelNo : modelNo);
+            let formattedNo = modelNo < 10 ? '0' + modelNo : modelNo;
+            document.getElementById('modalModelName').innerText = 'মডেল টেস্ট - ' + formattedNo;
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.getElementById('loginModal').style.display = 'flex';
