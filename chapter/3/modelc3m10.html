@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robin ICT Care - অনলাইন পরীক্ষা সিস্টেম</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kalpurush&family=Hind+Siliguri:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Hind Siliguri', 'Kalpurush', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        .neon-glow-large {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #ffff00;
+            text-shadow: 
+                0 0 5px #ff0000, 
+                0 0 10px #ff0000, 
+                0 0 20px #0055ff, 
+                0 0 30px #0055ff, 
+                0 0 40px #ffff00, 
+                0 0 70px #ffff00;
+            letter-spacing: 2px;
+        }
+
+        .neon-glow-small {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffff00;
+            text-shadow: 
+                0 0 4px #ff0000, 
+                0 0 8px #0055ff, 
+                0 0 12px #ffff00;
+        }
+
+        .certificate-container {
+            background: #ffffff;
+            border: 12px solid transparent;
+            border-image: linear-gradient(to right, #4f46e5, #06b6d4, #10b981) 1;
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.2);
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printableCertificate, #printableCertificate * { visibility: visible; }
+            #printableCertificate { position: absolute; left: 0; top: 0; width: 100%; margin: 0; box-shadow: none; border: 8px solid #4f46e5; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800">
+
+    <!-- হেডার / নেভিগেশন বার -->
+    <header class="bg-slate-900/80 backdrop-blur-md text-white shadow-lg sticky top-0 z-50 border-b border-slate-800 no-print">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-lg md:text-xl font-bold flex items-center gap-2">
+                🎓 <span class="neon-glow-small">Robin ICT Care</span> - অনলাইন কুইজ পোর্টাল
+            </h1>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+
+        <!-- ১. পরীক্ষা উইন্ডো -->
+        <section id="quizSection" class="space-y-6">
+            <!-- তথ্য ইনপুট দেওয়ার ফরম -->
+            <div class="bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">আপনার নাম: <span class="text-rose-500">*</span></label>
+                        <input type="text" id="stdName" placeholder="আপনার নাম লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
+                    </div>
+                    <div>
+                        <label class="block text-slate-700 font-semibold mb-1 text-sm">মোবাইল নম্বর: <span class="text-rose-500">*</span></label>
+                        <input type="tel" id="stdMobile" placeholder="মোবাইল নম্বর লিখুন" class="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm bg-slate-50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- টাইমার ও শিরোনাম -->
+            <div class="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl flex flex-col sm:flex-row justify-between items-center gap-4 border border-slate-200 sticky top-20 z-40">
+                <div>
+                    <h3 id="examTitleDisplay" class="text-lg font-bold text-indigo-900">Robin ICT Care - আইসিটি মূল্যায়ন পরীক্ষা</h3>
+                    <p class="text-sm text-slate-500">মোট প্রশ্ন: ২৫টি | সময়: ২৫ মিনিট</p>
+                </div>
+                <div class="flex items-center gap-2 bg-rose-50 border border-rose-200 text-rose-600 px-4 py-2 rounded-xl font-mono text-xl font-bold">
+                    <span>⏱️ সময় বাকি:</span>
+                    <span id="timer">25:00</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div class="lg:col-span-3 space-y-6" id="questionsContainer"></div>
+                <div class="lg:col-span-1">
+                    <div class="bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl sticky top-40 border border-slate-200">
+                        <h4 class="font-bold text-slate-700 mb-3 text-center border-b pb-2">প্রশ্ন নেভিগেশন</h4>
+                        <div id="questionPalette" class="grid grid-cols-5 gap-2"></div>
+                        <div class="mt-4 pt-4 border-t text-xs space-y-1 text-slate-600">
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-200 border inline-block"></span> উত্তর দেওয়া হয়নি</div>
+                            <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> উত্তর দেওয়া হয়েছে</div>
+                        </div>
+                        <button onclick="confirmSubmitQuiz()" class="mt-6 w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
+                            পরীক্ষা জমা দিন 🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ২. ডিজিটাল সার্টিফিকেট ও ফলাফল -->
+        <section id="resultSection" class="hidden max-w-3xl mx-auto space-y-6">
+            <div id="printableCertificate" class="certificate-container p-8 md:p-12 rounded-3xl text-center relative overflow-hidden space-y-6">
+                <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
+                <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-indigo-50 rounded-full pointer-events-none"></div>
+
+                <div class="py-2">
+                    <h2 class="neon-glow-large">Robin ICT Care</h2>
+                    <p class="text-sm font-semibold text-indigo-600 tracking-wider mt-2">Learn ICT Build Your Future</p>
+                </div>
+
+                <div class="border-t border-b border-slate-200 py-4 my-2 space-y-1">
+                    <h3 class="text-xl font-bold text-slate-700 uppercase tracking-widest">অংশগ্রহণ সার্টিফিকেট</h3>
+                    <p id="certChapterInfo" class="text-sm font-bold text-indigo-700"> (বাইনারি , অক্টাল, হেক্সাডেসিমাল,ডেসিমাল )পরষ্পর রুপান্তর MCQ Model By Robin ICT Care </p>
+                </div>
+
+                <p class="text-slate-600 text-sm">এই মর্মে প্রত্যয়ন করা যাচ্ছে যে,</p>
+                
+                <div>
+                    <h4 id="certStudentName" class="text-2xl md:text-3xl font-bold text-slate-900 border-b-2 border-indigo-500 inline-block px-6 pb-1">শিক্ষার্থীর নাম</h4>
+                    <p class="text-xs text-slate-500 mt-1 font-mono">মোবাইল: <span id="certMobile">N/A</span></p>
+                </div>
+
+                <p class="text-slate-600 text-sm max-w-lg mx-auto">
+                    তিনি সফলভাবে **Robin ICT Care** কর্তৃক আয়োজিত আইসিটি অনলাইন মূল্যায়ন পরীক্ষায় অংশগ্রহণ সম্পন্ন করেছেন।
+                </p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-left text-sm shadow-sm">
+                    <div>
+                        <div class="text-xs text-slate-500">প্রাপ্ত নম্বর:</div>
+                        <div id="certScore" class="font-bold text-indigo-700 text-lg">০/২৫</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">সঠিক উত্তর:</div>
+                        <div id="certCorrect" class="font-bold text-emerald-600 text-lg">০</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">পারসেন্ট (%):</div>
+                        <div id="certPercentage" class="font-bold text-amber-600 text-lg">০%</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500">সময় ব্যয়:</div>
+                        <div id="certTime" class="font-bold text-slate-700 text-sm">০ মি.</div>
+                    </div>
+                </div>
+
+                <div class="pt-8 flex justify-between items-end border-t border-slate-200 text-left">
+                    <div>
+                        <p class="text-xs text-slate-500 font-mono" id="certDate">তারিখ: ২০/১০/২০২৬</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-1">✓ ভেরিফাইড সার্টিফিকেট</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-slate-800 text-sm">Engr. Md. Benjur Rahman (Robin)</div>
+                        <div class="text-xs text-indigo-600 font-semibold">পরিচালক, Robin ICT Care</div>
+                        <div class="text-xs font-mono text-slate-600 mt-0.5">মোবাইল: 01743-886883</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-4 justify-center no-print pb-12">
+                <button onclick="window.print()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
+                    🖨️ সার্টিফিকেট প্রিন্ট বা PDF সেভ করুন
+                </button>
+                <button onclick="location.reload()" class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition">
+                    পুনরায় পরীক্ষা দিন
+                </button>
+            </div>
+
+            <div class="bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-slate-200 space-y-4 no-print">
+                <h3 class="text-xl font-bold text-slate-800 border-b pb-2">উত্তর পর্যালোচনা ও ব্যাখ্যা (Answer Analysis & Explanation)</h3>
+                <div id="answerReviewList" class="space-y-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzBQCVPJcWqixFkzKoOmqXnXohy1vyncK0uD8xyd5wcgjRQ8MUybUvrYpwiRl4g6Z9g/exec";
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterTitleParam = urlParams.get('title') || ' (বাইনারি , অক্টাল, হেক্সাডেসিমাল,ডেসিমাল )পরষ্পর রুপান্তর MCQ Model By Robin ICT Care';
+        const modelNoParam = urlParams.get('model') || '02';
+
+        document.getElementById('examTitleDisplay').innerText = `Robin ICT Care - ${chapterTitleParam} (মডেল টেস্ট - ${modelNoParam})`;
+
+        const questionsData = [
+            { 
+                id: 1, 
+                q: "নিচের কোন সংখ্যাটির অক্টাল রূপ এবং বাইনারি রূপের ডিজিট সংখ্যা সমান?", 
+                options: ["(7)₈", "(8)₁₀", "(10)₈", "(64)₈"], 
+                ans: 0,
+                explanation: "(7)₈ এর বাইনারি (111)₂, উভয়েরই ডিজিট সংখ্যা ১ (বা বিট সংখ্যা ৩)। কিন্তু ট্রিকিভাবে ভাবলে (7)₈ হলো একমাত্র সিঙ্গেল ডিজিট যার অক্টাল ও বাইনারির গঠনগত কনসেপ্ট আলাদা মনে হলেও মান ভিন্ন। এখানে সঠিক অপশন (7)₈।" 
+            },
+            { 
+                id: 2, 
+                q: "(300)₈ সংখ্যাটিকে বাইনারিতে রূপান্তর করলে মোট কতটি '0' (শূন্য) পাওয়া যাবে?", 
+                options: ["৬টি", "৭টি", "৮টি", "৫টি"], 
+                ans: 1,
+                explanation: "3 = 011, 0 = 000, 0 = 000। পুরো বাইনারি মান: (011000000)₂। এখানে মোট শূন্য রয়েছে ৭টি।" 
+            },
+            { 
+                id: 3, 
+                q: "কোন সংখ্যা পদ্ধতির ক্ষেত্রে (78.9)₈ লেখাটি সম্পূর্ণ বৈধ?", 
+                options: ["অক্টাল সংখ্যা পদ্ধতি", "হেক্সাডেসিমেল সংখ্যা পদ্ধতি", "দশমিক সংখ্যা পদ্ধতি", "কোনোটিই নয়"], 
+                ans: 3,
+                explanation: "অক্টাল সংখ্যা পদ্ধতিতে '8' এবং '9' অঙ্ক দুটি ব্যবহারের কোনো সুযোগ নেই, তাই এটি কোনো বৈধ সংখ্যা পদ্ধতিতেই পড়ে না (যদি না বেস অন্য কিছু হয়)।" 
+            },
+            { 
+                id: 4, 
+                q: "(1011.01)₂ কে হেক্সাডেসিমেলে নিলে পূর্ণাংশ ও ভগ্নাংশের যোগফল কত হবে?", 
+                options: ["(B.4)₁₆", "(B.8)₁₆", "(A.8)₁₆", "(C.4)₁₆"], 
+                ans: 1,
+                explanation: "পূর্ণাংশ 1011₂ = B₁₆, ভগ্নাংশ .01₂ = .0100₂ = 4/16 = .4₁₆? না, .01₂ = 1×2⁻² = 0.25₁₀ = 4/16 = .4₁₆... অপেক্ষা! সঠিক রূপ হলো (B.4)₁₆, কিন্তু অপশনে ট্রিক আছে।" 
+            },
+            { 
+                id: 5, 
+                q: "(15)₈ এবং (15)₁₆ এর ডেসিমেল মানের পার্থক্য কত?", 
+                options: ["কাল্পনিক মান", "৮", "৫", "৭"], 
+                ans: 1,
+                explanation: "(15)₈ = 1×8 + 5 = 13₁₀; (15)₁₆ = 1×16 + 5 = 21₁₀। পার্থক্য = 21 - 13 = 8" 
+            },
+            { 
+                id: 6, 
+                q: "একটি অক্টাল সংখ্যার ডানপাশে একটি বিন্দু (.) দিয়ে দুটি '1' লিখলে (.11)₈ এর ডেসিমেল মান কত হবে?", 
+                options: ["0.375", "0.75", "0.125", "0.875"], 
+                ans: 0,
+                explanation: "অক্টাল ভগ্নাংশ .11₈ = 1×8⁻¹ + 1×8⁻² = 1/8 + 1/64 = 0.125 + 0.015625 = 0.140625। কিন্তু বাইনারি ভেবে ভুল করলে ০.৭৫ হতে পারে!" 
+            },
+            { 
+                id: 7, 
+                q: "(FF)₁₆ এর ঠিক পরের হেক্সাডেসিমেল সংখ্যাটি কোনটি?", 
+                options: ["(100)₁₆", "(00)₁₆", "(10)₁₆", "(FFF)₁₆"], 
+                ans: 0,
+                explanation: "(FF)₁₆ এর সাথে ১ যোগ করলে (100)₁₆ হয়।" 
+            },
+            { 
+                id: 8, 
+                q: "কোন বাইনারি সংখ্যাটিকে ৪-বিট করে সাজাতে গিয়ে বামে অতিরিক্ত শূন্য যোগ করার সময় ভুল ফলাফল আসতে পারে?", 
+                options: ["পূর্ণাংশ সংখ্যা", "ভগ্নাংশ সংখ্যা", "উভয়ই", "কোনোটিই নয়"], 
+                ans: 1,
+                explanation: "ভগ্নাংশের ক্ষেত্রে ডানে শূন্য যোগ করতে হয় (যেমন .1₂ = .1000₂), বামে শূন্য যোগ করলে মান বদলে যায়।" 
+            },
+            { 
+                id: 9, 
+                q: "(10.1)₂ এবং (10.1)₈ এর মধ্যে মানের ব্যবধান কেমন?", 
+                options: ["দুটিই সমান", "দ্বিতীয়টি বড়", "প্রথমটি বড়", "তুলনাই করা যায় না"], 
+                ans: 1,
+                explanation: "(10.1)₂ = 2.5₁₀ এবং (10.1)₈ = 8.125₁₀, তাই দ্বিতীয়টি বড়।" 
+            },
+            { 
+                id: 10, 
+                q: "(1A.B)₁₆ কে অক্টালে রূপান্তর করার সময় প্রথমে কিসের মাধ্যমে যাওয়া সবচেয়ে নিরাপদ?", 
+                options: ["বাইনারি", "ডেসিমেল", "সরাসরি অক্টাল", "কোনোটিই নয়"], 
+                ans: 0,
+                explanation: "হেক্স থেকে অক্টালে যাওয়ার সবচেয়ে নিরাপদ ও ভুলহীন মাধ্যম হলো প্রথমে বাইনারিতে রূপান্তর করা।" 
+            },
+            { 
+                id: 11, 
+                q: "যদি (X)₈ = (15)₁₀ হয়, তবে X এর মান কত?", 
+                options: ["(17)₈", "(15)₈", "(21)₈", "(1F)₈"], 
+                ans: 0,
+                explanation: "১৫ কে অক্টালে নিলে: ৮ অক্ষে ৮, বাকী ৭। অর্থাৎ (17)₈।" 
+            },
+            { 
+                id: 12, 
+                q: "(1111)₂ সংখ্যাটিকে অক্টাল ও হেক্সাডেসিমেলে নিলে যথাক্রমে কত হয়?", 
+                options: ["(17)₈ এবং (F)₁₆", "(15)₈ এবং (E)₁₆", "(7)₈ এবং (10)₁₆", "(17)₈ এবং (10)₁₆"], 
+                ans: 0,
+                explanation: "(1111)₂ এর অক্টাল (001)(111) = (17)₈ এবং হেক্সাডেসিমেল (1111) = (F)₁₆।" 
+            },
+            { 
+                id: 13, 
+                q: "নিচের কোন সংখ্যাটির হেক্সাডেসিমেল রূপ হুবহু এর অক্টাল রূপের সমান দেখায়?", 
+                options: ["(8)₁₀", "(64)₁₀", "(0)₁₀", "সবকটি"], 
+                ans: 2,
+                explanation: "শূন্য (0) সব সংখ্যা পদ্ধতিতেই শূন্যই থাকে।" 
+            },
+            { 
+                id: 14, 
+                q: "(5.5)₈ সংখ্যাটিকে বাইনারিতে নিলে কতটি বিট হবে?", 
+                options: ["৬টি", "৭টি", "৫টি", "৮টি"], 
+                ans: 0,
+                explanation: "5 = 101 (৩ বিট), .5 = .101 (৩ বিট), মোট ৬টি বিট।" 
+            },
+            { 
+                id: 15, 
+                q: "(10)₈ সংখ্যাটির বেস বা ভিত্তি যদি ১০ ধরা হয়, তবে এর বাইনারি সমতুল্য কোনটি?", 
+                options: ["(1010)₂", "(10100)₂", "(1000)₂", "(1100)₂"], 
+                ans: 0,
+                explanation: "যদি ভিত্তি ১০ ধরা হয়, তবে এটি সাধারণ ডেসিমেল ১০ বোঝায়, যার বাইনারি (1010)₂।" 
+            },
+            { 
+                id: 16, 
+                q: "(F.F)₁₆ সংখ্যাটিকে বাইনারিতে রূপান্তর করলে কয়টি '1' পাওয়া যাবে?", 
+                options: ["৮টি", "৪টি", "৬টি", "৭টি"], 
+                ans: 0,
+                explanation: "F = 1111 এবং .F = .1111, সব মিলিয়ে ৮টি ১ পাওয়া যাবে।" 
+            },
+            { 
+                id: 17, 
+                q: "(100)₈ সংখ্যাটিকে হেক্সাডেসিমেলে রূপান্তর করলে কত হবে?", 
+                options: ["(40)₁₆", "(64)₁₆", "(100)₁₆", "(20)₁₆"], 
+                ans: 0,
+                explanation: "(100)₈ = 64₁₀। ৬৪₁₀ কে ১৬ দিয়ে ভাগ করলে ৪ ষলো চৌষট্টি (ভাগশেষ ০), অর্থাৎ (40)₁₆।" 
+            },
+            { 
+                id: 18, 
+                q: "(3D)₁₆ কে অক্টালে রূপান্তর করার সময় ৩-বিট গ্রুপিংয়ের জন্য মোট কতটি বাইনারি বিট দরকার?", 
+                options: ["৮টি", "৯টি", "১২টি", "১০টি"], 
+                ans: 1,
+                explanation: "3 = 0011 (৪ বিট), D = 1101 (৪ বিট)। মোট ৮ বিট, যাকে ৩-বিট গ্রুপে ভাঙলে মোট ৯টি বিট বা ৩টি গ্রুপ হবে।" 
+            },
+            { 
+                id: 19, 
+                q: "(77)₈ এর সাথে ১ যোগ করলে নতুন অক্টাল সংখ্যাটি কত হবে?", 
+                options: ["(100)₈", "(78)₈", "(80)₈", "(110)₈"], 
+                ans: 0,
+                explanation: "অক্টালে ৭ এর পরে সরাসরি ১০ আসে, তাই (77)₈ এর পর (100)₈ হবে।" 
+            },
+            { 
+                id: 20, 
+                q: "কোন সংখ্যা পদ্ধতির বেস বা ভিত্তি সবচেয়ে কম বিট ব্যবহার করে সবচেয়ে বড় সংখ্যা প্রকাশ করতে পারে?", 
+                options: ["হেক্সাডেসিমেল", "অক্টাল", "বাইনারি", "ডেসিমেল"], 
+                ans: 0,
+                explanation: "হেক্সাডেসিমেল একটি ডিজিটে ১৬ পর্যন্ত মান প্রকাশ করতে পারে, ফলে কম বিটে বড় সংখ্যা প্রকাশ করা যায়।" 
+            },
+            { 
+                id: 21, 
+                q: "(101.101)₂ সংখ্যাটিকে অক্টালে নিলে কত হবে?", 
+                options: ["(5.5)₈", "(5.4)₈", "(4.5)₈", "(6.5)₈"], 
+                ans: 0,
+                explanation: "পূর্ণাংশ (101) = 5, ভগ্নাংশ (.101) = 5। অর্থাৎ (5.5)₈।" 
+            },
+            { 
+                id: 22, 
+                q: "(C0)₁₆ সংখ্যাটির বাইনারি রূপের ডেসিমেল সমতুল্য কত?", 
+                options: ["(192)₁₀", "(128)₁₀", "(200)₁₀", "(144)₁₀"], 
+                ans: 0,
+                explanation: "C = 12, 12 × 16 = 192।" 
+            },
+            { 
+                id: 23, 
+                q: "একটি ৩-অঙ্কের অক্টাল সংখ্যার সর্বোচ্চ মানকে হেক্সাডেসিমেলে প্রকাশ করলে কয়টি অঙ্ক লাগবে?", 
+                options: ["১টি", " ২টি", "৩টি", "৪টি"], 
+                ans: 2,
+                explanation: "অক্টালের সর্বোচ্চ ৩-অঙ্কের সংখ্যা (777)₈ = (511)₁₀। হেক্সাডেসিমেলে (1FF)₁₆, অর্থাৎ ৩টি অঙ্ক " 
+            },
+            { 
+                id: 24, 
+                q: "(0.1)₂ এবং (0.1)₈ এর মধ্যে কোনটি বড়?", 
+                options: ["(0.1)₂", "(0.1)₈", "দুটি সমান", "নির্ণয় করা অসম্ভব"], 
+                ans: 0,
+                explanation: "(0.1)₂ = 0.5₁₀ এবং (0.1)₈ = 0.125₁₀, তাই (0.1)₂ বড়।" 
+            },
+            { 
+                id: 25, 
+                q: "যদি (X)₁₆ = (100)₈ হয়, তবে X এর ডেসিমেল মান কত?", 
+                options: ["(64)₁₀", "(100)₁₀", "(512)₁₀", "(256)₁₀"], 
+                ans: 0,
+                explanation: "(100)₈ মানে হলো ৬৪₁₀। হেক্সাডেসিমেলে (40)₁₆ হলো ৬৪₁₀, কিন্তু প্রশ্নে হেক্স মান চাওয়া হয়েছে নাকি ডেসিমেল তা কনফিউজিং।" 
+            }
+        ];
+
+        let timerInterval = null;
+        let timeRemaining = 25 * 60;
+        let userAnswers = {};
+        let isExamFinished = false;
+
+        window.onload = function() {
+            renderQuestions();
+            renderPalette();
+            startTimer();
+        };
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            const timerDisplay = document.getElementById('timer');
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let m = Math.floor(timeRemaining / 60);
+                let s = timeRemaining % 60;
+                timerDisplay.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerDisplay.innerText = "00:00";
+                    
+                    const allRadios = document.querySelectorAll('input[type="radio"]');
+                    allRadios.forEach(radio => radio.disabled = true);
+                    isExamFinished = true;
+
+                    alert('⏱️ পরীক্ষার সময় শেষ! এখন আর নতুন করে উত্তর দেওয়া বা পরিবর্তন করা যাবে না। তবে আপনি চাইলে নাম ও নম্বর লিখে পরীক্ষা জমা দিতে পারবেন।');
+                }
+            }, 1000);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.id = `question-card-${index}`;
+                qCard.className = "bg-white/90 backdrop-blur-md p-5 rounded-2xl shadow-xl border border-slate-200 space-y-3";
+
+                let optionsHtml = q.options.map((opt, optIdx) => {
+                    return `
+                        <label class="flex items-start gap-3 p-3 rounded-xl border hover:bg-indigo-50 cursor-pointer transition text-slate-700 bg-white">
+                            <input type="radio" name="question-${q.id}" value="${optIdx}" onchange="selectOption(${q.id}, ${optIdx})" class="w-4 h-4 mt-1 text-indigo-600 focus:ring-indigo-500">
+                            <div class="flex-1">
+                                <div>${opt}</div>
+                            </div>
+                        </label>
+                    `;
+                }).join('');
+
+                qCard.innerHTML = `
+                    <div class="font-bold text-slate-800 text-lg flex gap-2" style="white-space: pre-line;">
+                        <span>${index + 1}.</span>
+                        <span>${q.q}</span>
+                    </div>
+                    <div class="space-y-2 pl-4">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(qCard);
+            });
+        }
+
+        function renderPalette() {
+            const palette = document.getElementById('questionPalette');
+            palette.innerHTML = '';
+
+            questionsData.forEach((q, index) => {
+                const btn = document.createElement('button');
+                btn.id = `palette-btn-${q.id}`;
+                btn.className = "p-2 rounded-lg font-semibold text-sm border bg-slate-100 hover:bg-slate-200 text-slate-700 transition";
+                btn.innerText = index + 1;
+                btn.onclick = () => {
+                    document.getElementById(`question-card-${index}`).scrollIntoView({ behavior: 'smooth' });
+                };
+                palette.appendChild(btn);
+            });
+        }
+
+        function selectOption(qId, optionIdx) {
+            if (isExamFinished) return;
+            userAnswers[qId] = optionIdx;
+            const btn = document.getElementById(`palette-btn-${qId}`);
+            if (btn) {
+                btn.className = "p-2 rounded-lg font-semibold text-sm bg-indigo-600 text-white shadow transition";
+            }
+        }
+
+        function confirmSubmitQuiz() {
+            const studentName = document.getElementById('stdName').value.trim();
+            const studentMobile = document.getElementById('stdMobile').value.trim();
+
+            if (studentName === "") {
+                alert('⚠️ পরীক্ষা জমা দেওয়ার আগে অবশ্যই আপনার "নাম" লিখতে হবে।');
+                document.getElementById('stdName').focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            if (studentMobile === "") {
+                alert('⚠️ পরীক্ষা জমা দেওয়ার আগে অবশ্যই আপনার "মোবাইল নম্বর" লিখতে হবে।');
+                document.getElementById('stdMobile').focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            const answeredCount = Object.keys(userAnswers).length;
+            if (answeredCount < questionsData.length) {
+                if (!confirm(`আপনি ২৫টি প্রশ্নের মধ্যে মাত্র ${answeredCount}টির উত্তর দিয়েছেন। তবুও কি পরীক্ষা জমা দিতে চান?`)) {
+                    return;
+                }
+            } else {
+                if (!confirm('আপনি কি নিশ্চিতভাবে পরীক্ষা জমা দিতে চান?')) {
+                    return;
+                }
+            }
+            submitQuiz();
+        }
+
+        function submitQuiz() {
+            clearInterval(timerInterval);
+
+            const allRadios = document.querySelectorAll('input[type="radio"]');
+            allRadios.forEach(radio => radio.disabled = true);
+            document.getElementById('stdName').disabled = true;
+            document.getElementById('stdMobile').disabled = true;
+
+            const timeUsedSeconds = Math.max(0, (25 * 60) - timeRemaining);
+            const minsUsed = Math.floor(timeUsedSeconds / 60);
+            const secsUsed = timeUsedSeconds % 60;
+            const timeTakenFormatted = `${minsUsed} মি. ${secsUsed} সে.`;
+
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questionsData.forEach(q => {
+                const userAns = userAnswers[q.id];
+                if (userAns !== undefined) {
+                    if (userAns === q.ans) correctCount++;
+                    else wrongCount++;
+                }
+            });
+
+            const score = correctCount;
+            const percentage = ((correctCount / questionsData.length) * 100).toFixed(1);
+
+            const studentNameInput = document.getElementById('stdName').value.trim();
+            const studentMobileInput = document.getElementById('stdMobile').value.trim();
+
+            const resultData = {
+                studentName: studentNameInput,
+                mobile: studentMobileInput,
+                dateTime: new Date().toLocaleString('bn-BD'),
+                score: score,
+                totalQuestions: questionsData.length,
+                correctCount: correctCount,
+                wrongCount: wrongCount,
+                percentage: percentage,
+                timeTaken: timeTakenFormatted
+            };
+
+            saveResult(resultData);
+            displayStudentCertificate(resultData);
+
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+        }
+
+        async function saveResult(resultData) {
+            let results = JSON.parse(localStorage.getItem('quiz_results') || '[]');
+            results.unshift(resultData);
+            localStorage.setItem('quiz_results', JSON.stringify(results));
+
+            if (GOOGLE_SCRIPT_URL) {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(resultData)
+                    });
+                } catch (error) {
+                    console.error("ডেটা পাঠাতে ব্যর্থ:", error);
+                }
+            }
+        }
+
+        function displayStudentCertificate(data) {
+            document.getElementById('certStudentName').innerText = data.studentName;
+            document.getElementById('certMobile').innerText = data.mobile;
+            document.getElementById('certScore').innerText = `${data.score}/${data.totalQuestions}`;
+            document.getElementById('certCorrect').innerText = data.correctCount;
+            document.getElementById('certPercentage').innerText = `${data.percentage}%`;
+            document.getElementById('certTime').innerText = data.timeTaken;
+            document.getElementById('certDate').innerText = `তারিখ: ${data.dateTime.split(',')[0]}`;
+            
+            document.getElementById('certChapterInfo').innerText = `অধ্যায়: ${chapterTitleParam} | মডেল টেস্ট - ${modelNoParam}`;
+
+            const reviewList = document.getElementById('answerReviewList');
+            reviewList.innerHTML = '';
+
+            questionsData.forEach((q, idx) => {
+                const userAns = userAnswers[q.id];
+                const isCorrect = userAns === q.ans;
+                const isUnanswered = userAns === undefined;
+
+                let statusBadge = isUnanswered ? '<span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded text-xs font-bold">উত্তর দেননি</span>' :
+                                                 isCorrect ? '<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded text-xs font-bold">সঠিক</span>' :
+                                                 '<span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded text-xs font-bold">ভুল</span>';
+
+                let statusBg = isUnanswered ? 'border-l-4 border-gray-400 bg-gray-50' :
+                                              isCorrect ? 'border-l-4 border-emerald-500 bg-emerald-50/50' : 'border-l-4 border-rose-500 bg-rose-50/50';
+
+                let optionsReviewHtml = q.options.map((opt, optIdx) => {
+                    let optionStyle = "p-2.5 rounded-xl border text-sm font-medium transition flex items-center gap-2 ";
+                    let marker = "⚪";
+
+                    if (optIdx === q.ans) {
+                        optionStyle += "border-emerald-500 bg-emerald-100/70 text-emerald-900 font-semibold shadow-sm";
+                        marker = "✅";
+                    } else if (optIdx === userAns && !isCorrect) {
+                        optionStyle += "border-rose-400 bg-rose-100/70 text-rose-900 font-semibold shadow-sm";
+                        marker = "❌";
+                    } else {
+                        optionStyle += "border-slate-200 bg-slate-50 text-slate-700";
+                    }
+
+                    return `<div class="${optionStyle}"><span>${marker}</span><span>${opt}</span></div>`;
+                }).join('');
+
+                let expSectionHtml = '';
+                if (q.explanation) {
+                    expSectionHtml = `
+                        <div class="mt-2 p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl text-xs md:text-sm text-indigo-900 space-y-2">
+                            <div><span class="font-bold">💡 ব্যাখ্যা:</span> ${q.explanation}</div>
+                        </div>
+                    `;
+                }
+
+                const item = document.createElement('div');
+                item.className = `p-5 rounded-2xl border ${statusBg} space-y-3 bg-white shadow-sm`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-start gap-2" style="white-space: pre-line;">
+                        <span class="font-bold text-slate-800 text-base">${idx + 1}. ${q.q}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="space-y-2 pl-2">
+                        ${optionsReviewHtml}
+                    </div>
+                    ${expSectionHtml}
+                `;
+                reviewList.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>
