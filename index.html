@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robin ICT Care - Learn ICT Build your Future</title>
+    <title>Robin ICT Care - Online MCQ Exam Portal</title>
     <!-- Google Fonts & Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -53,6 +53,18 @@
             font-size: 1.05rem;
             letter-spacing: 1px;
             color: #e0e0e0;
+        }
+        
+        /* --- Portal Badge Tagline --- */
+        .portal-badge-banner {
+            background: linear-gradient(135deg, #00ffcc, #059669);
+            color: #0a0e17;
+            font-weight: 700;
+            text-align: center;
+            padding: 8px 15px;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
 
         /* --- Login Section --- */
@@ -106,7 +118,7 @@
             box-shadow: 0 0 6px rgba(219, 39, 119, 0.2);
         }
 
-        /* --- কিবোর্ড কালার (নরমাল অবস্থায়) ও পিংক হভার এফেক্ট --- */
+        /* --- কিবোর্ড কালার (নরমাল অবস্থায়) ও পিংক হভার এফেক্ট --- */
         .btn-login {
             width: 100%;
             background: linear-gradient(135deg, #1e293b, #0f172a); 
@@ -202,12 +214,12 @@
 
         .btn-free-access {
             width: 100%;
-            background: linear-gradient(135deg, #273548, #1e293b);
-            color: #00ffcc; 
-            padding: 11px;
-            border: 1px solid #475569;
+            background: linear-gradient(135deg, #059669, #047857);
+            color: #ffffff; 
+            padding: 12px;
+            border: 1px solid #10b981;
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             display: flex;
@@ -215,14 +227,15 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.25s ease;
-            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
         }
         .btn-free-access:hover {
             background: linear-gradient(135deg, #db2777, #f43f5e); /* মাউস নিলে পিংক */
             border-color: #f43f5e;
             color: #fff;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(219, 39, 119, 0.35);
         }
 
         .btn-yt-guide {
@@ -285,10 +298,17 @@
 
         .section-title {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
             font-size: 1.4rem;
             color: #1e293b;
             font-weight: 700;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #64748b;
         }
 
         /* ডার্ক গ্রে স্টাইলিশ রেসপনসিভ টেবিল */
@@ -474,13 +494,29 @@
 
     <header>
         <h1>Robin ICT Care</h1>
-        <p>Learn ICT Build your Future</p>
+        <p>Learn ICT &middot; Build Your Future <br> অফলাইন ব্যাচ মহিলা কলেজের দক্ষিন পাশ্বে, কাদিরগঞ্জ, রাজশাহী, মাহমুদা ভিলার ২য় তলা</p>
     </header>
 
-    <!-- স্টুডেন্ট লগইন এরিয়া -->
+    <!-- পোর্টাল পরিচিতি ব্যানার -->
+    <div class="portal-badge-banner">
+        <i class="fa-solid fa-laptop-code"></i> HSC ICT অনলাইন MCQ এক্সাম ও মডেল  টেস্ট
+    </div>
+
+    <!-- স্টুডেন্ট লগইন এরিয়া -->
     <div class="login-wrapper" id="loginArea">
         <div class="login-card">
-            <h3>শিক্ষার্থী লগইন</h3>
+            <h3>  Welcome To RIC Online Exam</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;"> ফ্রি পরীক্ষা দিতে নীচের বাটনে ক্লিক করুন </p>
+            
+            <!-- সবার উপরে ফ্রি পরীক্ষা দেওয়ার বাটন -->
+            <button class="btn-free-access" onclick="openFreeExamSection()">
+                <i class="fa-solid fa-pen-to-square"></i>ফ্রি পরীক্ষা দিন
+            </button>
+
+            <div class="divider">
+                <span> প্রিমিয়াম প্যাকেজের জন্য লগিন করুন </span>
+            </div>
+
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="studentId">ইউজার আইডি (User ID)</label>
@@ -490,12 +526,12 @@
                     <label for="password">পাসওয়ার্ড (Password)</label>
                     <input type="password" id="password" placeholder="পাসওয়ার্ড লিখুন" required>
                 </div>
-                <button type="submit" class="btn-login" id="loginBtn">লগইন করুন</button>
+                <button type="submit" class="btn-login" id="loginBtn"><i class="fa-solid fa-right-to-bracket"></i> ড্যাশবোর্ডে প্রবেশ করুন</button>
             </form>
 
             <div id="loginError" class="error-message">ভুল ইউজার আইডি বা পাসওয়ার্ড!</div>
 
-            <!-- আইডি ও পাসওয়ার্ড পাওয়ার জন্য যোগাযোগের নির্দেশনা -->
+            <!-- আইডি ও পাসওয়ার্ড পাওয়ার জন্য যোগাযোগের নির্দেশনা -->
             <div class="contact-notice">
                 আইডি ও পাসওয়ার্ড পেতে সরাসরি কল করুন:<br>
                 <a href="tel:01743886883" style="color:#0f172a; font-weight:700; text-decoration:none;">
@@ -505,19 +541,11 @@
                     <i class="fa-solid fa-user-plus"></i> Create a New Account
                 </a>
             </div>
-
-            <div class="divider">
-                <span>অথবা</span>
-            </div>
-
-            <button class="btn-free-access" onclick="openFreeExamSection()">
-                <i class="fa-solid fa-pen-to-square"></i> ফ্রি টেস্ট দিন (লগইন ছাড়া)
-            </button>
         </div>
 
         <!-- ইউটিউব নীতিমালার ভিডিও লিঙ্ক -->
         <a href="https://www.youtube.com/@plazmaprivatecenter/featured" target="_blank" class="btn-yt-guide">
-            <i class="fa-brands fa-youtube"></i> ব্যবহারের নীতিমালা (ভিডিও গাইড)
+            <i class="fa-brands fa-youtube"></i> অনলাইন পরীক্ষা দেওয়ার নিয়ম (ভিডিও গাইড)
         </a>
     </div>
 
@@ -528,15 +556,16 @@
             <button class="btn-logout" onclick="handleLogout()">লগআউট / ফিরে যান</button>
         </div>
 
-        <h2 class="section-title">এইচএসসি আইসিটি অনলাইন পরীক্ষা ও মডেল টেস্ট</h2>
+        <h2 class="section-title">এইচএসসি আইসিটি অনলাইন পরীক্ষা ও মডেল টেস্ট পোর্টাল</h2>
+        <p class="section-subtitle">আপনার নির্ধারিত অধ্যায়ের উপর লাইভ MCQ টেস্টে অংশ নিয়ে নিজের প্রস্তুতি যাচাই করুন।</p>
         
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
                         <th style="width: 22%;">বিভাগ/অধ্যায়</th>
-                        <th style="width: 53%;">পরীক্ষার বিষয়</th>
-                        <th style="width: 25%; text-align: center;">অ্যাকশন</th>
+                        <th style="width: 53%;">অনলাইন পরীক্ষার বিষয়</th>
+                        <th style="width: 25%; text-align: center;">পরীক্ষা দিন</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -545,7 +574,7 @@
                         <td>তথ্য ও যোগাযোগ প্রযুক্তি: বিশ্ব ও বাংলাদেশ</td>
                         <td style="text-align: center;">
                            <a href="cpt1v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>
                     </tr>
@@ -554,7 +583,7 @@
                         <td>কমিউনিকেশন সিস্টেম ও নেটওয়ার্কিং</td>
                         <td style="text-align: center;">
                            <a href="cpt2v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>
                     </tr>
@@ -563,7 +592,7 @@
                         <td>সংখ্যা পদ্ধতি ও ডিজিটাল লজিক</td>
                         <td style="text-align: center;">
                            <a href="cpt3v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>
                     </tr>
@@ -572,7 +601,7 @@
                         <td>ওয়েব ডিজাইন পরিচিতি ও HTML</td>
                         <td style="text-align: center;">
                            <a href="cpt4v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>
                     </tr>
@@ -581,7 +610,7 @@
                         <td>প্রোগ্রামিং ভাষা (C Programming)</td>
                         <td style="text-align: center;">
                            <a href="cpt5v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>
                     </tr>
@@ -590,16 +619,16 @@
                         <td>ডেটাবেস ম্যানেজমেন্ট সিস্টেম</td>
                         <td style="text-align: center;">
                            <a href="cpt6v2.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-clock"></i> MCQ পরীক্ষা দিন</button>
                            </a>
                         </td>   
                     </tr>
                     <tr class="free-model-row">
                         <td><strong>ফ্রি মডেল</strong></td>
-                        <td><strong>MCQ TEST (ফ্রি মেম্বার)</strong><br><span class="badge-free">উন্মুক্ত (ফ্রি)</span></td>
+                        <td><strong>উন্মুক্ত অনলাইন মডেল টেস্ট (সবার জন্য)</strong><br><span class="badge-free">ফ্রি অ্যাক্সেস</span></td>
                         <td style="text-align: center;">
                            <a href="fmodel.html">
-                           <button class="btn-exam">MCQ পরীক্ষা দিন</button>
+                           <button class="btn-exam"><i class="fa-solid fa-pen-nib"></i> ফ্রি পরীক্ষা দিন</button>
                            </a>
                         </td>  
                     </tr>
@@ -613,14 +642,14 @@
         <div class="exam-box">
             <span class="close-exam" onclick="closeExam()">&times;</span>
             <div class="exam-header">
-                <h3 id="examSubjectTitle">পরীক্ষা</h3>
+                <h3 id="examSubjectTitle">অনলাইন পরীক্ষা</h3>
             </div>
             <div id="quizContainer">
                 <h4 id="questionText" style="margin-bottom: 15px; font-size: 1rem; color: #1e293b;">প্রশ্ন লোড হচ্ছে...</h4>
                 <div id="optionsContainer"></div>
             </div>
             <div id="resultContainer" style="display:none; text-align:center;">
-                <h3 style="color:#059669; margin-bottom: 10px;">পরীক্ষা সম্পন্ন হয়েছে!</h3>
+                <h3 style="color:#059669; margin-bottom: 10px;">অভিনন্দন! পরীক্ষা সম্পন্ন হয়েছে।</h3>
                 <p id="scoreText" style="font-size: 1.1rem; margin: 15px 0; color: #334155;"></p>
                 <button class="btn-login" onclick="closeExam()" style="max-width: 200px; margin: 0 auto;">প্যানেলে ফিরে যান</button>
             </div>
@@ -628,7 +657,7 @@
     </div>
 
     <footer>
-        &copy; 2026 Robin ICT Care. All Rights Reserved.
+        &copy; 2026 Robin ICT Care &middot; Online MCQ Exam Portal. All Rights Reserved.
     </footer>
 
     <script>
@@ -682,7 +711,7 @@
                 })
                 .finally(() => {
                     loginBtn.disabled = false;
-                    loginBtn.innerText = "লগইন করুন";
+                    loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> ড্যাশবোর্ডে প্রবেশ করুন';
                 });
         }
 
