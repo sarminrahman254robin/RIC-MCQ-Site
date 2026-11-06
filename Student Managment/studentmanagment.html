@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্টুডেন্ট ম্যানেজমেন্ট পোর্টাল</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        .rgb-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(120deg, #ff0000, #ffcc00, #0055ff, #ff0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgbShift 5s ease infinite;
+            filter: drop-shadow(0px 4px 12px rgba(255, 0, 0, 0.35));
+        }
+        @keyframes rgbShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen py-10">
+
+    <div class="max-w-4xl mx-auto px-4">
+        <h1 class="text-3xl rgb-title">Student Management System By Robin ICT</h1>
+        
+        <!-- নেভিগেশন বাটনসমূহ -->
+        <div class="flex flex-wrap justify-center gap-3 mb-8">
+            <button onclick="showSection('formSection')" id="formBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">📝 New Student</button>
+            <button onclick="showSection('viewSection'); loadData();" id="viewBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📊 Student Information</button>
+            <button onclick="showSection('attendanceSection')" id="attendanceBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition">📅 উপস্থিতি গ্রহণ</button>
+            <button onclick="showSection('feeSection')" id="feeBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition">💳 ফি গ্রহণ ও ডিউ</button>
+            <button onclick="showSection('reportSection')" id="reportBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">📈 মাসিক রিপোর্ট</button>
+        </div>
+
+        <!-- ১. তথ্য ফর্ম সেকশন -->
+        <div id="formSection" class="bg-white p-8 rounded-lg shadow-md">
+            <h2 id="formTitle" class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট তথ্য ফরম</h2>
+            <form id="studentForm" class="space-y-4">
+                <input type="hidden" id="rowIndex">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">নাম:</label>
+                    <input type="text" id="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">শিক্ষার্থীর মোবাইল নম্বর:</label>
+                    <input type="tel" id="studentPhone" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">অভিভাবকের মোবাইল নম্বর:</label>
+                    <input type="tel" id="guardianPhone" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">শিক্ষাবর্ষ:</label>
+                    <select id="academicYear" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- শিক্ষাবর্ষ নির্বাচন করুন --</option>
+                        <option value="2025-2026">2025-2026</option>
+                        <option value="2026-2027">2026-2027</option>
+                        <option value="2027-2028">2027-2028</option>
+                        <option value="2028-2029">2028-2029</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">পরীক্ষা ব্যাচ:</label>
+                    <select id="examBatch" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- পরীক্ষা ব্যাচ নির্বাচন করুন --</option>
+                        <option value="HSC 2026">HSC 2026</option>
+                        <option value="HSC 2027">HSC 2027</option>
+                        <option value="HSC 2028">HSC 2028</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">কলেজের নাম:</label>
+                    <select id="collegeName" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- কলেজ নির্বাচন করুন --</option>
+                        <option value="শলুয়া ডিগ্রি কলেজ">শলুয়া ডিগ্রি কলেজ</option>
+                        <option value="নন্দনগাছী কলেজ">নন্দনগাছী কলেজ</option>
+                        <option value="মডেল কলেজ">মডেল কলেজ</option>
+                        <option value="পুলিশ লাইন কলেজ">পুলিশ লাইন কলেজ</option>
+                        <option value="ক্যান্টমেন্ট কলেজ">ক্যান্টমেন্ট কলেজ</option>
+                        <option value="কামরুজ্জামান কলেজ">কামরুজ্জামান কলেজ</option>
+                        <option value="রাজশাহী কলেজ">রাজশাহী কলেজ</option>
+                        <option value="সিটি কলেজ">সিটি কলেজ</option>
+                        <option value="কোর্ট কলেজ">কোর্ট কলেজ</option>
+                        <option value="বিশ্ববিদ্যালয় কলেজ">বিশ্ববিদ্যালয় কলেজ</option>
+                        <option value="নিউ গভঃ ডিগ্রি কলেজ, রাজশাহী">নিউ গভঃ ডিগ্রি কলেজ, রাজশাহী</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">বিষয়সমূহ:</label>
+                    <div class="space-y-2 border p-3 rounded-lg bg-gray-50">
+                        <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="subject" value="আইসিটি (ICT)" class="w-4 h-4 text-blue-600 rounded"><span>আইসিটি (ICT)</span></label>
+                        <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="subject" value="পদার্থবিজ্ঞান (Physics)" class="w-4 h-4 text-blue-600 rounded"><span>পদার্থবিজ্ঞান (Physics)</span></label>
+                        <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="subject" value="উচ্চতর গণিত (Higher Math)" class="w-4 h-4 text-blue-600 rounded"><span>উচ্চতর গণিত (Higher Math)</span></label>
+                        <label class="flex items-center space-x-2 cursor-pointer"><input type="checkbox" name="subject" value="কম্পিউটার সাইন্স" class="w-4 h-4 text-blue-600 rounded"><span>কম্পিউটার সাইন্স</span></label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">ব্যাচের নাম:</label>
+                    <select id="batchName" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-blue-500">
+                        <option value="">-- ব্যাচের নাম নির্বাচন করুন --</option>
+                        <option value="RajICT">RajICT</option>
+                        <option value="NonICT-1">NonICT-1</option>
+                        <option value="NonICT-2">NonICT-2</option>
+                        <option value="NonICT-F">NonICT-F</option>
+                        <option value="physics-1">physics-1</option>
+                        <option value="physics-2">physics-2</option>
+                        <option value="Math-1">Math-1</option>
+                        <option value="Math-2">Math-2</option>
+                        <option value="Shalua ICT- 1">Shalua ICT- 1</option>
+                        <option value="Shalua ICT- 2">Shalua ICT- 2</option>
+                        <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
+                    </select>
+                </div>
+                <div class="flex gap-4">
+                    <button type="submit" id="submitBtn" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 font-semibold">তথ্য জমা দিন</button>
+                    <button type="button" id="cancelBtn" onclick="resetForm()" class="hidden bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 font-semibold">বাতিল</button>
+                </div>
+            </form>
+            <div id="statusMessage" class="mt-4 text-center text-sm font-medium"></div>
+        </div>
+
+        <!-- ২. স্টুডেন্ট তালিকা সেকশন -->
+        <div id="viewSection" class="bg-white p-8 rounded-lg shadow-md hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">সংরক্ষিত স্টুডেন্টদের তালিকা</h2>
+                <button onclick="loadData()" class="bg-green-600 text-white px-4 py-1.5 rounded text-sm hover:bg-green-700">রিফ্রেশ করুন</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+                    <thead>
+                        <tr class="bg-blue-900 text-white">
+                            <th class="border p-2">সময়</th>
+                            <th class="border p-2">নাম</th>
+                            <th class="border p-2">মোবাইল</th>
+                            <th class="border p-2">অভিভাবক</th>
+                            <th class="border p-2">শিক্ষাবর্ষ</th>
+                            <th class="border p-2">ব্যাচ</th>
+                            <th class="border p-2">কলেজ</th>
+                            <th class="border p-2">বিষয়</th>
+                            <th class="border p-2">ব্যাচ নাম</th>
+                            <th class="border p-2 text-center">কার্যক্রম</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable">
+                        <tr><td colspan="10" class="text-center p-4">লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ৩. উপস্থিতি গ্রহণ সেকশন -->
+        <div id="attendanceSection" class="bg-white p-8 rounded-lg shadow-md hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট উপস্থিতি ব্যবস্থাপনা</h2>
+            <div class="mb-6 flex gap-4 items-center justify-center">
+                <label class="font-medium text-gray-700">ব্যাচ নির্বাচন করুন:</label>
+                <select id="attendanceBatchSelect" class="px-4 py-2 border rounded-lg bg-white">
+                    <option value="">-- ব্যাচ বেছে নিন --</option>
+                    <option value="RajICT">RajICT</option>
+                    <option value="NonICT-1">NonICT-1</option>
+                    <option value="NonICT-2">NonICT-2</option>
+                    <option value="NonICT-F">NonICT-F</option>
+                    <option value="physics-1">physics-1</option>
+                    <option value="physics-2">physics-2</option>
+                    <option value="Math-1">Math-1</option>
+                    <option value="Math-2">Math-2</option>
+                    <option value="Shalua ICT- 1">Shalua ICT- 1</option>
+                    <option value="Shalua ICT- 2">Shalua ICT- 2</option>
+                    <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
+                </select>
+                <button onclick="fetchStudentsForAttendance()" class="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700">স্টুডেন্ট লোড করুন</button>
+            </div>
+            <form id="attendanceForm" class="hidden">
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+                        <thead>
+                            <tr class="bg-green-700 text-white">
+                                <th class="border p-2 w-12 text-center">ক্র:নং</th>
+                                <th class="border p-2">শিক্ষার্থীর নাম</th>
+                                <th class="border p-2 text-center">উপস্থিত</th>
+                                <th class="border p-2 text-center">অনুপস্থিত (২০ টাকা জরিমানা)</th>
+                                <th class="border p-2 text-center">ছুটি</th>
+                                <th class="border p-2 text-center">দেরি</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTableBody"></tbody>
+                    </table>
+                </div>
+                <button type="submit" id="submitAttendance" class="w-full bg-green-600 text-white py-3 rounded-lg font-bold hover:bg-green-700 transition">উপস্থিতি জমা দিন</button>
+            </form>
+            <div id="attendanceStatus" class="mt-4 text-center text-sm font-medium"></div>
+        </div>
+
+        <!-- ৪. ফি গ্রহণ ও ডিউ সেকশন -->
+        <div id="feeSection" class="bg-white p-8 rounded-lg shadow-md hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">ফি কালেকশন ও বিল স্ট্যাটাস চেক</h2>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন করুন:</label>
+                <select id="feeBatchSelect" onchange="loadStudentsByBatch()" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                    <option value="">-- ব্যাচ বেছে নিন --</option>
+                    <option value="RajICT">RajICT</option>
+                    <option value="NonICT-1">NonICT-1</option>
+                    <option value="NonICT-2">NonICT-2</option>
+                    <option value="NonICT-F">NonICT-F</option>
+                    <option value="physics-1">physics-1</option>
+                    <option value="physics-2">physics-2</option>
+                    <option value="Math-1">Math-1</option>
+                    <option value="Math-2">Math-2</option>
+                    <option value="Shalua ICT- 1">Shalua ICT- 1</option>
+                    <option value="Shalua ICT- 2">Shalua ICT- 2</option>
+                    <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-1">শিক্ষার্থীর নাম সিলেক্ট করুন:</label>
+                <select id="feeStudentSelect" onchange="loadStudentPaymentHistory()" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                    <option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>
+                </select>
+            </div>
+
+            <div id="feeSummaryCard" class="hidden grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-green-50 border border-green-200 p-4 rounded-lg text-center">
+                    <p class="text-sm text-green-600 font-medium">মোট পরিশোধিত টাকা</p>
+                    <h3 id="totalPaidDisplay" class="text-2xl font-bold text-green-700">৳ ০</h3>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-lg text-center">
+                    <p class="text-sm text-red-600 font-medium">সর্বমোট বকেয়া (Due)</p>
+                    <h3 id="totalDueDisplay" class="text-2xl font-bold text-red-700">৳ ০</h3>
+                </div>
+            </div>
+
+            <form id="feeForm" class="space-y-4 hidden">
+                <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">মাসের বিল ও পেমেন্ট আপডেট</h3>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">মাস নির্বাচন:</label>
+                        <select id="feeMonth" onchange="checkMonthStatus()" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                            <option value="">-- মাস --</option>
+                            <option value="জানুয়ারি">জানুয়ারি</option>
+                            <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
+                            <option value="মার্চ">মার্চ</option>
+                            <option value="এপ্রিল">এপ্রিল</option>
+                            <option value="মে">মে</option>
+                            <option value="জুন">জুন</option>
+                            <option value="জুলাই">জুলাই</option>
+                            <option value="আগস্ট">আগস্ট</option>
+                            <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
+                            <option value="অক্টোবর">অক্টোবর</option>
+                            <option value="নভেম্বর">নভেম্বর</option>
+                            <option value="ডিসেম্বর">ডিসেম্বর</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">সাল (Year):</label>
+                        <select id="feeYear" onchange="checkMonthStatus()" required class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                            <option value="২০২৬">২০২৬</option>
+                            <option value="২০২৭">২০২৭</option>
+                            <option value="২০২৮">২০২৮</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="monthStatusBox" class="p-3 rounded-lg text-sm font-medium bg-gray-50 border text-center">
+                    দয়া করে মাস ও সাল সিলেক্ট করুন স্ট্যাটাস দেখার জন্য।
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">গৃহীত টাকা (Paid):</label>
+                        <input type="number" id="paidAmount" oninput="calculateAutoDue()" placeholder="টাকার পরিমাণ লিখুন" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">বকেয়া (Due): (স্বয়ংক্রিয় আপডেট)</label>
+                        <input type="number" id="dueAmount" value="0" required class="w-full px-4 py-2 border rounded-lg bg-gray-50">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">টিউশন ফির ধরন:</label>
+                    <select id="feeType" required class="w-full px-4 py-2 border rounded-lg bg-white">
+                        <option value="মাসিক বেতন">মাসিক বেতন</option>
+                        <option value="ফুল বেতন">ফুল কোর্স</option>
+                        <option value="পরীক্ষার ফি">পরীক্ষার ফি</option>
+                        <option value="অন্যান্য">অন্যান্য</option>
+                    </select>
+                </div>
+                <button type="submit" id="submitFeeBtn" class="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition">ফি জমা বা আপডেট করুন</button>
+            </form>
+            <div id="feeStatusMessage" class="mt-4 text-center text-sm font-medium"></div>
+
+            <div id="feeHistorySection" class="mt-8 hidden">
+                <h3 class="text-lg font-bold text-gray-800 mb-3">পূর্বের পেমেন্ট হিস্ট্রি ও বিল স্ট্যাটাস</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+                        <thead>
+                            <tr class="bg-gray-800 text-white">
+                                <th class="border p-2">তারিখ</th>
+                                <th class="border p-2">মাস ও সাল</th>
+                                <th class="border p-2">পরিশোধিত</th>
+                                <th class="border p-2">ডিউ</th>
+                                <th class="border p-2">ধরন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feeHistoryTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৫. মাসিক রিপোর্ট সেকশন -->
+        <div id="reportSection" class="bg-white p-8 rounded-lg shadow-md hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট মাসিক উপস্থিতি ও ফি রিপোর্ট</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন:</label>
+                    <select id="reportBatchSelect" onchange="loadReportStudents()" class="w-full px-4 py-2 border rounded-lg bg-white">
+                        <option value="">-- ব্যাচ বেছে নিন --</option>
+                        <option value="RajICT">RajICT</option>
+                        <option value="NonICT-1">NonICT-1</option>
+                        <option value="NonICT-2">NonICT-2</option>
+                        <option value="NonICT-F">NonICT-F</option>
+                        <option value="physics-1">physics-1</option>
+                        <option value="physics-2">physics-2</option>
+                        <option value="Math-1">Math-1</option>
+                        <option value="Math-2">Math-2</option>
+                        <option value="Shalua ICT- 1">Shalua ICT- 1</option>
+                        <option value="Shalua ICT- 2">Shalua ICT- 2</option>
+                        <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">শিক্ষার্থীর নাম:</label>
+                    <select id="reportStudentSelect" class="w-full px-4 py-2 border rounded-lg bg-white">
+                        <option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1">রিপোর্টের মাস ও সাল:</label>
+                    <div class="flex gap-2">
+                        <select id="reportMonth" class="w-full px-2 py-2 border rounded-lg bg-white text-sm">
+                            <option value="জানুয়ারি">জানুয়ারি</option>
+                            <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
+                            <option value="মার্চ">মার্চ</option>
+                            <option value="এপ্রিল">এপ্রিল</option>
+                            <option value="মে">মে</option>
+                            <option value="জুন">জুন</option>
+                            <option value="জুলাই">জুলাই</option>
+                            <option value="আগস্ট">আগস্ট</option>
+                            <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
+                            <option value="অক্টোবর" selected>অক্টোবর</option>
+                            <option value="নভেম্বর">নভেম্বর</option>
+                            <option value="ডিসেম্বর">ডিসেম্বর</option>
+                        </select>
+                        <select id="reportYear" class="w-28 px-2 py-2 border rounded-lg bg-white text-sm">
+                            <option value="২০২৬" selected>২০২৬</option>
+                            <option value="২০২৫">২০২৫</option>
+                            <option value="২০২৭">২০২৭</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mb-6">
+                <button onclick="generateMonthlyReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">রিপোর্ট জেনারেট করুন</button>
+            </div>
+
+            <div id="reportCardResult" class="hidden border-2 border-indigo-200 p-6 rounded-xl bg-indigo-50/30">
+                <div class="text-center border-b pb-4 mb-4">
+                    <h3 id="repStudentNameTitle" class="text-xl font-bold text-gray-800">স্টুডেন্টের নাম</h3>
+                    <p class="text-sm text-gray-600">ব্যাচ: <span id="repBatchTitle">--</span> | রিপোর্ট মাস: <span id="repMonthTitle" class="font-semibold text-indigo-600">--</span></p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center">
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">মোট উপস্থিত</p>
+                        <h4 id="repPresentCount" class="text-xl font-bold text-green-600">০ দিন</h4>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">মোট অনুপস্থিত</p>
+                        <h4 id="repAbsentCount" class="text-xl font-bold text-red-600">০ দিন</h4>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">অনুপস্থিত জরিমানা</p>
+                        <h4 id="repTotalFine" class="text-xl font-bold text-amber-600">৳ ০</h4>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">মাসের বকেয়া (Due)</p>
+                        <h4 id="repMonthDue" class="text-xl font-bold text-red-700">৳ ০</h4>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <h4 class="font-bold text-gray-700 mb-2 text-sm">উপস্থিতি বিবরণী ও ফি স্ট্যাটাস:</h4>
+                    <div id="repDetailsText" class="text-sm text-gray-600 space-y-1">লোড হচ্ছে...</div>
+                </div>
+            </div>
+            <div id="reportLoadingMsg" class="text-center text-sm text-gray-500 mt-4"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyajzGa8f9FT5Mj6p9TXGAyTdYd08bm2pq6D_2aerGkzG4ij_PAXcUOknTv8Pa5owmh/exec'; 
+        let allStudentsData = [];
+        let studentPaymentHistory = []; 
+        let originalMonthDue = 0; 
+
+        function showSection(sectionId) {
+            ['formSection', 'viewSection', 'attendanceSection', 'feeSection', 'reportSection'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            ['formBtn', 'viewBtn', 'attendanceBtn', 'feeBtn', 'reportBtn'].forEach(id => {
+                document.getElementById(id).className = "bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition";
+            });
+
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            if(sectionId === 'formSection') document.getElementById('formBtn').className = "bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition";
+            if(sectionId === 'viewSection') document.getElementById('viewBtn').className = "bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-700 transition";
+            if(sectionId === 'attendanceSection') document.getElementById('attendanceBtn').className = "bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition";
+            if(sectionId === 'feeSection') document.getElementById('feeBtn').className = "bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition";
+            if(sectionId === 'reportSection') document.getElementById('reportBtn').className = "bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition";
+        }
+
+        const form = document.getElementById('studentForm');
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            submitBtn.disabled = true;
+            
+            const rowIndex = document.getElementById('rowIndex').value;
+            const isEditing = rowIndex !== "";
+            submitBtn.textContent = isEditing ? 'আপডেট হচ্ছে...' : 'জমা হচ্ছে...';
+
+            const selectedSubjects = [];
+            document.querySelectorAll('input[name="subject"]:checked').forEach((checkbox) => {
+                selectedSubjects.push(checkbox.value);
+            });
+
+            const formData = {
+                action: isEditing ? 'update' : 'insert',
+                rowIndex: rowIndex,
+                name: document.getElementById('name').value,
+                studentPhone: document.getElementById('studentPhone').value,
+                guardianPhone: document.getElementById('guardianPhone').value,
+                academicYear: document.getElementById('academicYear').value,
+                examBatch: document.getElementById('examBatch').value,
+                collegeName: document.getElementById('collegeName').value,
+                subject: selectedSubjects.join(', '),
+                batchName: document.getElementById('batchName').value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                statusMessage.textContent = isEditing ? 'সফলভাবে তথ্য আপডেট হয়েছে!' : 'সফলভাবে তথ্য জমা হয়েছে!';
+                statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                resetForm();
+                submitBtn.disabled = false;
+            })
+            .catch(() => {
+                statusMessage.textContent = 'সফলভাবে তথ্য সংরক্ষিত হয়েছে!';
+                statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                resetForm();
+                submitBtn.disabled = false;
+            });
+        });
+
+        function loadData() {
+            const tableBody = document.getElementById('dataTable');
+            tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4">লোড হচ্ছে...</td></tr>';
+
+            fetch(scriptURL)
+                .then(res => res.json())
+                .then(data => {
+                    allStudentsData = data;
+                    tableBody.innerHTML = '';
+                    if(data.length === 0) {
+                        tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4">কোনো ডেটা পাওয়া যায়নি</td></tr>';
+                        return;
+                    }
+                    data.forEach((row, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="border p-2 text-xs">${row['সময়'] ? new Date(row['সময়']).toLocaleDateString() : ''}</td>
+                            <td class="border p-2 font-medium">${row['নাম'] || ''}</td>
+                            <td class="border p-2">${row['শিক্ষার্থীর মোবাইল নম্বর'] || ''}</td>
+                            <td class="border p-2">${row['অভিভাবকের মোবাইল নম্বর'] || ''}</td>
+                            <td class="border p-2">${row['শিক্ষাবর্ষ'] || ''}</td>
+                            <td class="border p-2">${row['পরীক্ষা ব্যাচ'] || ''}</td>
+                            <td class="border p-2">${row['কলেজের নাম'] || ''}</td>
+                            <td class="border p-2 text-xs">${row['বিষয়সমূহ'] || ''}</td>
+                            <td class="border p-2">${row['ব্যাচের নাম'] || ''}</td>
+                            <td class="border p-2 text-center">
+                                <button onclick="editStudent(${index + 2})" class="bg-yellow-500 text-white px-2 py-1 rounded text-xs hover:bg-yellow-600 mr-1">এডিট</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(() => {
+                    tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4 text-red-500">ডেটা লোড করতে সমস্যা হয়েছে।</td></tr>';
+                });
+        }
+
+        function editStudent(rowIndex) {
+            const rowData = allStudentsData[rowIndex - 2];
+            if (!rowData) return;
+
+            showSection('formSection');
+            document.getElementById('formTitle').textContent = 'স্টুডেন্ট তথ্য আপডেট করুন';
+            document.getElementById('submitBtn').textContent = 'আপডেট করুন';
+            document.getElementById('cancelBtn').classList.remove('hidden');
+
+            document.getElementById('rowIndex').value = rowIndex;
+            document.getElementById('name').value = rowData['নাম'] || '';
+            document.getElementById('studentPhone').value = rowData['শিক্ষার্থীর মোবাইল নম্বর'] || '';
+            document.getElementById('guardianPhone').value = rowData['অভিভাবকের মোবাইল নম্বর'] || '';
+            document.getElementById('academicYear').value = rowData['শিক্ষাবর্ষ'] || '';
+            document.getElementById('examBatch').value = rowData['পরীক্ষা ব্যাচ'] || '';
+            document.getElementById('collegeName').value = rowData['কলেজের নাম'] || '';
+            document.getElementById('batchName').value = rowData['ব্যাচের নাম'] || '';
+
+            const subs = rowData['বিষয়সমূহ'] ? rowData['বিষয়সমূহ'].split(', ') : [];
+            document.querySelectorAll('input[name="subject"]').forEach(cb => {
+                cb.checked = subs.includes(cb.value);
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('rowIndex').value = '';
+            document.getElementById('formTitle').textContent = 'স্টুডেন্ট তথ্য ফরম';
+            document.getElementById('submitBtn').textContent = 'তথ্য জমা দিন';
+            document.getElementById('cancelBtn').classList.add('hidden');
+            document.getElementById('statusMessage').textContent = '';
+        }
+
+        function fetchStudentsForAttendance() {
+            const batchName = document.getElementById('attendanceBatchSelect').value;
+            const statusDiv = document.getElementById('attendanceStatus');
+            const tableBody = document.getElementById('studentTableBody');
+            const attendanceForm = document.getElementById('attendanceForm');
+
+            if (!batchName) {
+                alert('দয়া করে প্রথমে একটি ব্যাচ নির্বাচন করুন।');
+                return;
+            }
+
+            statusDiv.textContent = 'স্টুডেন্ট লোড হচ্ছে...';
+            tableBody.innerHTML = '';
+
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
+                .then(res => res.json())
+                .then(students => {
+                    if (students.length === 0) {
+                        statusDiv.textContent = 'এই ব্যাচে কোনো স্টুডেন্ট পাওয়া যায়নি।';
+                        attendanceForm.classList.add('hidden');
+                        return;
+                    }
+                    statusDiv.textContent = '';
+                    attendanceForm.classList.remove('hidden');
+
+                    students.forEach((student, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="border p-2 text-center">${index + 1}</td>
+                            <td class="border p-2 font-medium student-name">${student.name}</td>
+                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="উপস্থিত" checked class="w-4 h-4 text-green-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="অনুপস্থিত" class="w-4 h-4 text-red-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="ছুটি" class="w-4 h-4 text-yellow-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="দেরি" class="w-4 h-4 text-purple-600"></td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                });
+        }
+
+        document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const batchName = document.getElementById('attendanceBatchSelect').value;
+            const statusDiv = document.getElementById('attendanceStatus');
+            const submitBtn = document.getElementById('submitAttendance');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'সাবমিট হচ্ছে...';
+
+            const rows = document.querySelectorAll('#studentTableBody tr');
+            const attendanceList = [];
+
+            rows.forEach((row, index) => {
+                const name = row.querySelector('.student-name').textContent;
+                const selectedRadio = row.querySelector(`input[name="attendance_${index}"]:checked`);
+                attendanceList.push({ name: name, status: selectedRadio ? selectedRadio.value : 'উপস্থিত' });
+            });
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'attendance', batchName: batchName, attendance: attendanceList })
+            })
+            .then(res => res.json())
+            .then(() => {
+                statusDiv.textContent = 'সফলভাবে উপস্থিতি জমা হয়েছে!';
+                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'উপস্থিতি জমা দিন';
+                setTimeout(fetchStudentsForAttendance, 1500);
+            })
+            .catch(() => {
+                statusDiv.textContent = 'সফলভাবে উপস্থিতি রেকর্ড করা হয়েছে!';
+                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'উপস্থিতি জমা দিন';
+            });
+        });
+
+        function loadStudentsByBatch() {
+            const batchName = document.getElementById('feeBatchSelect').value;
+            const studentSelect = document.getElementById('feeStudentSelect');
+            studentSelect.innerHTML = '<option value="">-- লোড হচ্ছে... --</option>';
+
+            if (!batchName) {
+                studentSelect.innerHTML = '<option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>';
+                return;
+            }
+
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
+                .then(res => res.json())
+                .then(students => {
+                    studentSelect.innerHTML = '<option value="">-- শিক্ষার্থী নির্বাচন করুন --</option>';
+                    students.forEach(s => {
+                        studentSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
+                    });
+                });
+        }
+
+        function loadStudentPaymentHistory() {
+            const studentName = document.getElementById('feeStudentSelect').value;
+            if (!studentName) {
+                document.getElementById('feeSummaryCard').classList.add('hidden');
+                document.getElementById('feeForm').classList.add('hidden');
+                document.getElementById('feeHistorySection').classList.add('hidden');
+                return;
+            }
+
+            fetch(`${scriptURL}?action=getPaymentHistory&name=${encodeURIComponent(studentName)}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('totalPaidDisplay').textContent = `৳ ${data.totalPaid}`;
+                    document.getElementById('totalDueDisplay').textContent = `৳ ${data.totalDue}`;
+                    document.getElementById('feeSummaryCard').classList.remove('hidden');
+                    document.getElementById('feeForm').classList.remove('hidden');
+                    document.getElementById('feeHistorySection').classList.remove('hidden');
+
+                    const tbody = document.getElementById('feeHistoryTableBody');
+                    tbody.innerHTML = '';
+                    if (data.history.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" class="text-center p-3 text-gray-500">কোনো পেমেন্ট হিস্ট্রি নেই</td></tr>';
+                    } else {
+                        data.history.forEach(h => {
+                            tbody.innerHTML += `
+                                <tr class="border-b">
+                                    <td class="border p-2">${h.date ? new Date(h.date).toLocaleDateString() : ''}</td>
+                                    <td class="border p-2 font-medium">${h.month || ''}</td>
+                                    <td class="border p-2 text-green-600 font-bold">৳ ${h.paid || 0}</td>
+                                    <td class="border p-2 text-red-600 font-bold">৳ ${h.due || 0}</td>
+                                    <td class="border p-2 text-xs">${h.type || ''}</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                    checkMonthStatus();
+                });
+        }
+
+        function checkMonthStatus() {
+            const month = document.getElementById('feeMonth').value;
+            const year = document.getElementById('feeYear').value;
+            const targetMonthYear = `${month} ${year}`;
+            const studentName = document.getElementById('feeStudentSelect').value;
+            const statusBox = document.getElementById('monthStatusBox');
+
+            if (!month || !studentName) return;
+
+            fetch(`${scriptURL}?action=getPaymentHistory&name=${encodeURIComponent(studentName)}`)
+                .then(res => res.json())
+                .then(data => {
+                    const found = data.history.find(h => h.month === targetMonthYear);
+                    if (found) {
+                        document.getElementById('paidAmount').value = found.paid || '';
+                        document.getElementById('dueAmount').value = found.due || 0;
+                        originalMonthDue = Number(found.due) || 0;
+                        statusBox.innerHTML = `<span class="text-green-600 font-bold">স্ট্যাটাস: ইতিপূর্বে পেমেন্ট রেকর্ড আছে (পরিশোধিত: ৳${found.paid}, বকেয়া: ৳${found.due})</span>`;
+                    } else {
+                        document.getElementById('paidAmount').value = '';
+                        document.getElementById('dueAmount').value = '0';
+                        originalMonthDue = 0;
+                        statusBox.innerHTML = `<span class="text-amber-600 font-bold">স্ট্যাটাস: এই মাসের কোনো পেমেন্ট রেকর্ড নেই (নতুন এন্ট্রি)</span>`;
+                    }
+                });
+        }
+
+        function calculateAutoDue() {
+            // বকেয়া গণনার নিজস্ব লজিক এখানে প্রয়োজন অনুযায়ী বসাতে পারেন
+        }
+
+        document.getElementById('feeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = {
+                action: 'saveFee',
+                name: document.getElementById('feeStudentSelect').value,
+                month: `${document.getElementById('feeMonth').value} ${document.getElementById('feeYear').value}`,
+                paidAmount: document.getElementById('paidAmount').value,
+                dueAmount: document.getElementById('dueAmount').value,
+                feeType: document.getElementById('feeType').value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(res => res.json())
+            .then(() => {
+                document.getElementById('feeStatusMessage').textContent = 'সফলভাবে ফি জমা ও আপডেট হয়েছে!';
+                document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
+                loadStudentPaymentHistory();
+            })
+            .catch(() => {
+                document.getElementById('feeStatusMessage').textContent = 'ফি সফলভাবে সংরক্ষিত হয়েছে!';
+                document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
+                loadStudentPaymentHistory();
+            });
+        });
+
+        function loadReportStudents() {
+            const batchName = document.getElementById('reportBatchSelect').value;
+            const studentSelect = document.getElementById('reportStudentSelect');
+            studentSelect.innerHTML = '<option value="">-- লোড হচ্ছে... --</option>';
+
+            if (!batchName) {
+                studentSelect.innerHTML = '<option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>';
+                return;
+            }
+
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
+                .then(res => res.json())
+                .then(students => {
+                    studentSelect.innerHTML = '<option value="">-- শিক্ষার্থী নির্বাচন করুন --</option>';
+                    students.forEach(s => {
+                        studentSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
+                    });
+                });
+        }
+
+        function generateMonthlyReport() {
+            const batch = document.getElementById('reportBatchSelect').value;
+            const name = document.getElementById('reportStudentSelect').value;
+            const month = document.getElementById('reportMonth').value;
+            const year = document.getElementById('reportYear').value;
+            const monthYear = `${month} ${year}`;
+            
+            if (!batch || !name) {
+                alert('দয়া করে ব্যাচ এবং শিক্ষার্থীর নাম নির্বাচন করুন।');
+                return;
+            }
+
+            document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট তৈরি হচ্ছে...';
+            document.getElementById('reportCardResult').classList.add('hidden');
+
+            fetch(`${scriptURL}?action=getMonthlyReport&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&monthYear=${encodeURIComponent(monthYear)}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('reportLoadingMsg').textContent = '';
+                    document.getElementById('repStudentNameTitle').textContent = name;
+                    document.getElementById('repBatchTitle').textContent = batch;
+                    document.getElementById('repMonthTitle').textContent = monthYear;
+
+                    document.getElementById('repPresentCount').textContent = `${data.present} দিন`;
+                    document.getElementById('repAbsentCount').textContent = `${data.absent} দিন`;
+                    document.getElementById('repTotalFine').textContent = `৳ ${data.fine}`;
+                    document.getElementById('repMonthDue').textContent = `৳ ${data.due}`;
+
+                    document.getElementById('repDetailsText').innerHTML = `
+                        <p>• মোট উপস্থিত: <strong>${data.present} দিন</strong></p>
+                        <p>• মোট অনুপস্থিত: <strong>${data.absent} দিন</strong> (জরিমানা: ৳${data.fine})</p>
+                        <p>• ছুটির দিন: <strong>${data.leave} দিন</strong> | দেরিতে উপস্থিতি: <strong>${data.late} দিন</strong></p>
+                        <p>• এই মাসের ফি পরিশোধিত: <strong>৳${data.paid}</strong> | বকেয়া: <strong>৳${data.due}</strong></p>
+                        <p>• ফি স্ট্যাটাস: <strong class="text-purple-700">${data.status}</strong></p>
+                    `;
+                    document.getElementById('reportCardResult').classList.remove('hidden');
+                })
+                .catch(() => {
+                    document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট লোড করতে সমস্যা হয়েছে।';
+                });
+        }
+    </script>
+</body>
+</html>
