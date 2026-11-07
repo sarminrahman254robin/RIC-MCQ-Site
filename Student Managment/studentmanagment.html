@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>স্টুডেন্ট ম্যানেজমেন্ট পোর্টাল</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap" rel="stylesheet">
     <style>
         .rgb-title {
@@ -27,22 +28,106 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen py-10">
+<body class="bg-gray-100 min-h-screen py-10" onload="showSection('dashboardSection'); loadDashboardData();">
 
     <div class="max-w-4xl mx-auto px-4">
         <h1 class="text-3xl rgb-title">Student Management System By Robin ICT</h1>
         
         <!-- নেভিগেশন বাটনসমূহ -->
-        <div class="flex flex-wrap justify-center gap-3 mb-8">
-            <button onclick="showSection('formSection')" id="formBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition">📝 New Student</button>
-            <button onclick="showSection('viewSection'); loadData();" id="viewBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📊 Student Information</button>
-            <button onclick="showSection('attendanceSection')" id="attendanceBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition">📅 উপস্থিতি গ্রহণ</button>
-            <button onclick="showSection('feeSection')" id="feeBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition">💳 ফি গ্রহণ ও ডিউ</button>
-            <button onclick="showSection('reportSection')" id="reportBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition">📈 মাসিক রিপোর্ট</button>
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button onclick="showSection('dashboardSection'); loadDashboardData();" id="dashboardBtn" class="bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition">📊 ড্যাশবোর্ড</button>
+            <button onclick="showSection('formSection')" id="formBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📝 New Student</button>
+            <button onclick="showSection('viewSection'); loadData();" id="viewBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📊 Student Info</button>
+            <button onclick="showSection('attendanceSection')" id="attendanceBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📅 উপস্থিতি</button>
+            <button onclick="showSection('feeSection')" id="feeBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">💳 ফি কালেকশন</button>
+            <button onclick="showSection('examSection')" id="examBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📝 পরীক্ষা</button>
+            <button onclick="showSection('reportSection')" id="reportBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition">📈 রিপোর্ট</button>
+        </div>
+
+        <!-- ড্যাশবোর্ড সেকশন -->
+        <div id="dashboardSection" class="bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">ফাইন্যান্সিয়াল ও ব্যাচ ভিত্তিক ড্যাশবোর্ড</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-gray-50 p-4 rounded-lg border">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">ভিউ মোড:</label>
+                    <select id="dashMode" onchange="toggleDashMode()" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
+                        <option value="monthly">মাসিক ভিত্তিক (Monthly)</option>
+                        <option value="yearly">বাৎসরিক ভিত্তিক (Yearly)</option>
+                    </select>
+                </div>
+                <div id="dashMonthDiv">
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">মাস নির্বাচন:</label>
+                    <select id="dashMonth" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
+                        <option value="জানুয়ারি">জানুয়ারি</option>
+                        <option value="ফেব্রুয়ারি">ফেব্রুয়ারি</option>
+                        <option value="মার্চ">মার্চ</option>
+                        <option value="এপ্রিল">এপ্রিল</option>
+                        <option value="মে">মে</option>
+                        <option value="জুন">জুন</option>
+                        <option value="জুলাই">জুলাই</option>
+                        <option value="আগস্ট">আগস্ট</option>
+                        <option value="সেপ্টেম্বর">সেপ্টেম্বর</option>
+                        <option value="অক্টোবর" selected>অক্টোবর</option>
+                        <option value="নভেম্বর">নভেম্বর</option>
+                        <option value="ডিসেম্বর">ডিসেম্বর</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">সাল (Year):</label>
+                    <select id="dashYear" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
+                        <option value="২০২৬" selected>২০২৬</option>
+                        <option value="২০২৫">২০২৫</option>
+                        <option value="২০২৭">২০২৭</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <button onclick="loadDashboardData()" class="bg-teal-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-700 transition text-sm">ড্যাশবোর্ড আপডেট করুন</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="bg-green-50 border border-green-200 p-5 rounded-xl text-center shadow-sm">
+                    <p class="text-sm text-green-600 font-medium">মোট প্রাপ্ত টাকা (Total Paid)</p>
+                    <h3 id="dashTotalPaid" class="text-3xl font-bold text-green-700 mt-1">৳ ০</h3>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-5 rounded-xl text-center shadow-sm">
+                    <p class="text-sm text-red-600 font-medium">মোট বকেয়া (Total Due)</p>
+                    <h3 id="dashTotalDue" class="text-3xl font-bold text-red-700 mt-1">৳ ০</h3>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">ব্যাচভিত্তিক শিক্ষার্থীর তালিকা</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+                            <thead>
+                                <tr class="bg-teal-800 text-white">
+                                    <th class="border p-2">ব্যাচের নাম</th>
+                                    <th class="border p-2 text-center">শিক্ষার্থীর সংখ্যা</th>
+                                </tr>
+                            </thead>
+                            <tbody id="batchCountTableBody">
+                                <tr><td colspan="2" class="text-center p-3">লোড হচ্ছে...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 font-semibold text-gray-700 text-sm">
+                        সর্বমোট শিক্ষার্থী: <span id="totalStudentCount" class="text-teal-600">০</span> জন
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl border flex justify-center">
+                    <div class="w-full max-w-xs">
+                        <canvas id="batchPieChart"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- ১. তথ্য ফর্ম সেকশন -->
-        <div id="formSection" class="bg-white p-8 rounded-lg shadow-md">
+        <div id="formSection" class="bg-white p-8 rounded-lg shadow-md hidden">
             <h2 id="formTitle" class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট তথ্য ফরম</h2>
             <form id="studentForm" class="space-y-4">
                 <input type="hidden" id="rowIndex">
@@ -208,7 +293,7 @@
             
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন করুন:</label>
-                <select id="feeBatchSelect" onchange="loadStudentsByBatch()" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                <select id="feeBatchSelect" onchange="loadStudentsByBatch('fee')" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
                     <option value="">-- ব্যাচ বেছে নিন --</option>
                     <option value="RajICT">RajICT</option>
                     <option value="NonICT-1">NonICT-1</option>
@@ -320,14 +405,70 @@
             </div>
         </div>
 
-        <!-- ৫. মাসিক রিপোর্ট সেকশন -->
+        <!-- ৫. পরীক্ষার ফলাফল সেকশন -->
+        <div id="examSection" class="bg-white p-8 rounded-lg shadow-md hidden">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">পরীক্ষার ফলাফল ইনপুট ও ব্যবস্থাপনা</h2>
+            
+            <div class="space-y-4 mb-6 bg-gray-50 p-4 rounded-lg border">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন:</label>
+                        <select id="examBatchSelect" onchange="fetchStudentsForExamTable()" class="w-full px-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-amber-500 text-sm">
+                            <option value="">-- ব্যাচ বেছে নিন --</option>
+                            <option value="RajICT">RajICT</option>
+                            <option value="NonICT-1">NonICT-1</option>
+                            <option value="NonICT-2">NonICT-2</option>
+                            <option value="NonICT-F">NonICT-F</option>
+                            <option value="physics-1">physics-1</option>
+                            <option value="physics-2">physics-2</option>
+                            <option value="Math-1">Math-1</option>
+                            <option value="Math-2">Math-2</option>
+                            <option value="Shalua ICT- 1">Shalua ICT- 1</option>
+                            <option value="Shalua ICT- 2">Shalua ICT- 2</option>
+                            <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">বিষয় (Subject):</label>
+                        <input type="text" id="examSubject" placeholder="যেমন: আইসিটি" class="w-full px-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">পরীক্ষার টপিক (Topic):</label>
+                        <input type="text" id="examTopic" placeholder="যেমন: অধ্যায় ১" class="w-full px-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-amber-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-1">পূর্ণমান (Total Marks):</label>
+                        <input type="number" id="globalTotalMarks" value="100" class="w-full px-3 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-amber-500 text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <form id="examForm" class="hidden space-y-4">
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full border-collapse border border-gray-300 text-left text-sm">
+                        <thead>
+                            <tr class="bg-amber-600 text-white">
+                                <th class="border p-2 w-12 text-center">ক্র:নং</th>
+                                <th class="border p-2">শিক্ষার্থীর নাম</th>
+                                <th class="border p-2 text-center w-48">প্রাপ্ত নম্বর (Obtained)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="examStudentTableBody"></tbody>
+                    </table>
+                </div>
+                <button type="submit" id="submitExamBtn" class="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition">সকলের ফলাফল একসঙ্গে সংরক্ষণ করুন</button>
+            </form>
+            <div id="examStatusMessage" class="mt-4 text-center text-sm font-medium"></div>
+        </div>
+
+        <!-- ৬. মাসিক রিপোর্ট সেকশন -->
         <div id="reportSection" class="bg-white p-8 rounded-lg shadow-md hidden">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট মাসিক উপস্থিতি ও ফি রিপোর্ট</h2>
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট মাসিক উপস্থিতি, ফি ও পরীক্ষার রিপোর্ট</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
                     <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন:</label>
-                    <select id="reportBatchSelect" onchange="loadReportStudents()" class="w-full px-4 py-2 border rounded-lg bg-white">
+                    <select id="reportBatchSelect" onchange="loadStudentsByBatch('report')" class="w-full px-4 py-2 border rounded-lg bg-white">
                         <option value="">-- ব্যাচ বেছে নিন --</option>
                         <option value="RajICT">RajICT</option>
                         <option value="NonICT-1">NonICT-1</option>
@@ -403,6 +544,21 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-center">
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">মোট পরীক্ষা দিয়েছে</p>
+                        <h4 id="repExamCount" class="text-xl font-bold text-amber-600">০ টি</h4>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">প্রাপ্ত মোট নম্বর</p>
+                        <h4 id="repTotalMarks" class="text-xl font-bold text-blue-600">০ / ০</h4>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border">
+                        <p class="text-xs text-gray-500">গড় শতকরা হার</p>
+                        <h4 id="repAvgPercentage" class="text-xl font-bold text-purple-600">০%</h4>
+                    </div>
+                </div>
+
                 <div class="bg-white p-4 rounded-lg shadow-sm border">
                     <h4 class="font-bold text-gray-700 mb-2 text-sm">উপস্থিতি বিবরণী ও ফি স্ট্যাটাস:</h4>
                     <div id="repDetailsText" class="text-sm text-gray-600 space-y-1">লোড হচ্ছে...</div>
@@ -414,75 +570,244 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyajzGa8f9FT5Mj6p9TXGAyTdYd08bm2pq6D_2aerGkzG4ij_PAXcUOknTv8Pa5owmh/exec'; 
-        let allStudentsData = [];
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz6NyBO6XrccZvz2czsfmWbQK2KrGrhBYk2Jr0S_8WhEWS9tg_lo6wtmc2Hbm3Je4cS/exec'; 
         let studentPaymentHistory = []; 
         let originalMonthDue = 0; 
+        let myPieChart = null;
 
         function showSection(sectionId) {
-            ['formSection', 'viewSection', 'attendanceSection', 'feeSection', 'reportSection'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
+            ['dashboardSection', 'formSection', 'viewSection', 'attendanceSection', 'feeSection', 'examSection', 'reportSection'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.classList.add('hidden');
             });
-            ['formBtn', 'viewBtn', 'attendanceBtn', 'feeBtn', 'reportBtn'].forEach(id => {
-                document.getElementById(id).className = "bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition";
+            ['dashboardBtn', 'formBtn', 'viewBtn', 'attendanceBtn', 'feeBtn', 'examBtn', 'reportBtn'].forEach(id => {
+                const btn = document.getElementById(id);
+                if(btn) btn.className = "bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-600 transition";
             });
 
-            document.getElementById(sectionId).classList.remove('hidden');
+            const targetSection = document.getElementById(sectionId);
+            if(targetSection) targetSection.classList.remove('hidden');
             
+            if(sectionId === 'dashboardSection') document.getElementById('dashboardBtn').className = "bg-teal-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-teal-700 transition";
             if(sectionId === 'formSection') document.getElementById('formBtn').className = "bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition";
             if(sectionId === 'viewSection') document.getElementById('viewBtn').className = "bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-gray-700 transition";
             if(sectionId === 'attendanceSection') document.getElementById('attendanceBtn').className = "bg-green-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-green-700 transition";
             if(sectionId === 'feeSection') document.getElementById('feeBtn').className = "bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-purple-700 transition";
+            if(sectionId === 'examSection') document.getElementById('examBtn').className = "bg-amber-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-amber-700 transition";
             if(sectionId === 'reportSection') document.getElementById('reportBtn').className = "bg-indigo-600 text-white px-4 py-2 rounded-lg font-semibold shadow hover:bg-indigo-700 transition";
         }
 
-        const form = document.getElementById('studentForm');
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            const statusMessage = document.getElementById('statusMessage');
-            submitBtn.disabled = true;
+        function toggleDashMode() {
+            const mode = document.getElementById('dashMode').value;
+            const monthDiv = document.getElementById('dashMonthDiv');
+            if(mode === 'yearly') {
+                monthDiv.classList.add('hidden');
+            } else {
+                monthDiv.classList.remove('hidden');
+            }
+        }
+
+        function loadDashboardData() {
+            const mode = document.getElementById('dashMode').value;
+            const month = document.getElementById('dashMonth').value;
+            const year = document.getElementById('dashYear').value;
+
+            fetch(`${scriptURL}?action=getDashboardData&mode=${mode}&month=${encodeURIComponent(month)}&year=${encodeURIComponent(year)}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('dashTotalPaid').textContent = '৳ ' + data.totalPaid;
+                    document.getElementById('dashTotalDue').textContent = '৳ ' + data.totalDue;
+                    document.getElementById('totalStudentCount').textContent = data.totalStudents;
+
+                    const tbody = document.getElementById('batchCountTableBody');
+                    tbody.innerHTML = '';
+                    const batchLabels = [];
+                    const batchCounts = [];
+
+                    for (const [batchName, count] of Object.entries(data.batchCounts)) {
+                        batchLabels.push(batchName);
+                        batchCounts.push(count);
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="border p-2 font-medium">${batchName}</td>
+                            <td class="border p-2 text-center font-bold text-teal-600">${count} জন</td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
+
+                    if(batchLabels.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="2" class="text-center p-3 text-gray-500">কোনো ডেটা পাওয়া যায়নি</td></tr>';
+                    }
+
+                    renderBatchChart(batchLabels, batchCounts);
+                })
+                .catch(err => console.error('Dashboard load error:', err));
+        }
+
+        function renderBatchChart(labels, data) {
+            const ctx = document.getElementById('batchPieChart').getContext('2d');
+            if(myPieChart) {
+                myPieChart.destroy();
+            }
+
+            myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#0d9488', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', 
+                            '#ec4899', '#10b981', '#6366f1', '#14b8a6', '#f97316'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function loadStudentsByBatch(type) {
+            let batch = "", studentSelectId = "";
+            if(type === 'fee') {
+                batch = document.getElementById('feeBatchSelect').value;
+                studentSelectId = 'feeStudentSelect';
+            } else if(type === 'report') {
+                batch = document.getElementById('reportBatchSelect').value;
+                studentSelectId = 'reportStudentSelect';
+            }
+
+            const studentSelect = document.getElementById(studentSelectId);
+            studentSelect.innerHTML = '<option value="">-- লোড হচ্ছে... --</option>';
+
+            if (!batch) {
+                studentSelect.innerHTML = '<option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>';
+                return;
+            }
+
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batch)}`)
+                .then(res => res.json())
+                .then(students => {
+                    studentSelect.innerHTML = '<option value="">-- শিক্ষার্থী নির্বাচন করুন --</option>';
+                    if(students.length === 0) {
+                        studentSelect.innerHTML = '<option value="">-- কোনো শিক্ষার্থী পাওয়া যায়নি --</option>';
+                        return;
+                    }
+                    students.forEach(st => {
+                        const opt = document.createElement('option');
+                        opt.value = st.name;
+                        opt.textContent = st.name + (st.phone ? ` (${st.phone})` : '');
+                        studentSelect.appendChild(opt);
+                    });
+                })
+                .catch(() => {
+                    studentSelect.innerHTML = '<option value="">-- ডেটা লোড করতে সমস্যা হয়েছে --</option>';
+                });
+        }
+
+        function fetchStudentsForExamTable() {
+            const batch = document.getElementById('examBatchSelect').value;
+            const statusMsg = document.getElementById('examStatusMessage');
+            const examForm = document.getElementById('examForm');
+            const tbody = document.getElementById('examStudentTableBody');
+
+            statusMsg.textContent = '';
+            tbody.innerHTML = '';
+            examForm.classList.add('hidden');
+
+            if (!batch) return;
+
+            statusMsg.textContent = 'শিক্ষার্থীদের তালিকা লোড হচ্ছে...';
             
-            const rowIndex = document.getElementById('rowIndex').value;
-            const isEditing = rowIndex !== "";
-            submitBtn.textContent = isEditing ? 'আপডেট হচ্ছে...' : 'জমা হচ্ছে...';
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batch)}`)
+                .then(res => res.json())
+                .then(students => {
+                    statusMsg.textContent = '';
+                    if (students.length === 0) {
+                        statusMsg.textContent = 'এই ব্যাচে কোনো শিক্ষার্থী পাওয়া যায়নি।';
+                        statusMsg.className = 'mt-4 text-center text-sm font-medium text-red-600';
+                        return;
+                    }
 
-            const selectedSubjects = [];
-            document.querySelectorAll('input[name="subject"]:checked').forEach((checkbox) => {
-                selectedSubjects.push(checkbox.value);
+                    examForm.classList.remove('hidden');
+                    students.forEach((st, idx) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="border p-2 text-center">${idx + 1}</td>
+                            <td class="border p-2 font-medium">
+                                <input type="hidden" name="stName" value="${st.name}">
+                                ${st.name} ${st.phone ? `(${st.phone})` : ''}
+                            </td>
+                            <td class="border p-2 text-center">
+                                <input type="number" name="obtainedMarks" placeholder="নম্বর দিন" class="w-full px-3 py-1.5 border rounded text-center focus:ring-2 focus:ring-amber-500">
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(() => {
+                    statusMsg.textContent = 'ডেটা লোড করতে সমস্যা হয়েছে।';
+                    statusMsg.className = 'mt-4 text-center text-sm font-medium text-red-600';
+                });
+        }
+
+        const form = document.getElementById('studentForm');
+        if(form) {
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const submitBtn = document.getElementById('submitBtn');
+                const statusMessage = document.getElementById('statusMessage');
+                submitBtn.disabled = true;
+                
+                const rowIndex = document.getElementById('rowIndex').value;
+                const isEditing = rowIndex !== "";
+                submitBtn.textContent = isEditing ? 'আপডেট হচ্ছে...' : 'জমা হচ্ছে...';
+
+                const selectedSubjects = [];
+                document.querySelectorAll('input[name="subject"]:checked').forEach((checkbox) => {
+                    selectedSubjects.push(checkbox.value);
+                });
+
+                const formData = {
+                    action: isEditing ? 'update' : 'insert',
+                    rowIndex: rowIndex,
+                    name: document.getElementById('name').value,
+                    studentPhone: document.getElementById('studentPhone').value,
+                    guardianPhone: document.getElementById('guardianPhone').value,
+                    academicYear: document.getElementById('academicYear').value,
+                    examBatch: document.getElementById('examBatch').value,
+                    collegeName: document.getElementById('collegeName').value,
+                    subject: selectedSubjects.join(', '),
+                    batchName: document.getElementById('batchName').value
+                };
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                })
+                .then(res => res.json())
+                .then(() => {
+                    statusMessage.textContent = isEditing ? 'সফলভাবে তথ্য আপডেট হয়েছে!' : 'সফলভাবে তথ্য জমা হয়েছে!';
+                    statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                    resetForm();
+                    submitBtn.disabled = false;
+                })
+                .catch(() => {
+                    statusMessage.textContent = 'সফলভাবে তথ্য সংরক্ষিত হয়েছে!';
+                    statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                    resetForm();
+                    submitBtn.disabled = false;
+                });
             });
-
-            const formData = {
-                action: isEditing ? 'update' : 'insert',
-                rowIndex: rowIndex,
-                name: document.getElementById('name').value,
-                studentPhone: document.getElementById('studentPhone').value,
-                guardianPhone: document.getElementById('guardianPhone').value,
-                academicYear: document.getElementById('academicYear').value,
-                examBatch: document.getElementById('examBatch').value,
-                collegeName: document.getElementById('collegeName').value,
-                subject: selectedSubjects.join(', '),
-                batchName: document.getElementById('batchName').value
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(data => {
-                statusMessage.textContent = isEditing ? 'সফলভাবে তথ্য আপডেট হয়েছে!' : 'সফলভাবে তথ্য জমা হয়েছে!';
-                statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                resetForm();
-                submitBtn.disabled = false;
-            })
-            .catch(() => {
-                statusMessage.textContent = 'সফলভাবে তথ্য সংরক্ষিত হয়েছে!';
-                statusMessage.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                resetForm();
-                submitBtn.disabled = false;
-            });
-        });
+        }
 
         function loadData() {
             const tableBody = document.getElementById('dataTable');
@@ -491,10 +816,9 @@
             fetch(scriptURL)
                 .then(res => res.json())
                 .then(data => {
-                    allStudentsData = data;
                     tableBody.innerHTML = '';
                     if(data.length === 0) {
-                        tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4">কোনো ডেটা পাওয়া যায়নি</td></tr>';
+                        tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4">কোনো ডেটা পাওয়া যায়নি</td></tr>';
                         return;
                     }
                     data.forEach((row, index) => {
@@ -507,42 +831,266 @@
                             <td class="border p-2">${row['শিক্ষাবর্ষ'] || ''}</td>
                             <td class="border p-2">${row['পরীক্ষা ব্যাচ'] || ''}</td>
                             <td class="border p-2">${row['কলেজের নাম'] || ''}</td>
-                            <td class="border p-2 text-xs">${row['বিষয়সমূহ'] || ''}</td>
-                            <td class="border p-2">${row['ব্যাচের নাম'] || ''}</td>
+                            <td class="border p-2">${row['বিষয়'] || ''}</td>
+                            <td class="border p-2">${row['ব্যাচ নাম'] || ''}</td>
                             <td class="border p-2 text-center">
-                                <button onclick="editStudent(${index + 2})" class="bg-yellow-500 text-white px-2 py-1 rounded text-xs hover:bg-yellow-600 mr-1">এডিট</button>
+                                <button onclick="editStudent(${index})" class="bg-yellow-500 text-white px-2 py-1 rounded text-xs hover:bg-yellow-600">এডিট</button>
                             </td>
                         `;
                         tableBody.appendChild(tr);
                     });
-                })
-                .catch(() => {
-                    tableBody.innerHTML = '<tr><td colspan="10" class="text-center p-4 text-red-500">ডেটা লোড করতে সমস্যা হয়েছে।</td></tr>';
                 });
         }
 
-        function editStudent(rowIndex) {
-            const rowData = allStudentsData[rowIndex - 2];
-            if (!rowData) return;
+        function fetchStudentsForAttendance() {
+            const batch = document.getElementById('attendanceBatchSelect').value;
+            const statusDiv = document.getElementById('attendanceStatus');
+            const attForm = document.getElementById('attendanceForm');
+            const tbody = document.getElementById('studentTableBody');
 
-            showSection('formSection');
-            document.getElementById('formTitle').textContent = 'স্টুডেন্ট তথ্য আপডেট করুন';
-            document.getElementById('submitBtn').textContent = 'আপডেট করুন';
-            document.getElementById('cancelBtn').classList.remove('hidden');
+            if(!batch) {
+                alert('দয়া করে প্রথমে ব্যাচ নির্বাচন করুন!');
+                return;
+            }
 
-            document.getElementById('rowIndex').value = rowIndex;
-            document.getElementById('name').value = rowData['নাম'] || '';
-            document.getElementById('studentPhone').value = rowData['শিক্ষার্থীর মোবাইল নম্বর'] || '';
-            document.getElementById('guardianPhone').value = rowData['অভিভাবকের মোবাইল নম্বর'] || '';
-            document.getElementById('academicYear').value = rowData['শিক্ষাবর্ষ'] || '';
-            document.getElementById('examBatch').value = rowData['পরীক্ষা ব্যাচ'] || '';
-            document.getElementById('collegeName').value = rowData['কলেজের নাম'] || '';
-            document.getElementById('batchName').value = rowData['ব্যাচের নাম'] || '';
+            statusDiv.textContent = 'লোড হচ্ছে...';
+            tbody.innerHTML = '';
 
-            const subs = rowData['বিষয়সমূহ'] ? rowData['বিষয়সমূহ'].split(', ') : [];
-            document.querySelectorAll('input[name="subject"]').forEach(cb => {
-                cb.checked = subs.includes(cb.value);
+            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batch)}`)
+                .then(res => res.json())
+                .then(students => {
+                    statusDiv.textContent = '';
+                    if(students.length === 0) {
+                        statusDiv.textContent = 'এই ব্যাচে কোনো শিক্ষার্থী নেই।';
+                        attForm.classList.add('hidden');
+                        return;
+                    }
+
+                    attForm.classList.remove('hidden');
+                    students.forEach((st, idx) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td class="border p-2 text-center">${idx + 1}</td>
+                            <td class="border p-2 font-medium"><input type="hidden" name="stName" value="${st.name}">${st.name}</td>
+                            <td class="border p-2 text-center"><input type="radio" name="att_${idx}" value="উপস্থিত" checked class="w-4 h-4 text-green-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="att_${idx}" value="অনুপস্থিত" class="w-4 h-4 text-red-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="att_${idx}" value="ছুটি" class="w-4 h-4 text-blue-600"></td>
+                            <td class="border p-2 text-center"><input type="radio" name="att_${idx}" value="দেরি" class="w-4 h-4 text-yellow-600"></td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(() => {
+                    statusDiv.textContent = 'ডেটা লোড করতে সমস্যা হয়েছে।';
+                });
+        }
+
+        const attendanceForm = document.getElementById('attendanceForm');
+        if(attendanceForm) {
+            attendanceForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const batchName = document.getElementById('attendanceBatchSelect').value;
+                const rows = document.querySelectorAll('#studentTableBody tr');
+                const attendanceData = [];
+
+                rows.forEach((row, idx) => {
+                    const name = row.querySelector('input[name="stName"]').value;
+                    const selectedStatus = row.querySelector(`input[name="att_${idx}"]:checked`).value;
+                    attendanceData.push({ name: name, status: selectedStatus });
+                });
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'attendance', batchName: batchName, attendance: attendanceData })
+                })
+                .then(res => res.json())
+                .then(() => {
+                    document.getElementById('attendanceStatus').textContent = 'উপস্থিতি সফলভাবে সংরক্ষিত হয়েছে!';
+                    document.getElementById('attendanceStatus').className = 'mt-4 text-center text-sm font-medium text-green-600';
+                });
             });
+        }
+
+        function loadStudentPaymentHistory() {
+            const name = document.getElementById('feeStudentSelect').value;
+            if(!name) return;
+
+            fetch(`${scriptURL}?action=getPaymentHistory&name=${encodeURIComponent(name)}`)
+                .then(res => res.json())
+                .then(data => {
+                    studentPaymentHistory = data.history;
+                    document.getElementById('totalPaidDisplay').textContent = '৳ ' + data.totalPaid;
+                    document.getElementById('totalDueDisplay').textContent = '৳ ' + data.totalDue;
+                    document.getElementById('feeSummaryCard').classList.remove('hidden');
+                    document.getElementById('feeForm').classList.remove('hidden');
+                    checkMonthStatus();
+                });
+        }
+
+        function checkMonthStatus() {
+            const selectedMonth = document.getElementById('feeMonth').value;
+            const selectedYear = document.getElementById('feeYear').value;
+            if(!selectedMonth) return;
+
+            const targetMonthStr = selectedMonth + " " + selectedYear;
+            const foundRecord = studentPaymentHistory.find(h => h.month && h.month.toString().trim() === targetMonthStr);
+
+            const statusBox = document.getElementById('monthStatusBox');
+            if(foundRecord) {
+                statusBox.textContent = `এই মাসের রেকর্ড পাওয়া গেছে: পরিশোধিত = ৳ ${foundRecord.paid}, বকেয়া = ৳ ${foundRecord.due}`;
+                statusBox.className = "p-3 rounded-lg text-sm font-medium bg-blue-50 border border-blue-200 text-blue-700 text-center";
+                document.getElementById('paidAmount').value = foundRecord.paid;
+                document.getElementById('dueAmount').value = foundRecord.due;
+                originalMonthDue = Number(foundRecord.due) || 0;
+            } else {
+                statusBox.textContent = "এই মাসে কোনো পেমেন্ট রেকর্ড নেই (নতুন এন্ট্রি)।";
+                statusBox.className = "p-3 rounded-lg text-sm font-medium bg-gray-50 border text-center";
+                document.getElementById('paidAmount').value = '';
+                document.getElementById('dueAmount').value = '0';
+                originalMonthDue = 0;
+            }
+        }
+
+        function calculateAutoDue() {
+            const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+            const computedDue = Math.max(0, originalMonthDue - paid);
+            document.getElementById('dueAmount').value = computedDue;
+        }
+
+        const feeForm = document.getElementById('feeForm');
+        if(feeForm) {
+            feeForm.addEventListener('submit', e => {
+                e.preventDefault();
+                const name = document.getElementById('feeStudentSelect').value;
+                const month = document.getElementById('feeMonth').value + " " + document.getElementById('feeYear').value;
+                const paidAmount = document.getElementById('paidAmount').value;
+                const dueAmount = document.getElementById('dueAmount').value;
+                const feeType = document.getElementById('feeType').value;
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'saveFee', name, month, paidAmount, dueAmount, feeType })
+                })
+                .then(res => res.json())
+                .then(() => {
+                    document.getElementById('feeStatusMessage').textContent = 'ফি সফলভাবে সংরক্ষিত হয়েছে!';
+                    document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
+                    loadStudentPaymentHistory();
+                });
+            });
+        }
+
+        const examFormEl = document.getElementById('examForm');
+        if(examFormEl) {
+            examFormEl.addEventListener('submit', e => {
+                e.preventDefault();
+                const submitBtn = document.getElementById('submitExamBtn');
+                const statusMsg = document.getElementById('examStatusMessage');
+                const batchName = document.getElementById('examBatchSelect').value;
+                const subject = document.getElementById('examSubject').value;
+                const topic = document.getElementById('examTopic').value;
+                const globalTotal = parseFloat(document.getElementById('globalTotalMarks').value) || 100;
+
+                if (!subject || !topic) {
+                    alert('দয়া করে পরীক্ষার বিষয় এবং টপিক পূরণ করুন!');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'সংরক্ষণ হচ্ছে...';
+
+                const rows = document.querySelectorAll('#examStudentTableBody tr');
+                const resultsList = [];
+
+                rows.forEach((row) => {
+                    const name = row.querySelector('input[name="stName"]').value;
+                    const obtainedInput = row.querySelector('input[name="obtainedMarks"]').value;
+                    const obtained = obtainedInput === "" ? 0 : parseFloat(obtainedInput);
+                    const percentage = ((obtained / globalTotal) * 100).toFixed(2) + '%';
+
+                    resultsList.push({
+                        name: name,
+                        totalMarks: globalTotal,
+                        obtainedMarks: obtained,
+                        percentage: percentage
+                    });
+                });
+
+                const payload = {
+                    action: 'insertBulkExamResults',
+                    date: new Date().toISOString(),
+                    batchName: batchName,
+                    subject: subject,
+                    topic: topic,
+                    results: resultsList
+                };
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                })
+                .then(res => res.json())
+                .then(() => {
+                    statusMsg.textContent = 'সকল শিক্ষার্থীর পরীক্ষার ফলাফল সফলভাবে সংরক্ষিত হয়েছে!';
+                    statusMsg.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'সকলের ফলাফল একসঙ্গে সংরক্ষণ করুন';
+                    examFormEl.reset();
+                    examFormEl.classList.add('hidden');
+                    document.getElementById('examBatchSelect').value = '';
+                })
+                .catch(() => {
+                    statusMsg.textContent = 'ফলাফল সফলভাবে সংরক্ষিত হয়েছে!';
+                    statusMsg.className = 'mt-4 text-center text-sm font-medium text-green-600';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'সকলের ফলাফল একসঙ্গে সংরক্ষণ করুন';
+                });
+            });
+        }
+
+        function generateMonthlyReport() {
+            const batch = document.getElementById('reportBatchSelect').value;
+            const name = document.getElementById('reportStudentSelect').value;
+            const month = document.getElementById('reportMonth').value;
+            const year = document.getElementById('reportYear').value;
+            const monthYearStr = month + " " + year;
+
+            if(!batch || !name) {
+                alert('দয়া করে ব্যাচ এবং শিক্ষার্থীর নাম সিলেক্ট করুন!');
+                return;
+            }
+
+            document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট তৈরি হচ্ছে...';
+            document.getElementById('reportCardResult').classList.add('hidden');
+
+            fetch(`${scriptURL}?action=getMonthlyReport&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&monthYear=${encodeURIComponent(monthYearStr)}`)
+                .then(res => res.json())
+                .then(report => {
+                    document.getElementById('reportLoadingMsg').textContent = '';
+                    document.getElementById('reportCardResult').classList.remove('hidden');
+
+                    document.getElementById('repStudentNameTitle').textContent = name;
+                    document.getElementById('repBatchTitle').textContent = batch;
+                    document.getElementById('repMonthTitle').textContent = monthYearStr;
+
+                    document.getElementById('repPresentCount').textContent = report.present + ' দিন';
+                    document.getElementById('repAbsentCount').textContent = report.absent + ' দিন';
+                    document.getElementById('repTotalFine').textContent = '৳ ' + report.fine;
+                    document.getElementById('repMonthDue').textContent = '৳ ' + report.due;
+
+                    document.getElementById('repExamCount').textContent = (report.examCount || 0) + ' টি';
+                    document.getElementById('repTotalMarks').textContent = (report.totalObtained || 0) + ' / ' + (report.totalPossible || 0);
+                    document.getElementById('repAvgPercentage').textContent = (report.avgPercentage || 0) + '%';
+
+                    document.getElementById('repDetailsText').innerHTML = `
+                        <p><b>ফি স্ট্যাটাস:</b> ${report.status} (পরিশোধিত: ৳ ${report.paid})</p>
+                        <p><b>অনুপস্থিত জরিমানা:</b> ৳ ${report.fine}</p>
+                        <p><b>পরীক্ষার বিবরণ:</b> মোট ${report.examCount || 0} টি পরীক্ষায় অংশগ্রহণ করেছে।</p>
+                    `;
+                })
+                .catch(() => {
+                    document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট লোড করতে সমস্যা হয়েছে।';
+                });
         }
 
         function resetForm() {
@@ -551,264 +1099,6 @@
             document.getElementById('formTitle').textContent = 'স্টুডেন্ট তথ্য ফরম';
             document.getElementById('submitBtn').textContent = 'তথ্য জমা দিন';
             document.getElementById('cancelBtn').classList.add('hidden');
-            document.getElementById('statusMessage').textContent = '';
-        }
-
-        function fetchStudentsForAttendance() {
-            const batchName = document.getElementById('attendanceBatchSelect').value;
-            const statusDiv = document.getElementById('attendanceStatus');
-            const tableBody = document.getElementById('studentTableBody');
-            const attendanceForm = document.getElementById('attendanceForm');
-
-            if (!batchName) {
-                alert('দয়া করে প্রথমে একটি ব্যাচ নির্বাচন করুন।');
-                return;
-            }
-
-            statusDiv.textContent = 'স্টুডেন্ট লোড হচ্ছে...';
-            tableBody.innerHTML = '';
-
-            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
-                .then(res => res.json())
-                .then(students => {
-                    if (students.length === 0) {
-                        statusDiv.textContent = 'এই ব্যাচে কোনো স্টুডেন্ট পাওয়া যায়নি।';
-                        attendanceForm.classList.add('hidden');
-                        return;
-                    }
-                    statusDiv.textContent = '';
-                    attendanceForm.classList.remove('hidden');
-
-                    students.forEach((student, index) => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td class="border p-2 text-center">${index + 1}</td>
-                            <td class="border p-2 font-medium student-name">${student.name}</td>
-                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="উপস্থিত" checked class="w-4 h-4 text-green-600"></td>
-                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="অনুপস্থিত" class="w-4 h-4 text-red-600"></td>
-                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="ছুটি" class="w-4 h-4 text-yellow-600"></td>
-                            <td class="border p-2 text-center"><input type="radio" name="attendance_${index}" value="দেরি" class="w-4 h-4 text-purple-600"></td>
-                        `;
-                        tableBody.appendChild(tr);
-                    });
-                });
-        }
-
-        document.getElementById('attendanceForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const batchName = document.getElementById('attendanceBatchSelect').value;
-            const statusDiv = document.getElementById('attendanceStatus');
-            const submitBtn = document.getElementById('submitAttendance');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'সাবমিট হচ্ছে...';
-
-            const rows = document.querySelectorAll('#studentTableBody tr');
-            const attendanceList = [];
-
-            rows.forEach((row, index) => {
-                const name = row.querySelector('.student-name').textContent;
-                const selectedRadio = row.querySelector(`input[name="attendance_${index}"]:checked`);
-                attendanceList.push({ name: name, status: selectedRadio ? selectedRadio.value : 'উপস্থিত' });
-            });
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify({ action: 'attendance', batchName: batchName, attendance: attendanceList })
-            })
-            .then(res => res.json())
-            .then(() => {
-                statusDiv.textContent = 'সফলভাবে উপস্থিতি জমা হয়েছে!';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'উপস্থিতি জমা দিন';
-                setTimeout(fetchStudentsForAttendance, 1500);
-            })
-            .catch(() => {
-                statusDiv.textContent = 'সফলভাবে উপস্থিতি রেকর্ড করা হয়েছে!';
-                statusDiv.className = 'mt-4 text-center text-sm font-medium text-green-600';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'উপস্থিতি জমা দিন';
-            });
-        });
-
-        function loadStudentsByBatch() {
-            const batchName = document.getElementById('feeBatchSelect').value;
-            const studentSelect = document.getElementById('feeStudentSelect');
-            studentSelect.innerHTML = '<option value="">-- লোড হচ্ছে... --</option>';
-
-            if (!batchName) {
-                studentSelect.innerHTML = '<option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>';
-                return;
-            }
-
-            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
-                .then(res => res.json())
-                .then(students => {
-                    studentSelect.innerHTML = '<option value="">-- শিক্ষার্থী নির্বাচন করুন --</option>';
-                    students.forEach(s => {
-                        studentSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
-                    });
-                });
-        }
-
-        function loadStudentPaymentHistory() {
-            const studentName = document.getElementById('feeStudentSelect').value;
-            if (!studentName) {
-                document.getElementById('feeSummaryCard').classList.add('hidden');
-                document.getElementById('feeForm').classList.add('hidden');
-                document.getElementById('feeHistorySection').classList.add('hidden');
-                return;
-            }
-
-            fetch(`${scriptURL}?action=getPaymentHistory&name=${encodeURIComponent(studentName)}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('totalPaidDisplay').textContent = `৳ ${data.totalPaid}`;
-                    document.getElementById('totalDueDisplay').textContent = `৳ ${data.totalDue}`;
-                    document.getElementById('feeSummaryCard').classList.remove('hidden');
-                    document.getElementById('feeForm').classList.remove('hidden');
-                    document.getElementById('feeHistorySection').classList.remove('hidden');
-
-                    const tbody = document.getElementById('feeHistoryTableBody');
-                    tbody.innerHTML = '';
-                    if (data.history.length === 0) {
-                        tbody.innerHTML = '<tr><td colspan="5" class="text-center p-3 text-gray-500">কোনো পেমেন্ট হিস্ট্রি নেই</td></tr>';
-                    } else {
-                        data.history.forEach(h => {
-                            tbody.innerHTML += `
-                                <tr class="border-b">
-                                    <td class="border p-2">${h.date ? new Date(h.date).toLocaleDateString() : ''}</td>
-                                    <td class="border p-2 font-medium">${h.month || ''}</td>
-                                    <td class="border p-2 text-green-600 font-bold">৳ ${h.paid || 0}</td>
-                                    <td class="border p-2 text-red-600 font-bold">৳ ${h.due || 0}</td>
-                                    <td class="border p-2 text-xs">${h.type || ''}</td>
-                                </tr>
-                            `;
-                        });
-                    }
-                    checkMonthStatus();
-                });
-        }
-
-        function checkMonthStatus() {
-            const month = document.getElementById('feeMonth').value;
-            const year = document.getElementById('feeYear').value;
-            const targetMonthYear = `${month} ${year}`;
-            const studentName = document.getElementById('feeStudentSelect').value;
-            const statusBox = document.getElementById('monthStatusBox');
-
-            if (!month || !studentName) return;
-
-            fetch(`${scriptURL}?action=getPaymentHistory&name=${encodeURIComponent(studentName)}`)
-                .then(res => res.json())
-                .then(data => {
-                    const found = data.history.find(h => h.month === targetMonthYear);
-                    if (found) {
-                        document.getElementById('paidAmount').value = found.paid || '';
-                        document.getElementById('dueAmount').value = found.due || 0;
-                        originalMonthDue = Number(found.due) || 0;
-                        statusBox.innerHTML = `<span class="text-green-600 font-bold">স্ট্যাটাস: ইতিপূর্বে পেমেন্ট রেকর্ড আছে (পরিশোধিত: ৳${found.paid}, বকেয়া: ৳${found.due})</span>`;
-                    } else {
-                        document.getElementById('paidAmount').value = '';
-                        document.getElementById('dueAmount').value = '0';
-                        originalMonthDue = 0;
-                        statusBox.innerHTML = `<span class="text-amber-600 font-bold">স্ট্যাটাস: এই মাসের কোনো পেমেন্ট রেকর্ড নেই (নতুন এন্ট্রি)</span>`;
-                    }
-                });
-        }
-
-        function calculateAutoDue() {
-            // বকেয়া গণনার নিজস্ব লজিক এখানে প্রয়োজন অনুযায়ী বসাতে পারেন
-        }
-
-        document.getElementById('feeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = {
-                action: 'saveFee',
-                name: document.getElementById('feeStudentSelect').value,
-                month: `${document.getElementById('feeMonth').value} ${document.getElementById('feeYear').value}`,
-                paidAmount: document.getElementById('paidAmount').value,
-                dueAmount: document.getElementById('dueAmount').value,
-                feeType: document.getElementById('feeType').value
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            })
-            .then(res => res.json())
-            .then(() => {
-                document.getElementById('feeStatusMessage').textContent = 'সফলভাবে ফি জমা ও আপডেট হয়েছে!';
-                document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
-                loadStudentPaymentHistory();
-            })
-            .catch(() => {
-                document.getElementById('feeStatusMessage').textContent = 'ফি সফলভাবে সংরক্ষিত হয়েছে!';
-                document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
-                loadStudentPaymentHistory();
-            });
-        });
-
-        function loadReportStudents() {
-            const batchName = document.getElementById('reportBatchSelect').value;
-            const studentSelect = document.getElementById('reportStudentSelect');
-            studentSelect.innerHTML = '<option value="">-- লোড হচ্ছে... --</option>';
-
-            if (!batchName) {
-                studentSelect.innerHTML = '<option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>';
-                return;
-            }
-
-            fetch(`${scriptURL}?action=getStudents&batch=${encodeURIComponent(batchName)}`)
-                .then(res => res.json())
-                .then(students => {
-                    studentSelect.innerHTML = '<option value="">-- শিক্ষার্থী নির্বাচন করুন --</option>';
-                    students.forEach(s => {
-                        studentSelect.innerHTML += `<option value="${s.name}">${s.name}</option>`;
-                    });
-                });
-        }
-
-        function generateMonthlyReport() {
-            const batch = document.getElementById('reportBatchSelect').value;
-            const name = document.getElementById('reportStudentSelect').value;
-            const month = document.getElementById('reportMonth').value;
-            const year = document.getElementById('reportYear').value;
-            const monthYear = `${month} ${year}`;
-            
-            if (!batch || !name) {
-                alert('দয়া করে ব্যাচ এবং শিক্ষার্থীর নাম নির্বাচন করুন।');
-                return;
-            }
-
-            document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট তৈরি হচ্ছে...';
-            document.getElementById('reportCardResult').classList.add('hidden');
-
-            fetch(`${scriptURL}?action=getMonthlyReport&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&monthYear=${encodeURIComponent(monthYear)}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('reportLoadingMsg').textContent = '';
-                    document.getElementById('repStudentNameTitle').textContent = name;
-                    document.getElementById('repBatchTitle').textContent = batch;
-                    document.getElementById('repMonthTitle').textContent = monthYear;
-
-                    document.getElementById('repPresentCount').textContent = `${data.present} দিন`;
-                    document.getElementById('repAbsentCount').textContent = `${data.absent} দিন`;
-                    document.getElementById('repTotalFine').textContent = `৳ ${data.fine}`;
-                    document.getElementById('repMonthDue').textContent = `৳ ${data.due}`;
-
-                    document.getElementById('repDetailsText').innerHTML = `
-                        <p>• মোট উপস্থিত: <strong>${data.present} দিন</strong></p>
-                        <p>• মোট অনুপস্থিত: <strong>${data.absent} দিন</strong> (জরিমানা: ৳${data.fine})</p>
-                        <p>• ছুটির দিন: <strong>${data.leave} দিন</strong> | দেরিতে উপস্থিতি: <strong>${data.late} দিন</strong></p>
-                        <p>• এই মাসের ফি পরিশোধিত: <strong>৳${data.paid}</strong> | বকেয়া: <strong>৳${data.due}</strong></p>
-                        <p>• ফি স্ট্যাটাস: <strong class="text-purple-700">${data.status}</strong></p>
-                    `;
-                    document.getElementById('reportCardResult').classList.remove('hidden');
-                })
-                .catch(() => {
-                    document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট লোড করতে সমস্যা হয়েছে।';
-                });
         }
     </script>
 </body>
