@@ -294,7 +294,7 @@
             
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন করুন:</label>
-                <select id="feeBatchSelect" onchange="loadStudentsByBatch('fee')" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                <select id="feeBatchSelect" onchange="loadStudentsByBatch('fee'); loadDueStudentsTable();" class="w-full px-4 py-2 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
                     <option value="">-- ব্যাচ বেছে নিন --</option>
                     <option value="RajICT">RajICT</option>
                     <option value="NonICT-1">NonICT-1</option>
@@ -308,6 +308,24 @@
                     <option value="Shalua ICT- 2">Shalua ICT- 2</option>
                     <option value="স্পেশাল ব্যাচ">স্পেশাল ব্যাচ</option>
                 </select>
+            </div>
+
+            <!-- বকেয়া শিক্ষার্থীদের টেবিল -->
+            <div id="dueStudentsContainer" class="mb-6 hidden">
+                <h3 class="text-sm font-bold text-red-600 mb-2">⚠️ যাদের বকেয়া রয়েছে তাদের তালিকা:</h3>
+                <div class="overflow-x-auto border rounded-lg">
+                    <table class="w-full border-collapse text-left text-sm">
+                        <thead>
+                            <tr class="bg-red-700 text-white">
+                                <th class="border p-2">শিক্ষার্থীর নাম</th>
+                                <th class="border p-2">মোবাইল</th>
+                                <th class="border p-2 text-center">মোট বকেয়া</th>
+                                <th class="border p-2 text-center">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dueStudentsTableBody"></tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="mb-6">
@@ -386,24 +404,6 @@
                 <button type="submit" id="submitFeeBtn" class="w-full bg-purple-600 text-white py-2 rounded-lg font-semibold hover:bg-purple-700 transition">ফি জমা বা আপডেট করুন</button>
             </form>
             <div id="feeStatusMessage" class="mt-4 text-center text-sm font-medium"></div>
-
-            <div id="feeHistorySection" class="mt-8 hidden">
-                <h3 class="text-lg font-bold text-gray-800 mb-3">পূর্বের পেমেন্ট হিস্ট্রি ও বিল স্ট্যাটাস</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse border border-gray-300 text-left text-sm">
-                        <thead>
-                            <tr class="bg-gray-800 text-white">
-                                <th class="border p-2">তারিখ</th>
-                                <th class="border p-2">মাস ও সাল</th>
-                                <th class="border p-2">পরিশোধিত</th>
-                                <th class="border p-2">ডিউ</th>
-                                <th class="border p-2">ধরন</th>
-                            </tr>
-                        </thead>
-                        <tbody id="feeHistoryTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
         <!-- ৫. পরীক্ষার ফলাফল সেকশন -->
@@ -464,12 +464,12 @@
 
         <!-- ৬. মাসিক রিপোর্ট সেকশন -->
         <div id="reportSection" class="bg-white p-8 rounded-lg shadow-md hidden">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট মাসিক উপস্থিতি, ফি ও পরীক্ষার রিপোর্ট</h2>
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">স্টুডেন্ট উপস্থিতি, ফি ও পরীক্ষার রিপোর্ট</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">ব্যাচ নির্বাচন:</label>
-                    <select id="reportBatchSelect" onchange="loadStudentsByBatch('report')" class="w-full px-4 py-2 border rounded-lg bg-white">
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">ব্যাচ নির্বাচন:</label>
+                    <select id="reportBatchSelect" onchange="loadStudentsByBatch('report')" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
                         <option value="">-- ব্যাচ বেছে নিন --</option>
                         <option value="RajICT">RajICT</option>
                         <option value="NonICT-1">NonICT-1</option>
@@ -485,13 +485,20 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">শিক্ষার্থীর নাম:</label>
-                    <select id="reportStudentSelect" class="w-full px-4 py-2 border rounded-lg bg-white">
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">শিক্ষার্থীর নাম:</label>
+                    <select id="reportStudentSelect" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
                         <option value="">-- প্রথমে ব্যাচ সিলেক্ট করুন --</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1">রিপোর্টের মাস ও সাল:</label>
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">রিপোর্টের ধরণ:</label>
+                    <select id="reportTypeMode" onchange="toggleReportMode()" class="w-full px-3 py-2 border rounded-lg bg-white text-sm">
+                        <option value="monthly">নির্দিষ্ট মাস ভিত্তিক</option>
+                        <option value="yearly">পুরো বছরের (Yearly)</option>
+                    </select>
+                </div>
+                <div id="reportMonthDiv">
+                    <label class="block text-gray-700 font-medium mb-1 text-sm">রিপোর্টের মাস ও সাল:</label>
                     <div class="flex gap-2">
                         <select id="reportMonth" class="w-full px-2 py-2 border rounded-lg bg-white text-sm">
                             <option value="জানুয়ারি">জানুয়ারি</option>
@@ -507,7 +514,7 @@
                             <option value="নভেম্বর">নভেম্বর</option>
                             <option value="ডিসেম্বর">ডিসেম্বর</option>
                         </select>
-                        <select id="reportYear" class="w-28 px-2 py-2 border rounded-lg bg-white text-sm">
+                        <select id="reportYear" class="w-24 px-2 py-2 border rounded-lg bg-white text-sm">
                             <option value="২০২৬" selected>২০২৬</option>
                             <option value="২০২৫">২০২৫</option>
                             <option value="২০২৭">২০২৭</option>
@@ -517,13 +524,13 @@
             </div>
             
             <div class="text-center mb-6">
-                <button onclick="generateMonthlyReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition">রিপোর্ট জেনারেট করুন</button>
+                <button onclick="generateMonthlyReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition text-sm">রিপোর্ট জেনারেট করুন</button>
             </div>
 
             <div id="reportCardResult" class="hidden border-2 border-indigo-200 p-6 rounded-xl bg-indigo-50/30">
                 <div class="text-center border-b pb-4 mb-4">
                     <h3 id="repStudentNameTitle" class="text-xl font-bold text-gray-800">স্টুডেন্টের নাম</h3>
-                    <p class="text-sm text-gray-600">ব্যাচ: <span id="repBatchTitle">--</span> | রিপোর্ট মাস: <span id="repMonthTitle" class="font-semibold text-indigo-600">--</span></p>
+                    <p class="text-sm text-gray-600">ব্যাচ: <span id="repBatchTitle">--</span> | সময়কাল: <span id="repMonthTitle" class="font-semibold text-indigo-600">--</span></p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center">
@@ -540,7 +547,7 @@
                         <h4 id="repTotalFine" class="text-xl font-bold text-amber-600">৳ ০</h4>
                     </div>
                     <div class="bg-white p-3 rounded-lg shadow-sm border">
-                        <p class="text-xs text-gray-500">মাসের বকেয়া (Due)</p>
+                        <p class="text-xs text-gray-500">সর্বমোট বকেয়া (Total Due)</p>
                         <h4 id="repMonthDue" class="text-xl font-bold text-red-700">৳ ০</h4>
                     </div>
                 </div>
@@ -561,18 +568,22 @@
                 </div>
 
                 <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <h4 class="font-bold text-gray-700 mb-2 text-sm">উপস্থিতি বিবরণী ও ফি স্ট্যাটাস:</h4>
+                    <h4 class="font-bold text-gray-700 mb-2 text-sm">সক্রিয় লেনদেন ও উপস্থিতি বিবরণী:</h4>
                     <div id="repDetailsText" class="text-sm text-gray-600 space-y-1">লোড হচ্ছে...</div>
+                    
+                    <div id="monthlyDueSection" class="mt-3 pt-3 border-t hidden">
+                        <h5 class="font-bold text-red-600 text-xs mb-1">মাসভিত্তিক বকেয়ার বিবরণ:</h5>
+                        <ul id="monthlyDueList" class="text-xs text-gray-700 space-y-1 list-disc list-inside"></ul>
+                    </div>
                 </div>
             </div>
             <div id="reportLoadingMsg" class="text-center text-sm text-gray-500 mt-4"></div>
         </div>
 
-        <!-- ৭. দৈনিক আয় ব্যয় ও হিসাব সেকশন (নতুন লেআউট ও গ্রাফসহ) -->
+        <!-- ৭. দৈনিক আয় ব্যয় ও হিসাব সেকশন -->
         <div id="expenseSection" class="bg-white p-8 rounded-lg shadow-md hidden">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">দৈনিক আয় ও ব্যয় ব্যবস্থাপনা</h2>
             
-            <!-- সামারি কার্ড -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-red-50 border border-red-200 p-4 rounded-lg text-center shadow-sm">
                     <p class="text-sm text-red-600 font-medium">মোট ব্যয়িত টাকা</p>
@@ -588,9 +599,7 @@
                 </div>
             </div>
 
-            <!-- গ্রাফ ও ইনপুট ফর্ম লেআউট -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 items-center">
-                <!-- ইনপুট ফর্ম -->
                 <form id="expenseForm" class="space-y-4 bg-gray-50 p-5 rounded-xl border">
                     <h3 class="text-lg font-semibold text-gray-800 border-b pb-2">নতুন হিসাব এন্ট্রি করুন</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -617,7 +626,6 @@
                     <div id="expenseStatusMessage" class="text-center text-sm font-medium"></div>
                 </form>
 
-                <!-- গ্রাফ সেকশন -->
                 <div class="bg-gray-50 p-5 rounded-xl border flex flex-col items-center justify-center">
                     <h3 class="text-sm font-bold text-gray-700 mb-3">আয় বনাম ব্যয়ের তুলনামূলক গ্রাফ</h3>
                     <div class="w-full max-w-xs h-64">
@@ -626,7 +634,6 @@
                 </div>
             </div>
 
-            <!-- সকল লেনদেনের ইতিহাস টেবিল -->
             <h3 class="text-lg font-bold text-gray-800 mb-3">সকল লেনদেনের ইতিহাস</h3>
             <div class="overflow-x-auto">
                 <table class="w-full border-collapse border border-gray-300 text-left text-sm">
@@ -649,9 +656,9 @@
 
     </div>
 
-    <!-- একীভূত জাভাস্ক্রিপ্ট কোড -->
+    <!-- জাভাস্ক্রিপ্ট কোড -->
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyo5HkSCI-PQ7KkmnUALmV6ohzG3JIsX0RShPLmt0qwtUfL_apQ1OlB_V3WI3IwA3UJ/exec'; 
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxtKGCO-GbqjndGdZdl6FdrCW7GhNcpVPhoOGvvALsBlNERMdLjTVCLOzMKE9oydT92/exec'; 
         let studentPaymentHistory = []; 
         let originalMonthDue = 0; 
         let myPieChart = null;
@@ -683,6 +690,16 @@
         function toggleDashMode() {
             const mode = document.getElementById('dashMode').value;
             const monthDiv = document.getElementById('dashMonthDiv');
+            if(mode === 'yearly') {
+                monthDiv.classList.add('hidden');
+            } else {
+                monthDiv.classList.remove('hidden');
+            }
+        }
+
+        function toggleReportMode() {
+            const mode = document.getElementById('reportTypeMode').value;
+            const monthDiv = document.getElementById('reportMonthDiv');
             if(mode === 'yearly') {
                 monthDiv.classList.add('hidden');
             } else {
@@ -794,6 +811,45 @@
                 .catch(() => {
                     studentSelect.innerHTML = '<option value="">-- ডেটা লোড করতে সমস্যা হয়েছে --</option>';
                 });
+        }
+
+        function loadDueStudentsTable() {
+            const batch = document.getElementById('feeBatchSelect').value;
+            const container = document.getElementById('dueStudentsContainer');
+            const tbody = document.getElementById('dueStudentsTableBody');
+            
+            tbody.innerHTML = '';
+            container.classList.add('hidden');
+
+            if (!batch) return;
+
+            fetch(`${scriptURL}?action=getStudentsWithDue&batch=${encodeURIComponent(batch)}`)
+                .then(res => res.json())
+                .then(students => {
+                    if (students.length > 0) {
+                        container.classList.remove('hidden');
+                        students.forEach(st => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td class="border p-2 font-medium">${st.name}</td>
+                                <td class="border p-2">${st.phone || '--'}</td>
+                                <td class="border p-2 text-center font-bold text-red-600">৳ ${st.due}</td>
+                                <td class="border p-2 text-center">
+                                    <button onclick="selectStudentAndPay('${st.name}')" class="bg-purple-600 text-white px-3 py-1 rounded text-xs hover:bg-purple-700">ফি সংগ্রহ করুন</button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+                })
+                .catch(err => console.error('Due table error:', err));
+        }
+
+        function selectStudentAndPay(studentName) {
+            const selectEl = document.getElementById('feeStudentSelect');
+            selectEl.value = studentName;
+            loadStudentPaymentHistory();
+            selectEl.scrollIntoView({ behavior: 'smooth' });
         }
 
         function fetchStudentsForExamTable() {
@@ -1108,6 +1164,7 @@
                     document.getElementById('feeStatusMessage').textContent = 'ফি সফলভাবে সংরক্ষিত হয়েছে!';
                     document.getElementById('feeStatusMessage').className = 'mt-4 text-center text-sm font-medium text-green-600';
                     loadStudentPaymentHistory();
+                    loadDueStudentsTable();
                 });
             });
         }
@@ -1183,6 +1240,7 @@
         function generateMonthlyReport() {
             const batch = document.getElementById('reportBatchSelect').value;
             const name = document.getElementById('reportStudentSelect').value;
+            const mode = document.getElementById('reportTypeMode').value;
             const month = document.getElementById('reportMonth').value;
             const year = document.getElementById('reportYear').value;
             const monthYearStr = month + " " + year;
@@ -1195,15 +1253,23 @@
             document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট তৈরি হচ্ছে...';
             document.getElementById('reportCardResult').classList.add('hidden');
 
-            fetch(`${scriptURL}?action=getMonthlyReport&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&monthYear=${encodeURIComponent(monthYearStr)}`)
+            let fetchURL = `${scriptURL}?action=getMonthlyReport&batch=${encodeURIComponent(batch)}&name=${encodeURIComponent(name)}&mode=${mode}&monthYear=${encodeURIComponent(monthYearStr)}&year=${encodeURIComponent(year)}`;
+
+            fetch(fetchURL)
                 .then(res => res.json())
                 .then(report => {
                     document.getElementById('reportLoadingMsg').textContent = '';
+                    
+                    if(mode === 'monthly' && report.hasActivity === false) {
+                        document.getElementById('reportLoadingMsg').textContent = 'নির্বাচিত মাসে এই শিক্ষার্থীর কোনো লেনদেন বা উপস্থিতি পাওয়া যায়নি।';
+                        return;
+                    }
+
                     document.getElementById('reportCardResult').classList.remove('hidden');
 
                     document.getElementById('repStudentNameTitle').textContent = name;
                     document.getElementById('repBatchTitle').textContent = batch;
-                    document.getElementById('repMonthTitle').textContent = monthYearStr;
+                    document.getElementById('repMonthTitle').textContent = mode === 'yearly' ? (year + ' সালের পুরো বছর') : monthYearStr;
 
                     document.getElementById('repPresentCount').textContent = report.present + ' দিন';
                     document.getElementById('repAbsentCount').textContent = report.absent + ' দিন';
@@ -1215,17 +1281,36 @@
                     document.getElementById('repAvgPercentage').textContent = (report.avgPercentage || 0) + '%';
 
                     document.getElementById('repDetailsText').innerHTML = `
-                        <p><b>ফি স্ট্যাটাস:</b> ${report.status} (পরিশোধিত: ৳ ${report.paid})</p>
-                        <p><b>অনুপস্থিত জরিমানা:</b> ৳ ${report.fine}</p>
+                        <p><b>সর্বমোট পরিশোধিত:</b> ৳ ${report.paid}</p>
+                        <p><b>উপস্থিতি ও জরিমানা বিবরণ:</b> মোট উপস্থিতি ${report.present} দিন, অনুপস্থিতি ${report.absent} দিন (জরিমানা: ৳ ${report.fine})।</p>
                         <p><b>পরীক্ষার বিবরণ:</b> মোট ${report.examCount || 0} টি পরীক্ষায় অংশগ্রহণ করেছে।</p>
                     `;
+
+                    const dueSection = document.getElementById('monthlyDueSection');
+                    const dueList = document.getElementById('monthlyDueList');
+                    dueList.innerHTML = '';
+
+                    if (report.monthlyDueBreakdown && report.monthlyDueBreakdown.length > 0) {
+                        dueSection.classList.remove('hidden');
+                        report.monthlyDueBreakdown.forEach(item => {
+                            const li = document.createElement('li');
+                            li.innerHTML = `<span class="font-medium">${item.monthYear}:</span> <span class="text-red-600 font-bold">৳ ${item.due}</span> বকেয়া`;
+                            dueList.appendChild(li);
+                        });
+                        
+                        const totalLi = document.createElement('li');
+                        totalLi.className = "pt-1 font-bold border-t text-gray-900";
+                        totalLi.innerHTML = `সর্বমোট বকেয়া (Total Due): <span class="text-red-700">৳ ${report.due}</span>`;
+                        dueList.appendChild(totalLi);
+                    } else {
+                        dueSection.classList.add('hidden');
+                    }
                 })
                 .catch(() => {
                     document.getElementById('reportLoadingMsg').textContent = 'রিপোর্ট লোড করতে সমস্যা হয়েছে।';
                 });
         }
 
-        // দৈনিক আয় ব্যয় ডেটা লোড ও গ্রাফ রেন্ডার করার ফাংশন
         function loadDailyExpenseData() {
             fetch(`${scriptURL}?action=getDailyExpenseSummary`)
                 .then(res => res.json())
